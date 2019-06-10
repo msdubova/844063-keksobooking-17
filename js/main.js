@@ -2,7 +2,7 @@
 
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
-var pin = document.querySelector('#pin');
+var pin = document.querySelector('#pin').content;
 var hotels = [];
 var fragment = document.createDocumentFragment();
 
@@ -13,7 +13,7 @@ var fragment = document.createDocumentFragment();
  * @return {number} округленное до целого числа случайное число в обозначенном промежутке
  */
 var getRandomInRange = function (min, max) {
-  return Math.round(Math.random() * (max - min) + min);
+  return (Math.round(Math.random() * (max - min) + min));
 };
 
 /**
@@ -29,7 +29,7 @@ var randomizeAvatar = function () {
  * @return {string} Возвращает строку - значение локализации
  */
 var randomizeLocation = function () {
-  return 'left: ' + getRandomInRange(0, map.offsetWidth) + 'px, top: ' + getRandomInRange(130, 631) + 'px';
+  return 'left: ' + getRandomInRange(0, mapPins.offsetWidth) + 'px; top: ' + getRandomInRange(130, 631) + 'px';
 };
 
 /**
@@ -66,13 +66,19 @@ var generatePins = function (quantity) {
 
   for (var i = 0; i < quantity; i++) {
     var clonedPin = pin.cloneNode(true);
+    var clonedPinImage = clonedPin.querySelector('img');
     clonedPin.style = hotels[i].location;
-    clonedPin.src = hotels[i].author;
-    clonedPin.alt = hotels[i].offer;
+    clonedPinImage.src = hotels[i].author;
+    clonedPinImage.alt = hotels[i].offer;
     fragment.appendChild(clonedPin);
   }
   mapPins.appendChild(fragment);
 };
 
+
+
+
+
 map.classList.remove('map--faded');
 generatePins(8);
+console.log(hotels);
