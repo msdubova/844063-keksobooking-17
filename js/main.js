@@ -21,7 +21,7 @@ var getRandomInRange = function (min, max) {
  * @return {string} Возвращает строку - значение свойства аватара
  */
 var randomizeAvatar = function () {
-  return ('img/avatars/user0' + getRandomInRange(1, 9) + '.png');
+  return ('img/avatars/user0' + getRandomInRange(1, 8) + '.png');
 };
 
 /**
@@ -67,7 +67,8 @@ var generatePins = function (quantity) {
   for (var i = 0; i < quantity; i++) {
     var clonedPin = pin.cloneNode(true);
     var clonedPinImage = clonedPin.querySelector('img');
-    clonedPin.style = hotels[i].location;
+    var clonedPinButton = clonedPin.querySelector('button');
+    clonedPinButton.style = hotels[i].location;
     clonedPinImage.src = hotels[i].author;
     clonedPinImage.alt = hotels[i].offer;
     fragment.appendChild(clonedPin);
