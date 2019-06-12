@@ -76,10 +76,5 @@ var generatePins = function (quantity) {
   mapPins.appendChild(fragment);
 };
 
-
-
-
-
 map.classList.remove('map--faded');
 generatePins(8);
-console.log(hotels);
