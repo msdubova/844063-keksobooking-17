@@ -5,6 +5,8 @@ var mapPins = document.querySelector('.map__pins');
 var pin = document.querySelector('#pin').content;
 var hotels = [];
 var fragment = document.createDocumentFragment();
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
 
 /**
  * Функция генерирует случайное число в указанном диапазоне
@@ -29,7 +31,7 @@ var randomizeAvatar = function () {
  * @return {string} Возвращает строку - значение локализации
  */
 var randomizeLocation = function () {
-  return 'left: ' + getRandomInRange(0, mapPins.offsetWidth) + 'px; top: ' + getRandomInRange(130, 631) + 'px';
+  return 'left: ' + (getRandomInRange(0, mapPins.offsetWidth) - PIN_WIDTH / 2) + 'px; top: ' + (getRandomInRange(130, 631) - PIN_HEIGHT) + 'px';
 };
 
 /**
