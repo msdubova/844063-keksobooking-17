@@ -1,12 +1,11 @@
 'use strict';
 
-var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
-var pin = document.querySelector('#pin').content;
-var hotels = [];
-var fragment = document.createDocumentFragment();
+var types = ['palace', 'flat', 'house', 'bungalo'];
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var LOWLINE_Y = 130;
+var TOPLINE_Y = 630;
 
 /**
  * Функция генерирует случайное число в указанном диапазоне
@@ -22,7 +21,7 @@ var getRandomInRange = function (min, max) {
  * Функция конкатенирует строку для значения стиля аватарки из указанной строки и конкатенации случайного числа
  * @return {string} Возвращает строку - значение свойства аватара
  */
-var randomizeAvatar = function () {
+var getRandomAvatar = function () {
   return ('img/avatars/user0' + getRandomInRange(1, 8) + '.png');
 };
 
@@ -30,33 +29,17 @@ var randomizeAvatar = function () {
  * Функция конкатенирует строку для значения локализации из указанной строки и конкатенации случайного числа
  * @return {string} Возвращает строку - значение локализации
  */
-var randomizeLocation = function () {
-  return 'left: ' + (getRandomInRange(0, mapPins.offsetWidth) - PIN_WIDTH / 2) + 'px; top: ' + (getRandomInRange(130, 631) - PIN_HEIGHT) + 'px';
+var getRandomLocation = function () {
+  return 'left: ' + (getRandomInRange(0, mapPins.offsetWidth) - PIN_WIDTH / 2) + 'px; top: ' + (getRandomInRange(LOWLINE_Y, TOPLINE_Y) - PIN_HEIGHT) + 'px';
 };
 
 /**
  * Функция конкатенирует строку для значения типа жилища из указанной строки и конкатенации случайного числа
  * @return {string} Возвращает строку - значение типа жилища
  */
-var randomizeType = function () {
-  var types = ['palace', 'flat', 'house', 'bungalo'];
-  return 'type: ' + types[getRandomInRange(0, types.length)];
-};
+var getRandomType = function () {
 
-/**
- * Функция создает массив из заданного количества объектов, значения свойств которых генерируются случайным образом
- * @param {number} quantity желаемое количество элементов в массиве
- * @return {arr}
- */
-var generateArray = function (quantity) {
-  for (var i = 0; i < quantity; i++) {
-    var hotelTemplate = {};
-    hotelTemplate.author = randomizeAvatar();
-    hotelTemplate.location = randomizeLocation();
-    hotelTemplate.offer = randomizeType();
-    hotels.push(hotelTemplate);
-  }
-  return hotels;
+  return 'type: ' + types[getRandomInRange(0, types.length)];
 };
 
 /**
@@ -64,19 +47,44 @@ var generateArray = function (quantity) {
  * @param {number} quantity желаемое количество элементов в массиве
  */
 var generatePins = function (quantity) {
-  generateArray(quantity);
+  var hotels = [];
+  var ad = document.querySelector('#pin').content;
+  var fragment = document.createDocumentFragment();
+
+  /**
+   * Функция создает массив из заданного количества объектов, значения свойств которых генерируются случайным образом
+   * @param {number} quantity желаемое количество элементов в массиве
+   * @return {arr}
+   */
+  var generateTemplates = function (quantity) {
+    for (var i = 0; i < quantity; i++) {
+      var hotelTemplate = {};
+      hotelTemplate.author = getRandomAvatar();
+      hotelTemplate.location = getRandomLocation();
+      hotelTemplate.offer = getRandomType();
+      hotels.push(hotelTemplate);
+    }
+    return hotels;
+  };
+  generateTemplates(quantity);
 
   for (var i = 0; i < quantity; i++) {
-    var clonedPin = pin.cloneNode(true);
-    var clonedPinImage = clonedPin.querySelector('img');
-    var clonedPinButton = clonedPin.querySelector('button');
-    clonedPinButton.style = hotels[i].location;
-    clonedPinImage.src = hotels[i].author;
-    clonedPinImage.alt = hotels[i].offer;
-    fragment.appendChild(clonedPin);
+    var clonedAd = ad.cloneNode(true);
+    var clonedAdImage = clonedAd.querySelector('img');
+    var clonedAdButton = clonedAd.querySelector('button');
+    clonedAdButton.style = hotels[i].location;
+    clonedAdImage.src = hotels[i].author;
+    clonedAdImage.alt = hotels[i].offer;
+    fragment.appendChild(clonedAd);
   }
   mapPins.appendChild(fragment);
 };
 
-map.classList.remove('map--faded');
-generatePins(8);
+var setup = function (quantity) {
+  var map = document.querySelector('.map');
+  map.classList.remove('map--faded');
+  generatePins(quantity);
+};
+
+setup(8);
+
