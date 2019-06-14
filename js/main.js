@@ -2,8 +2,7 @@
 
 var mapPins = document.querySelector('.map__pins');
 var types = ['palace', 'flat', 'house', 'bungalo'];
-var PIN_WIDTH = 50;
-var PIN_HEIGHT = 70;
+
 var LOWLINE_Y = 130;
 var TOPLINE_Y = 630;
 
@@ -18,11 +17,21 @@ var getRandomInRange = function (min, max) {
 };
 
 /**
- * Функция конкатенирует строку для значения стиля аватарки из указанной строки и конкатенации случайного числа
- * @return {string} Возвращает строку - значение свойства аватара
+ * Функция создает перемешанный массив чисел заданного диапазона, используется для безповторного присвоения случайных чисел в конкатенации имен аватарок
+ * @param {number} quantity Принимает целое число для указания диапазона чисел в создаваемом массиве
+ * @return {arr} Возвращает массив с перемешанными числами заданного диапазона
  */
-var getRandomAvatar = function () {
-  return ('img/avatars/user0' + getRandomInRange(1, 8) + '.png');
+var getRandomAvatar = function (quantity) {
+  var arr = [];
+  for (var j = 1; j <= quantity; j++) {
+    arr.push(j);
+  }
+
+  arr = arr.sort(function () {
+    return Math.random() - 0.5;
+  });
+
+  return arr;
 };
 
 /**
@@ -30,6 +39,8 @@ var getRandomAvatar = function () {
  * @return {string} Возвращает строку - значение локализации
  */
 var getRandomLocation = function () {
+  var PIN_WIDTH = mapPins.querySelector('.map__pin').clientWidth;
+  var PIN_HEIGHT = mapPins.querySelector('.map__pin').clientHeight;
   return 'left: ' + (getRandomInRange(0, mapPins.offsetWidth) - PIN_WIDTH / 2) + 'px; top: ' + (getRandomInRange(LOWLINE_Y, TOPLINE_Y) - PIN_HEIGHT) + 'px';
 };
 
@@ -38,7 +49,6 @@ var getRandomLocation = function () {
  * @return {string} Возвращает строку - значение типа жилища
  */
 var getRandomType = function () {
-
   return 'type: ' + types[getRandomInRange(0, types.length)];
 };
 
@@ -53,13 +63,15 @@ var generatePins = function (quantity) {
 
   /**
    * Функция создает массив из заданного количества объектов, значения свойств которых генерируются случайным образом
-   * @param {number} quantity желаемое количество элементов в массиве
+   * @param {number} range желаемое количество элементов в массиве
    * @return {arr}
    */
-  var generateTemplates = function (quantity) {
-    for (var i = 0; i < quantity; i++) {
+  var generateTemplates = function (range) {
+    range = quantity;
+    var avatars = getRandomAvatar(range);
+    for (var i = 0; i < range; i++) {
       var hotelTemplate = {};
-      hotelTemplate.author = getRandomAvatar();
+      hotelTemplate.author = 'img/avatars/user0' + (avatars[i]) + '.png';
       hotelTemplate.location = getRandomLocation();
       hotelTemplate.offer = getRandomType();
       hotels.push(hotelTemplate);
