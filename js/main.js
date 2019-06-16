@@ -63,8 +63,8 @@ var generateTemplates = function (quantity) {
     hotelTemplate.offer.type = types[getRandomInRange(0, types.length)];
 
     hotelTemplate.location = {};
-    hotelTemplate.location.x = (getRandomInRange(0, mapPins.offsetWidth) - PIN_WIDTH / 2);
-    hotelTemplate.location.y = (getRandomInRange(LOWLINE_Y, TOPLINE_Y) - PIN_HEIGHT);
+    hotelTemplate.location.x = (getRandomInRange(PIN_WIDTH / 2, mapPins.offsetWidth - PIN_WIDTH));
+    hotelTemplate.location.y = (getRandomInRange(LOWLINE_Y - PIN_HEIGHT, TOPLINE_Y));
 
     hotels.push(hotelTemplate);
   }
@@ -79,6 +79,7 @@ var generateTemplates = function (quantity) {
 var getRandomAvatarArrayString = function (arr) {
   var avatars = [];
   for (var i = 0; i < arr.length; i++) {
+
     avatars[i] = 'left: ' + arr[i].location.x + 'px; top: ' + arr[i].location.y + 'px;';
   }
   return avatars;
