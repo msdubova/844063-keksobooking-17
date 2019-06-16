@@ -19,18 +19,18 @@ var getRandomInRange = function (min, max) {
   return (Math.round(Math.random() * (max - min) + min));
 };
 
-/**
- * Функция создает массив из чисел от одного до указанного числа
- * @param {number} quantity количество элементов в массиве
- * @return {arr} arr массив из указанного количества элементов: чисел от 1 до макс в диапазоне
- */
-var getRandomArr = function (quantity) {
-  var arr = [];
-  for (var j = 1; j <= quantity; j++) {
-    arr.push(j);
-  }
-  return arr;
-};
+// /**
+//  * Функция создает массив из чисел от одного до указанного числа
+//  * @param {number} quantity количество элементов в массиве
+//  * @return {arr} arr массив из указанного количества элементов: чисел от 1 до макс в диапазоне
+//  */
+// var getRandomArr = function (quantity) {
+//   var arr = [];
+//   for (var j = 1; j <= quantity; j++) {
+//     arr.push(j);
+//   }
+//   return arr;
+// };
 
 /**
  * Функция перемешивает элементы массива
@@ -53,14 +53,14 @@ var shuffleArray = function (arr) {
   */
 var generateTemplates = function (quantity) {
   var hotels = [];
-  var avatars = shuffleArray(getRandomArr(quantity));
+  var avatars = shuffleArray(getRandomAvatarsArrayString(quantity));
   for (var i = 0; i < quantity; i++) {
     var hotelTemplate = {};
     hotelTemplate.author = {};
-    hotelTemplate.author.avatar = 'img/avatars/user0' + (avatars[i]) + '.png';
+    hotelTemplate.author.avatar = avatars[i];
 
     hotelTemplate.offer = {};
-    hotelTemplate.offer.type = types[getRandomInRange(0, types.length)];
+    hotelTemplate.offer.type = types[getRandomInRange(0, types.length - 1)];
 
     hotelTemplate.location = {};
     hotelTemplate.location.x = (getRandomInRange(PIN_WIDTH / 2, mapPins.offsetWidth - PIN_WIDTH));
@@ -72,17 +72,41 @@ var generateTemplates = function (quantity) {
 };
 
 /**
+ * Функция создает массив с адресами аватарок , которій состоит из 8 адресов, повторяющихся нужное количество раз, чтоб заполнить поочередно массив нужным количеством эелементов
+ * @param {number} quantity желаемое количество элементов в массиве
+ * @return {arr} возвращает массив
+ */
+var getRandomAvatarsArrayString = function (quantity) {
+  var avatarsArray = [];
+  if (quantity <= 8) {
+    for (var i = 0; i < quantity; i++) {
+      avatarsArray[i] = 'img/avatars/user0' + (i + 1) + '.png';
+    }
+  } else {
+    for (i = 0; i < quantity; i++) {
+      if (i < 8) {
+        avatarsArray[i] = 'img/avatars/user0' + (i + 1) + '.png';
+      } else {
+        avatarsArray[i] = 'img/avatars/user0' + (i % 8 + 1) + '.png';
+      }
+    }
+  }
+  return avatarsArray;
+};
+
+
+/**
  * Функция создает массив строк  - адресов изображений аватарок
  * @param {arr} arr Массив обьектов случайных свойств
  * @return {arr} avatars  - массив строк - адресов
  */
-var getRandomAvatarArrayString = function (arr) {
-  var avatars = [];
+var getRandomCoordinatesArrayString = function (arr) {
+  var coordinates = [];
   for (var i = 0; i < arr.length; i++) {
 
-    avatars[i] = 'left: ' + arr[i].location.x + 'px; top: ' + arr[i].location.y + 'px;';
+    coordinates[i] = 'left: ' + arr[i].location.x + 'px; top: ' + arr[i].location.y + 'px;';
   }
-  return avatars;
+  return coordinates;
 };
 
 /**
@@ -97,7 +121,7 @@ var generatePins = function (arr) {
     var clonedAd = ad.cloneNode(true);
     var clonedAdImage = clonedAd.querySelector('img');
     var clonedAdButton = clonedAd.querySelector('button');
-    clonedAdButton.style = (getRandomAvatarArrayString(arr)[i]);
+    clonedAdButton.style = (getRandomCoordinatesArrayString(arr)[i]);
     clonedAdImage.src = arr[i].author.avatar;
     clonedAdImage.alt = arr[i].offer.type;
     fragment.appendChild(clonedAd);
