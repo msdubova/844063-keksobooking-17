@@ -5,7 +5,7 @@ var types = ['palace', 'flat', 'house', 'bungalo'];
 
 var LOWLINE_Y = 130;
 var TOPLINE_Y = 630;
-var ELEMENTS = 8;
+var ELEMENTS_COUNT = 8;
 var PIN_WIDTH = mapPins.querySelector('.map__pin').clientWidth;
 var PIN_HEIGHT = mapPins.querySelector('.map__pin').clientHeight;
 
@@ -19,23 +19,10 @@ var getRandomInRange = function (min, max) {
   return (Math.round(Math.random() * (max - min) + min));
 };
 
-// /**
-//  * Функция создает массив из чисел от одного до указанного числа
-//  * @param {number} quantity количество элементов в массиве
-//  * @return {arr} arr массив из указанного количества элементов: чисел от 1 до макс в диапазоне
-//  */
-// var getRandomArr = function (quantity) {
-//   var arr = [];
-//   for (var j = 1; j <= quantity; j++) {
-//     arr.push(j);
-//   }
-//   return arr;
-// };
-
 /**
  * Функция перемешивает элементы массива
  * @param {arr} arr принимает массив элементов
- * @return {arr} arr Возвращает перемешанный массив
+ * @return {arr} Возвращает перемешанный массив
  */
 var shuffleArray = function (arr) {
   for (var i = arr.length - 1; i > 0; i--) {
@@ -49,22 +36,24 @@ var shuffleArray = function (arr) {
 /**
   * Функция создает массив из заданного количества объектов, значения свойств которых генерируются случайным образом
   * @param {number} quantity желаемое количество элементов в массиве
-  * @return {arr}   Массив обьектов случайных свойств
+  * @return {arr} Массив обьектов случайных свойств
   */
 var generateTemplates = function (quantity) {
   var hotels = [];
   var avatars = shuffleArray(getRandomAvatarsArrayString(quantity));
   for (var i = 0; i < quantity; i++) {
-    var hotelTemplate = {};
-    hotelTemplate.author = {};
-    hotelTemplate.author.avatar = avatars[i];
-
-    hotelTemplate.offer = {};
-    hotelTemplate.offer.type = types[getRandomInRange(0, types.length - 1)];
-
-    hotelTemplate.location = {};
-    hotelTemplate.location.x = (getRandomInRange(PIN_WIDTH / 2, mapPins.offsetWidth - PIN_WIDTH));
-    hotelTemplate.location.y = (getRandomInRange(LOWLINE_Y - PIN_HEIGHT, TOPLINE_Y));
+    var hotelTemplate = {
+      author: {
+        avatar: avatars[i]
+      },
+      offer: {
+        type: types[getRandomInRange(0, types.length - 1)]
+      },
+      location: {
+        x: (getRandomInRange(PIN_WIDTH / 2, mapPins.offsetWidth - PIN_WIDTH)),
+        y: (getRandomInRange(LOWLINE_Y - PIN_HEIGHT, TOPLINE_Y))
+      }
+    };
 
     hotels.push(hotelTemplate);
   }
@@ -72,23 +61,18 @@ var generateTemplates = function (quantity) {
 };
 
 /**
- * Функция создает массив с адресами аватарок , которій состоит из 8 адресов, повторяющихся нужное количество раз, чтоб заполнить поочередно массив нужным количеством эелементов
+ * Функция создает массив из 8 адресов. В случае, если задано количество элементов массива больше 8 - адреса повторяются, начиная с первого.
  * @param {number} quantity желаемое количество элементов в массиве
  * @return {arr} возвращает массив
  */
 var getRandomAvatarsArrayString = function (quantity) {
   var avatarsArray = [];
-  if (quantity <= 8) {
-    for (var i = 0; i < quantity; i++) {
+
+  for (var i = 0; i < quantity; i++) {
+    if (i >= 9) {
+      avatarsArray[i] = 'img/avatars/user' + (i + 1) + '.png';
+    } else {
       avatarsArray[i] = 'img/avatars/user0' + (i + 1) + '.png';
-    }
-  } else {
-    for (i = 0; i < quantity; i++) {
-      if (i < 8) {
-        avatarsArray[i] = 'img/avatars/user0' + (i + 1) + '.png';
-      } else {
-        avatarsArray[i] = 'img/avatars/user0' + (i % 8 + 1) + '.png';
-      }
     }
   }
   return avatarsArray;
@@ -98,7 +82,7 @@ var getRandomAvatarsArrayString = function (quantity) {
 /**
  * Функция создает массив строк  - адресов изображений аватарок
  * @param {arr} arr Массив обьектов случайных свойств
- * @return {arr} avatars  - массив строк - адресов
+ * @return {arr} массив строк - адресов
  */
 var getRandomCoordinatesArrayString = function (arr) {
   var coordinates = [];
@@ -140,4 +124,4 @@ var setup = function () {
 };
 
 setup();
-generatePins(generateTemplates(ELEMENTS));
+generatePins(generateTemplates(ELEMENTS_COUNT));
