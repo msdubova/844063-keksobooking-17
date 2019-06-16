@@ -131,14 +131,13 @@ var generatePins = function (arr) {
 };
 
 /**
- * Функция запускает алшоритм генерации булавок со случайными значениями и их добалвение в разметку
+ * Функция запускает алгоритм генерации булавок со случайными значениями и их добалвение в разметку
  * @param {number} quantity
  */
-var setup = function (quantity) {
+var setup = function () {
   var map = document.querySelector('.map');
   map.classList.remove('map--faded');
-
-  generatePins(generateTemplates(quantity));
 };
 
-setup(ELEMENTS);
+setup();
+generatePins(generateTemplates(ELEMENTS));
