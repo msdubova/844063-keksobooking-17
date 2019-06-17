@@ -5,9 +5,9 @@ var types = ['palace', 'flat', 'house', 'bungalo'];
 
 var LOWLINE_Y = 130;
 var TOPLINE_Y = 630;
-var ELEMENTS_COUNT = 8;
-var PIN_WIDTH = mapPins.querySelector('.map__pin').clientWidth;
-var PIN_HEIGHT = mapPins.querySelector('.map__pin').clientHeight;
+var ELEMENTS_COUNT = 100;
+// var PIN_WIDTH = mapPins.querySelector('.map__pin').clientWidth;
+// var PIN_HEIGHT = mapPins.querySelector('.map__pin').clientHeight;
 
 /**
  * Функция генерирует случайное число в указанном диапазоне
@@ -62,8 +62,10 @@ var generateTemplates = function (quantity) {
         type: types[getRandomInRange(0, types.length - 1)]
       },
       location: {
-        x: (getRandomInRange(PIN_WIDTH / 2, mapPins.offsetWidth - PIN_WIDTH)),
-        y: (getRandomInRange(LOWLINE_Y - PIN_HEIGHT, TOPLINE_Y))
+        // x: (getRandomInRange(PIN_WIDTH / 2, mapPins.offsetWidth - PIN_WIDTH)),
+        // y: (getRandomInRange(LOWLINE_Y - PIN_HEIGHT, TOPLINE_Y))
+        x: (getRandomInRange(0, mapPins.offsetWidth)),
+        y: (getRandomInRange(LOWLINE_Y, TOPLINE_Y))
       }
     };
 
@@ -133,5 +135,28 @@ var setup = function () {
   map.classList.remove('map--faded');
 };
 
+/**
+ * Функция корректирует координаты булавки , учитывая погрешность на размер булавки и перенос центра отсчета с левого верхнего угла на кончик булавки
+ */
+var customizePinSize = function () {
+  var ads = mapPins.querySelectorAll('.map__pin');
+  for (var i = 1; i < ads.length; i++) {
+    var left = (ads[i].style.left);
+    var top = (ads[i].style.top);
+    var width = (ads[i].clientWidth);
+    var height = (ads[i].clientHeight);
+    left = parseInt(left, 10) - width / 2;
+    top = parseInt(top, 10) - height;
+    if ((left - width / 2) < 0) {
+      left = 0;
+    }
+    if ((left + width) > mapPins.offsetWidth) {
+      left = mapPins.offsetWidth - width;
+    }
+    ads[i].style = 'left: ' + left + 'px; top: ' + top + 'px;';
+  }
+};
+
 setup();
 generatePins(generateTemplates(ELEMENTS_COUNT));
+customizePinSize();
