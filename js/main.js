@@ -5,7 +5,7 @@ var types = ['palace', 'flat', 'house', 'bungalo'];
 
 var LOWLINE_Y = 130;
 var TOPLINE_Y = 630;
-var ELEMENTS_COUNT = 100;
+var ELEMENTS_COUNT = 8;
 // var PIN_WIDTH = mapPins.querySelector('.map__pin').clientWidth;
 // var PIN_HEIGHT = mapPins.querySelector('.map__pin').clientHeight;
 
