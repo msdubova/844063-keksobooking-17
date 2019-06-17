@@ -22,7 +22,7 @@ var getRandomInRange = function (min, max) {
 /**
  * Функция перемешивает элементы массива
  * @param {arr} arr принимает массив элементов
- * @return {arr} Возвращает перемешанный массив
+ * @return {number[]} Возвращает перемешанный массив
  */
 var shuffleArray = function (arr) {
   for (var i = arr.length - 1; i > 0; i--) {
@@ -33,14 +33,26 @@ var shuffleArray = function (arr) {
   }
   return arr;
 };
+
 /**
-  * Функция создает массив из заданного количества объектов, значения свойств которых генерируются случайным образом
+  * Функция создает массив массив, состоящий из 8 сгенерированных JS объектов, которые будут описывать значения булавок на карте
   * @param {number} quantity желаемое количество элементов в массиве
-  * @return {arr} Массив обьектов случайных свойств
+  * @return {[{
+    * author: {
+    * avatar: string
+    * },
+    * offer: {
+    * type: string
+    * },
+    * location: {
+    * x: number,
+    * y: number
+    * }
+    * }]} Массив обьектов случайных свойств
   */
 var generateTemplates = function (quantity) {
-  var hotels = [];
-  var avatars = shuffleArray(getRandomAvatarsArrayString(quantity));
+  var ads = [];
+  var avatars = shuffleArray(getRandomAvatars(quantity));
   for (var i = 0; i < quantity; i++) {
     var hotelTemplate = {
       author: {
@@ -55,17 +67,17 @@ var generateTemplates = function (quantity) {
       }
     };
 
-    hotels.push(hotelTemplate);
+    ads.push(hotelTemplate);
   }
-  return hotels;
+  return ads;
 };
 
 /**
  * Функция создает массив из 8 адресов. В случае, если задано количество элементов массива больше 8 - адреса повторяются, начиная с первого.
  * @param {number} quantity желаемое количество элементов в массиве
- * @return {arr} возвращает массив
+ * @return {string[]} возвращает массив
  */
-var getRandomAvatarsArrayString = function (quantity) {
+var getRandomAvatars = function (quantity) {
   var avatarsArray = [];
 
   for (var i = 0; i < quantity; i++) {
@@ -78,23 +90,21 @@ var getRandomAvatarsArrayString = function (quantity) {
   return avatarsArray;
 };
 
-
 /**
  * Функция создает массив строк  - адресов изображений аватарок
  * @param {arr} arr Массив обьектов случайных свойств
- * @return {arr} массив строк - адресов
+ * @return {string[]} массив строк - адресов
  */
-var getRandomCoordinatesArrayString = function (arr) {
+var generateCoordinates = function (arr) {
   var coordinates = [];
   for (var i = 0; i < arr.length; i++) {
-
-    coordinates[i] = 'left: ' + arr[i].location.x + 'px; top: ' + arr[i].location.y + 'px;';
+    coordinates.push('left: ' + arr[i].location.x + 'px; top: ' + arr[i].location.y + 'px;');
   }
   return coordinates;
 };
 
 /**
- * Функция создает булавки и добавляет их в разметку, данные каждой булавки получены из массива  - результата фунцкии generateTemplates
+ * Функция создает булавки и добавляет их в разметку
  * @param {arr} arr массив с заготовленными обьектами - шаблонами свойств
  */
 var generatePins = function (arr) {
@@ -105,7 +115,7 @@ var generatePins = function (arr) {
     var clonedAd = ad.cloneNode(true);
     var clonedAdImage = clonedAd.querySelector('img');
     var clonedAdButton = clonedAd.querySelector('button');
-    clonedAdButton.style = (getRandomCoordinatesArrayString(arr)[i]);
+    clonedAdButton.style = (generateCoordinates(arr)[i]);
     clonedAdImage.src = arr[i].author.avatar;
     clonedAdImage.alt = arr[i].offer.type;
     fragment.appendChild(clonedAd);
