@@ -52,7 +52,7 @@ var shuffleArray = function (arr) {
   */
 var generateTemplates = function (quantity) {
   var ads = [];
-  var avatars = shuffleArray(getRandomAvatars(quantity));
+  var avatars = shuffleArray(getAvatars(quantity));
   for (var i = 0; i < quantity; i++) {
     var hotelTemplate = {
       author: {
@@ -79,7 +79,7 @@ var generateTemplates = function (quantity) {
  * @param {number} quantity желаемое количество элементов в массиве
  * @return {string[]} возвращает массив
  */
-var getRandomAvatars = function (quantity) {
+var getAvatars = function (quantity) {
   var avatarsArray = [];
 
   for (var i = 0; i < quantity; i++) {
@@ -109,7 +109,7 @@ var generateCoordinates = function (arr) {
  * Функция создает булавки и добавляет их в разметку
  * @param {arr} arr массив с заготовленными обьектами - шаблонами свойств
  */
-var generatePins = function (arr) {
+var renderPins = function (arr) {
   var ad = document.querySelector('#pin').content;
   var fragment = document.createDocumentFragment();
 
@@ -127,8 +127,7 @@ var generatePins = function (arr) {
 };
 
 /**
- * Функция запускает алгоритм генерации булавок со случайными значениями и их добалвение в разметку
- * @param {number} quantity
+ * Функция запускает предварительные настройки
  */
 var setup = function () {
   var map = document.querySelector('.map');
@@ -158,5 +157,5 @@ var customizePinSize = function () {
 };
 
 setup();
-generatePins(generateTemplates(ELEMENTS_COUNT));
+renderPins(generateTemplates(ELEMENTS_COUNT));
 customizePinSize();
