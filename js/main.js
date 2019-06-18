@@ -156,6 +156,59 @@ var customizePinSize = function () {
   }
 };
 
-setup();
-renderPins(generateTemplates(ELEMENTS_COUNT));
-customizePinSize();
+// setup();
+// renderPins(generateTemplates(ELEMENTS_COUNT));
+// customizePinSize();
+
+var formCustomAd = document.querySelector('.ad-form');
+var formFieldsets = formCustomAd.children;
+var mapPinMain = document.querySelector('.map__pin--main');
+var adressInput = formCustomAd.querySelector('input[name="address"]');
+var PIN_TAIL_HEIGHT = 22;
+
+/**
+ * Функция деактивирует форму. Также выполняет заполнение поле ввода адреса автоматически при открытии. Используется при открытии страницы
+ */
+var deactivateForm = function () {
+  if (!formCustomAd.classList.contains('ad-form--disabled')) {
+    formCustomAd.classList.add('ad-form--disabled');
+  }
+
+  for (var i = 0; i < formFieldsets.length; i++) {
+    formFieldsets[i].setAttribute('disabled', 'disabled');
+  }
+
+  adressInput.value = Math.round((parseInt(mapPinMain.style.left, 10) + mapPinMain.clientWidth / 2)) + ', ' + Math.round((parseInt(mapPinMain.style.top, 10) + mapPinMain.clientHeight / 2));
+};
+
+/**
+ * Функция активирует форму и карту с ее функциями и элементами
+ */
+var activatePage = function () {
+  formCustomAd.classList.remove('ad-form--disabled');
+
+  for (var i = 0; i < formFieldsets.length; i++) {
+    formFieldsets[i].removeAttribute('disabled');
+  }
+
+  setup();
+  renderPins(generateTemplates(ELEMENTS_COUNT));
+  customizePinSize();
+};
+
+/**
+ * Функция записывает координаты на карте нижнего края булавки в поле адреса
+ */
+var fillAdress = function () {
+  adressInput.value = Math.round((parseInt(mapPinMain.style.left, 10) + mapPinMain.clientWidth / 2)) + ', ' + Math.round((parseInt(mapPinMain.style.top, 10) + mapPinMain.clientHeight + PIN_TAIL_HEIGHT));
+};
+
+deactivateForm();
+
+mapPinMain.addEventListener('click', function () {
+  activatePage();
+});
+
+mapPinMain.addEventListener('mouseup', function () {
+  fillAdress();
+});
