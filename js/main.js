@@ -52,7 +52,7 @@ var shuffleArray = function (arr) {
   */
 var generateTemplates = function (quantity) {
   var ads = [];
-  var avatars = shuffleArray(getAvatars(quantity));
+  var avatars = shuffleArray(generateAvatars(quantity));
   for (var i = 0; i < quantity; i++) {
     var hotelTemplate = {
       author: {
@@ -79,7 +79,7 @@ var generateTemplates = function (quantity) {
  * @param {number} quantity желаемое количество элементов в массиве
  * @return {string[]} возвращает массив
  */
-var getAvatars = function (quantity) {
+var generateAvatars = function (quantity) {
   var avatarsArray = [];
 
   for (var i = 0; i < quantity; i++) {
@@ -121,6 +121,7 @@ var renderPins = function (arr) {
     clonedAdImage.src = arr[i].author.avatar;
     clonedAdImage.alt = arr[i].offer.type;
     fragment.appendChild(clonedAd);
+
   }
 
   mapPins.appendChild(fragment);
@@ -163,8 +164,49 @@ var customizePinSize = function () {
 var formCustomAd = document.querySelector('.ad-form');
 var formFieldsets = formCustomAd.children;
 var mapPinMain = document.querySelector('.map__pin--main');
-var adressInput = formCustomAd.querySelector('input[name="address"]');
+var addressInput = formCustomAd.querySelector('input[name="address"]');
 var PIN_TAIL_HEIGHT = 22;
+
+/**
+ * Фунция возвращает координату левого верхнего края переданного элемента по оси (абсцисс либо ординат  - параметр left top)
+ * @param {object} element
+ * @param {string} p параметр абсцисса или ордината(left top)
+ * @return {number} числовое значение в системе координат
+ */
+var getCoordinate = function (element, p) {
+  if (p === 'left') {
+    return (Math.round(parseInt(element.style.left, 10)));
+  } else if (p === 'top') {
+    return (Math.round(parseInt(element.style.top, 10)));
+  } else {
+    return ('Ошибка в вводе параметра функции p');
+  }
+};
+
+/**
+ * Фунция возвращает размер по горизонтали или по вертикали(параметр width и height) переданного элемента
+ * @param {object} element
+ * @param {string} p переметр ширина или высота (width и height)
+ * @return {number} число - размер
+ */
+var getSize = function (element, p) {
+  if (p === 'width') {
+    return (Math.round(parseInt(element.clientWidth, 10)));
+  } else if (p === 'height') {
+    return (Math.round(parseInt(element.clientHeight, 10)));
+  } else {
+    return ('Ошибка в вводе параметра функции p');
+  }
+};
+
+/**
+ * Функция записывает координаты нижне центральной точки переданного элемента в поле Input (address)
+ * @param {object} element
+ * @param {object} pseudoConst константа высоты псевдоэлемента булавки
+ */
+var fillAddress = function (element, pseudoConst) {
+  addressInput.value = (getCoordinate(element, 'left') + Math.round(getSize(element, 'width') / 2)) + ', ' + (getCoordinate(element, 'top') + getSize(element, 'height') + pseudoConst);
+};
 
 /**
  * Функция деактивирует форму. Также выполняет заполнение поле ввода адреса автоматически при открытии. Используется при открытии страницы
@@ -178,8 +220,9 @@ var deactivateForm = function () {
     formFieldsets[i].setAttribute('disabled', 'disabled');
   }
 
-  adressInput.value = Math.round((parseInt(mapPinMain.style.left, 10) + mapPinMain.clientWidth / 2)) + ', ' + Math.round((parseInt(mapPinMain.style.top, 10) + mapPinMain.clientHeight / 2));
+  addressInput.value = (getCoordinate(mapPinMain, 'left') + Math.round(getSize(mapPinMain, 'width') / 2)) + ', ' + (getCoordinate(mapPinMain, 'top') + Math.round(getSize(mapPinMain, 'height') / 2));
 };
+
 
 /**
  * Функция активирует форму и карту с ее функциями и элементами
@@ -194,21 +237,19 @@ var activatePage = function () {
   setup();
   renderPins(generateTemplates(ELEMENTS_COUNT));
   customizePinSize();
+
+  // mapPinMain.removeEventListener('click', function () {
+  //   activatePage();
+  // });
 };
 
-/**
- * Функция записывает координаты на карте нижнего края булавки в поле адреса
- */
-var fillAdress = function () {
-  adressInput.value = Math.round((parseInt(mapPinMain.style.left, 10) + mapPinMain.clientWidth / 2)) + ', ' + Math.round((parseInt(mapPinMain.style.top, 10) + mapPinMain.clientHeight + PIN_TAIL_HEIGHT));
-};
 
 deactivateForm();
 
 mapPinMain.addEventListener('click', function () {
   activatePage();
-});
+}, {once: true});
 
 mapPinMain.addEventListener('mouseup', function () {
-  fillAdress();
+  fillAddress(mapPinMain, PIN_TAIL_HEIGHT);
 });
