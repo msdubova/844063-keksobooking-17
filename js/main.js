@@ -160,29 +160,17 @@ var addressInput = formCustomAd.querySelector('input[name="address"]');
 var PIN_TAIL_HEIGHT = 22;
 
 /**
- * Фунция возвращает координату левого верхнего края переданного элемента по оси (абсцисс либо ординат  - параметр left top)
+ * Функция возвращает числовое значение затребованого параметра передаваемого элемента
  * @param {object} element
  * @param {string} p параметр абсцисса или ордината(left top)
  * @return {number} числовое значение в системе координат
  */
-var getCoordinate = function (element, p) {
+var getParameter = function (element, p) {
   if (p === 'left') {
     return (Math.round(parseInt(element.style.left, 10)));
   } else if (p === 'top') {
     return (Math.round(parseInt(element.style.top, 10)));
-  } else {
-    return ('Ошибка в вводе параметра функции p');
-  }
-};
-
-/**
- * Фунция возвращает размер по горизонтали или по вертикали(параметр width и height) переданного элемента
- * @param {object} element
- * @param {string} p переметр ширина или высота (width и height)
- * @return {number} число - размер
- */
-var getSize = function (element, p) {
-  if (p === 'width') {
+  } else if (p === 'width') {
     return (Math.round(parseInt(element.clientWidth, 10)));
   } else if (p === 'height') {
     return (Math.round(parseInt(element.clientHeight, 10)));
@@ -197,7 +185,7 @@ var getSize = function (element, p) {
  * @param {object} pseudoConst константа высоты псевдоэлемента булавки
  */
 var fillAddress = function (element, pseudoConst) {
-  addressInput.value = (getCoordinate(element, 'left') + Math.round(getSize(element, 'width') / 2)) + ', ' + (getCoordinate(element, 'top') + getSize(element, 'height') + pseudoConst);
+  addressInput.value = (getParameter(element, 'left') + Math.round(getParameter(element, 'width') / 2)) + ', ' + (getParameter(element, 'top') + getParameter(element, 'height') + pseudoConst);
 };
 
 /**
@@ -212,7 +200,7 @@ var deactivateForm = function () {
     formFieldsets[i].setAttribute('disabled', 'disabled');
   }
 
-  addressInput.value = (getCoordinate(mapPinMain, 'left') + Math.round(getSize(mapPinMain, 'width') / 2)) + ', ' + (getCoordinate(mapPinMain, 'top') + Math.round(getSize(mapPinMain, 'height') / 2));
+  addressInput.value = (getParameter(mapPinMain, 'left') + Math.round(getParameter(mapPinMain, 'width') / 2)) + ', ' + (getParameter(mapPinMain, 'top') + Math.round(getParameter(mapPinMain, 'height') / 2));
 };
 
 
