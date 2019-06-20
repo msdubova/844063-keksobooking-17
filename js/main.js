@@ -247,8 +247,9 @@ var adTypeSelect = formCustomAd.querySelector('#type');
 var adPriceInput = formCustomAd.querySelector('#price');
 var adCheckinSelect = formCustomAd.querySelector('#timein');
 var adCheckOutSelect = formCustomAd.querySelector('#timeout');
-var adRoomSelect = formCustomAd.querySelector('#room_number');
-var adCapacitySelect = formCustomAd.querySelector('#capacity');
+// в этой домашке же не нужно пока трогать комнаты и вместимость?
+// var adRoomSelect = formCustomAd.querySelector('#room_number');
+// var adCapacitySelect = formCustomAd.querySelector('#capacity');
 
 var adTypeParameters = {
   bungalo: {min: 0, placeholder: 0},
@@ -257,20 +258,30 @@ var adTypeParameters = {
   palace: {min: 10000, placeholder: 10000}
 };
 
+/**
+ * Функция подтягивает значения двух селектов по порядковому номеру выбранной опции
+ * @param {object} firstSelect селект, в котором происходит выбор опции
+ * @param {object} secondSelect селект, в котором выбор опции подтягивается выбором в первом селекте
+ */
+var matchSelects = function (firstSelect, secondSelect) {
+  secondSelect.selectedIndex = firstSelect.selectedIndex;
+};
 
 adTypeSelect.addEventListener('change', function () {
-  adPriceInput.setAttribute('min', adTypeParameters[adTypeSelect.value].min);
   adPriceInput.setAttribute('placeholder', adTypeParameters[adTypeSelect.value].placeholder);
 });
 
 adCheckinSelect.addEventListener('change', function () {
-  adCheckOutSelect.selectedIndex = adCheckinSelect.selectedIndex;
+  matchSelects(adCheckinSelect, adCheckOutSelect);
 });
 
 adCheckOutSelect.addEventListener('change', function () {
   adCheckinSelect.selectedIndex = adCheckOutSelect.selectedIndex;
+  matchSelects(adCheckOutSelect, adCheckinSelect);
 });
 
-adRoomSelect.addEventListener('change', function () {
-  adCapacitySelect.selectedIndex = adRoomSelect.selectedIndex;
-});
+// adRoomSelect.addEventListener('change', function () {
+//   adCapacitySelect.selectedIndex = adRoomSelect.selectedIndex;
+// });
+
+
