@@ -253,3 +253,36 @@ mapPinMain.addEventListener('click', function () {
 mapPinMain.addEventListener('mouseup', function () {
   fillAddress(mapPinMain, PIN_TAIL_HEIGHT);
 });
+
+
+var adTypeSelect = formCustomAd.querySelector('#type');
+var adPriceInput = formCustomAd.querySelector('#price');
+var adCheckinSelect = formCustomAd.querySelector('#timein');
+var adCheckOutSelect = formCustomAd.querySelector('#timeout');
+var adRoomSelect = formCustomAd.querySelector('#room_number');
+var adCapacitySelect = formCustomAd.querySelector('#capacity');
+
+var adTypeParameters = {
+  bungalo: {min: 0, placeholder: 0},
+  flat: {min: 1000, placeholder: 1000},
+  house: {min: 5000, placeholder: 5000},
+  palace: {min: 10000, placeholder: 10000}
+};
+
+
+adTypeSelect.addEventListener('change', function () {
+  adPriceInput.setAttribute('min', adTypeParameters[adTypeSelect.value].min);
+  adPriceInput.setAttribute('placeholder', adTypeParameters[adTypeSelect.value].placeholder);
+});
+
+adCheckinSelect.addEventListener('change', function () {
+  adCheckOutSelect.selectedIndex = adCheckinSelect.selectedIndex;
+});
+
+adCheckOutSelect.addEventListener('change', function () {
+  adCheckinSelect.selectedIndex = adCheckOutSelect.selectedIndex;
+});
+
+adRoomSelect.addEventListener('change', function () {
+  adCapacitySelect.selectedIndex = adRoomSelect.selectedIndex;
+});
