@@ -6,8 +6,6 @@ var types = ['palace', 'flat', 'house', 'bungalo'];
 var LOWLINE_Y = 130;
 var TOPLINE_Y = 630;
 var ELEMENTS_COUNT = 8;
-// var PIN_WIDTH = mapPins.querySelector('.map__pin').clientWidth;
-// var PIN_HEIGHT = mapPins.querySelector('.map__pin').clientHeight;
 
 /**
  * Функция генерирует случайное число в указанном диапазоне
@@ -62,8 +60,6 @@ var generateTemplates = function (quantity) {
         type: types[getRandomInRange(0, types.length - 1)]
       },
       location: {
-        // x: (getRandomInRange(PIN_WIDTH / 2, mapPins.offsetWidth - PIN_WIDTH)),
-        // y: (getRandomInRange(LOWLINE_Y - PIN_HEIGHT, TOPLINE_Y))
         x: (getRandomInRange(0, mapPins.offsetWidth)),
         y: (getRandomInRange(LOWLINE_Y, TOPLINE_Y))
       }
@@ -157,10 +153,6 @@ var customizePinSize = function () {
   }
 };
 
-// setup();
-// renderPins(generateTemplates(ELEMENTS_COUNT));
-// customizePinSize();
-
 var formCustomAd = document.querySelector('.ad-form');
 var formFieldsets = formCustomAd.children;
 var mapPinMain = document.querySelector('.map__pin--main');
@@ -237,10 +229,6 @@ var activatePage = function () {
   setup();
   renderPins(generateTemplates(ELEMENTS_COUNT));
   customizePinSize();
-
-  // mapPinMain.removeEventListener('click', function () {
-  //   activatePage();
-  // });
 };
 
 
