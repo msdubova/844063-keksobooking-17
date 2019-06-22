@@ -6,8 +6,6 @@ var types = ['palace', 'flat', 'house', 'bungalo'];
 var LOWLINE_Y = 130;
 var TOPLINE_Y = 630;
 var ELEMENTS_COUNT = 8;
-// var PIN_WIDTH = mapPins.querySelector('.map__pin').clientWidth;
-// var PIN_HEIGHT = mapPins.querySelector('.map__pin').clientHeight;
 
 /**
  * Функция генерирует случайное число в указанном диапазоне
@@ -52,7 +50,7 @@ var shuffleArray = function (arr) {
   */
 var generateTemplates = function (quantity) {
   var ads = [];
-  var avatars = shuffleArray(getRandomAvatars(quantity));
+  var avatars = shuffleArray(generateAvatars(quantity));
   for (var i = 0; i < quantity; i++) {
     var hotelTemplate = {
       author: {
@@ -62,8 +60,6 @@ var generateTemplates = function (quantity) {
         type: types[getRandomInRange(0, types.length - 1)]
       },
       location: {
-        // x: (getRandomInRange(PIN_WIDTH / 2, mapPins.offsetWidth - PIN_WIDTH)),
-        // y: (getRandomInRange(LOWLINE_Y - PIN_HEIGHT, TOPLINE_Y))
         x: (getRandomInRange(0, mapPins.offsetWidth)),
         y: (getRandomInRange(LOWLINE_Y, TOPLINE_Y))
       }
@@ -79,7 +75,7 @@ var generateTemplates = function (quantity) {
  * @param {number} quantity желаемое количество элементов в массиве
  * @return {string[]} возвращает массив
  */
-var getRandomAvatars = function (quantity) {
+var generateAvatars = function (quantity) {
   var avatarsArray = [];
 
   for (var i = 0; i < quantity; i++) {
@@ -109,7 +105,7 @@ var generateCoordinates = function (arr) {
  * Функция создает булавки и добавляет их в разметку
  * @param {arr} arr массив с заготовленными обьектами - шаблонами свойств
  */
-var generatePins = function (arr) {
+var renderPins = function (arr) {
   var ad = document.querySelector('#pin').content;
   var fragment = document.createDocumentFragment();
 
@@ -121,14 +117,14 @@ var generatePins = function (arr) {
     clonedAdImage.src = arr[i].author.avatar;
     clonedAdImage.alt = arr[i].offer.type;
     fragment.appendChild(clonedAd);
+
   }
 
   mapPins.appendChild(fragment);
 };
 
 /**
- * Функция запускает алгоритм генерации булавок со случайными значениями и их добалвение в разметку
- * @param {number} quantity
+ * Функция запускает предварительные настройки
  */
 var setup = function () {
   var map = document.querySelector('.map');
@@ -157,6 +153,119 @@ var customizePinSize = function () {
   }
 };
 
-setup();
-generatePins(generateTemplates(ELEMENTS_COUNT));
-customizePinSize();
+var formCustomAd = document.querySelector('.ad-form');
+var formFieldsets = formCustomAd.children;
+var mapPinMain = document.querySelector('.map__pin--main');
+var addressInput = formCustomAd.querySelector('input[name="address"]');
+var PIN_TAIL_HEIGHT = 22;
+
+/**
+ * Функция возращает числовое значение запрашиваемого параметра заданного элемента
+ * @param {string} parameterStringValue
+ * @return {number} числовое значение любогозапрашиваемого параметра элемента
+ */
+var getParameterNumValue = function (parameterStringValue) {
+  return Math.round(parseInt(parameterStringValue, 10));
+};
+
+/**
+ * Функция записывает координаты нижней центральной точки переданного элемента в поле Input (address)
+ * @param {object} element
+ */
+var fillPinAddressOnActiveMap = function (element) {
+  addressInput.value = (getParameterNumValue(element.style.left) + Math.round(getParameterNumValue(element.clientWidth) / 2)) + ', ' + (getParameterNumValue(element.style.top) + getParameterNumValue(element.clientHeight) + PIN_TAIL_HEIGHT);
+};
+
+/**
+ * Функция записывает координаты центра переданного элемента в поле Input (address)
+ * @param {object} element
+ */
+var fillPinInitialAddress = function (element) {
+  addressInput.value = (getParameterNumValue(element.style.left) + Math.round(getParameterNumValue(element.clientWidth) / 2)) + ', ' + (getParameterNumValue(element.style.top) + Math.round(getParameterNumValue(element.clientHeight) / 2));
+};
+
+/**
+ * Функция деактивирует форму. Также выполняет заполнение поле ввода адреса автоматически при открытии. Используется при открытии страницы
+ */
+var deactivateForm = function () {
+  if (!formCustomAd.classList.contains('ad-form--disabled')) {
+    formCustomAd.classList.add('ad-form--disabled');
+  }
+
+  for (var i = 0; i < formFieldsets.length; i++) {
+    formFieldsets[i].setAttribute('disabled', 'disabled');
+  }
+
+  fillPinInitialAddress(mapPinMain);
+};
+
+/**
+ * Функция активирует форму и карту с ее функциями и элементами
+ */
+var activatePage = function () {
+  formCustomAd.classList.remove('ad-form--disabled');
+
+  for (var i = 0; i < formFieldsets.length; i++) {
+    formFieldsets[i].removeAttribute('disabled');
+  }
+
+  setup();
+  renderPins(generateTemplates(ELEMENTS_COUNT));
+  customizePinSize();
+};
+
+
+deactivateForm();
+
+mapPinMain.addEventListener('click', function () {
+  activatePage();
+}, {once: true});
+
+mapPinMain.addEventListener('mouseup', function () {
+  fillPinAddressOnActiveMap(mapPinMain, PIN_TAIL_HEIGHT);
+});
+
+
+var adTypeSelect = formCustomAd.querySelector('#type');
+var adPriceInput = formCustomAd.querySelector('#price');
+var adCheckinSelect = formCustomAd.querySelector('#timein');
+var adCheckOutSelect = formCustomAd.querySelector('#timeout');
+// в этой домашке же не нужно пока трогать комнаты и вместимость?
+// var adRoomSelect = formCustomAd.querySelector('#room_number');
+// var adCapacitySelect = formCustomAd.querySelector('#capacity');
+
+var adTypeParameters = {
+  bungalo: {min: 0, placeholder: 0},
+  flat: {min: 1000, placeholder: 1000},
+  house: {min: 5000, placeholder: 5000},
+  palace: {min: 10000, placeholder: 10000}
+};
+
+/**
+ * Функция подтягивает значения двух селектов по порядковому номеру выбранной опции
+ * @param {object} firstSelect селект, в котором происходит выбор опции
+ * @param {object} secondSelect селект, в котором выбор опции подтягивается выбором в первом селекте
+ */
+var matchSelects = function (firstSelect, secondSelect) {
+  secondSelect.selectedIndex = firstSelect.selectedIndex;
+};
+
+adTypeSelect.addEventListener('change', function () {
+  adPriceInput.setAttribute('placeholder', adTypeParameters[adTypeSelect.value].placeholder);
+  adPriceInput.setAttribute('min', parseInt(adTypeParameters[adTypeSelect.value].min, 10));
+});
+
+adCheckinSelect.addEventListener('change', function () {
+  matchSelects(adCheckinSelect, adCheckOutSelect);
+});
+
+adCheckOutSelect.addEventListener('change', function () {
+  adCheckinSelect.selectedIndex = adCheckOutSelect.selectedIndex;
+  matchSelects(adCheckOutSelect, adCheckinSelect);
+});
+
+// adRoomSelect.addEventListener('change', function () {
+//   adCapacitySelect.selectedIndex = adRoomSelect.selectedIndex;
+// });
+
+
