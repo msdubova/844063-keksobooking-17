@@ -252,6 +252,7 @@ var matchSelects = function (firstSelect, secondSelect) {
 
 adTypeSelect.addEventListener('change', function () {
   adPriceInput.setAttribute('placeholder', adTypeParameters[adTypeSelect.value].placeholder);
+  adPriceInput.setAttribute('min', parseInt(adTypeParameters[adTypeSelect.value].min, 10));
 });
 
 adCheckinSelect.addEventListener('change', function () {
