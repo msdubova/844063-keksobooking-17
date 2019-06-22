@@ -160,32 +160,28 @@ var addressInput = formCustomAd.querySelector('input[name="address"]');
 var PIN_TAIL_HEIGHT = 22;
 
 /**
- * Функция возвращает числовое значение затребованого параметра передаваемого элемента
- * @param {object} element
- * @param {string} p параметр абсцисса или ордината(left top)
- * @return {number} числовое значение в системе координат
+ * Функция возращает числовое значение запрашиваемого параметра заданного элемента
+ * @param {string} parameterStringValue
+ * @return {number} числовое значение любогозапрашиваемого параметра элемента
  */
-var getParameter = function (element, p) {
-  if (p === 'left') {
-    return (Math.round(parseInt(element.style.left, 10)));
-  } else if (p === 'top') {
-    return (Math.round(parseInt(element.style.top, 10)));
-  } else if (p === 'width') {
-    return (Math.round(parseInt(element.clientWidth, 10)));
-  } else if (p === 'height') {
-    return (Math.round(parseInt(element.clientHeight, 10)));
-  } else {
-    return ('Ошибка в вводе параметра функции p');
-  }
+var getParameterNumValue = function (parameterStringValue) {
+  return Math.round(parseInt(parameterStringValue, 10));
 };
 
 /**
- * Функция записывает координаты нижне центральной точки переданного элемента в поле Input (address)
+ * Функция записывает координаты нижней центральной точки переданного элемента в поле Input (address)
  * @param {object} element
- * @param {object} pseudoConst константа высоты псевдоэлемента булавки
  */
-var fillAddress = function (element, pseudoConst) {
-  addressInput.value = (getParameter(element, 'left') + Math.round(getParameter(element, 'width') / 2)) + ', ' + (getParameter(element, 'top') + getParameter(element, 'height') + pseudoConst);
+var fillPinAddressOnActiveMap = function (element) {
+  addressInput.value = (getParameterNumValue(element.style.left) + Math.round(getParameterNumValue(element.clientWidth) / 2)) + ', ' + (getParameterNumValue(element.style.top) + getParameterNumValue(element.clientHeight) + PIN_TAIL_HEIGHT);
+};
+
+/**
+ * Функция записывает координаты центра переданного элемента в поле Input (address)
+ * @param {object} element
+ */
+var fillPinInitialAddress = function (element) {
+  addressInput.value = (getParameterNumValue(element.style.left) + Math.round(getParameterNumValue(element.clientWidth) / 2)) + ', ' + (getParameterNumValue(element.style.top) + Math.round(getParameterNumValue(element.clientHeight) / 2));
 };
 
 /**
@@ -200,9 +196,8 @@ var deactivateForm = function () {
     formFieldsets[i].setAttribute('disabled', 'disabled');
   }
 
-  addressInput.value = (getParameter(mapPinMain, 'left') + Math.round(getParameter(mapPinMain, 'width') / 2)) + ', ' + (getParameter(mapPinMain, 'top') + Math.round(getParameter(mapPinMain, 'height') / 2));
+  fillPinInitialAddress(mapPinMain);
 };
-
 
 /**
  * Функция активирует форму и карту с ее функциями и элементами
@@ -227,7 +222,7 @@ mapPinMain.addEventListener('click', function () {
 }, {once: true});
 
 mapPinMain.addEventListener('mouseup', function () {
-  fillAddress(mapPinMain, PIN_TAIL_HEIGHT);
+  fillPinAddressOnActiveMap(mapPinMain, PIN_TAIL_HEIGHT);
 });
 
 
