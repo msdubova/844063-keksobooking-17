@@ -174,7 +174,7 @@ var getParameterNumValue = function (parameterStringValue) {
  */
 var fillPinAddressOnActiveMap = function (element) {
   addressInput.value = (getParameterNumValue(element.style.left) + Math.round(getParameterNumValue(element.clientWidth) / 2)) + ', '
-  + (getParameterNumValue(element.style.top) + getParameterNumValue(element.clientHeight) + PIN_TAIL_HEIGHT);
+      + (getParameterNumValue(element.style.top) + getParameterNumValue(element.clientHeight) + PIN_TAIL_HEIGHT);
 };
 
 /**
@@ -183,7 +183,7 @@ var fillPinAddressOnActiveMap = function (element) {
  */
 var fillPinInitialAddress = function (element) {
   addressInput.value = (getParameterNumValue(element.style.left) + Math.round(getParameterNumValue(element.clientWidth) / 2)) + ', '
-  + (getParameterNumValue(element.style.top) + Math.round(getParameterNumValue(element.clientHeight) / 2));
+      + (getParameterNumValue(element.style.top) + Math.round(getParameterNumValue(element.clientHeight) / 2));
 };
 
 /**

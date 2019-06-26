@@ -189,20 +189,21 @@
                     minlength="30"
                     name="title"
                     placeholder="Милая, уютная квартирка в центре Токио"
-                    required=""
+                    required
                     type="text">
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label"
                     for="address">Адрес</label> <input id="address"
                     name="address"
+                    readonly
                     type="text">
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label"
                     for="type">Тип жилья</label> <select id="type"
                     name="type"
-                    required="">
+                    required>
             <option value="bungalo">
               Бунгало
             </option>
@@ -224,14 +225,14 @@
                     max="1000000"
                     name="price"
                     placeholder="5000"
-                    required=""
+                    required
                     type="number">
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--time">
           <label class="ad-form__label"
                     for="timein">Время заезда и выезда</label> <select id="timein"
                     name="timein"
-                    required="">
+                    required>
             <option selected
                     value="12:00">
               После 12
@@ -244,7 +245,7 @@
             </option>
           </select> <select id="timeout"
                     name="timeout"
-                    required=""
+                    required
                     title="Time to go out">
             <option selected
                     value="12:00">
@@ -262,7 +263,7 @@
           <label class="ad-form__label"
                     for="room_number">Кол-во комнат</label> <select id="room_number"
                     name="rooms"
-                    required="">
+                    required>
             <option selected
                     value="1">
               1 комната
@@ -282,7 +283,7 @@
           <label class="ad-form__label"
                     for="capacity">Количество мест</label> <select id="capacity"
                     name="capacity"
-                    required="">
+                    required>
             <option selected
                     value="3">
               для 3 гостей
@@ -333,7 +334,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label"
-                    for="description">Описание (не обязательно)</label> 
+                    for="description">Описание (не обязательно)</label>
           <textarea id="description"
                     name="description"
                     placeholder="Здесь расскажите о том, какое ваше жилье замечательное и вообще"></textarea>
