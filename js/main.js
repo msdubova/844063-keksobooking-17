@@ -157,7 +157,6 @@ var formCustomAd = document.querySelector('.ad-form');
 var formFieldsets = formCustomAd.children;
 var mapPinMain = document.querySelector('.map__pin--main');
 var addressInput = formCustomAd.querySelector('input[name="address"]');
-var PIN_TAIL_HEIGHT = 22;
 
 /**
  * Функция возращает числовое значение запрашиваемого параметра заданного элемента
@@ -166,15 +165,6 @@ var PIN_TAIL_HEIGHT = 22;
  */
 var getParameterNumValue = function (parameterStringValue) {
   return Math.round(parseInt(parameterStringValue, 10));
-};
-
-/**
- * Функция записывает координаты нижней центральной точки переданного элемента в поле Input (address)
- * @param {object} element
- */
-var fillPinAddressOnActiveMap = function (element) {
-  addressInput.value = (getParameterNumValue(element.style.left) + Math.round(getParameterNumValue(element.clientWidth) / 2)) + ', '
-      + (getParameterNumValue(element.style.top) + getParameterNumValue(element.clientHeight) + PIN_TAIL_HEIGHT);
 };
 
 /**
@@ -219,13 +209,13 @@ var activatePage = function () {
 
 deactivateForm();
 
-mapPinMain.addEventListener('click', function () {
+mapPinMain.addEventListener('mouseup', function () {
   activatePage();
 }, {once: true});
 
-mapPinMain.addEventListener('mouseup', function () {
-  fillPinAddressOnActiveMap(mapPinMain, PIN_TAIL_HEIGHT);
-});
+// mapPinMain.addEventListener('mouseup', function () {
+//   fillPinAddressOnActiveMap(mapPinMain, PIN_TAIL_HEIGHT);
+// });
 
 
 var adTypeSelect = formCustomAd.querySelector('#type');
