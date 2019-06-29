@@ -5,6 +5,7 @@
   var LOWLINE_Y = 130;
   var TOPLINE_Y = 630;
   var ELEMENTS_COUNT = 8;
+  var dragged = false;
 
   var formCustomAd = document.querySelector('.ad-form');
   var formFieldsets = formCustomAd.children;
@@ -44,6 +45,7 @@
   var getParameterNumValue = function (parameterStringValue) {
     return Math.round(parseInt(parameterStringValue, 10));
   };
+
   window.util = {
     mapPins: mapPins,
     types: types,
@@ -51,6 +53,7 @@
     TOPLINE_Y: TOPLINE_Y,
     PIN_TAIL_HEIGHT: PIN_TAIL_HEIGHT,
     ELEMENTS_COUNT: ELEMENTS_COUNT,
+    dragged: dragged,
     formCustomAd: formCustomAd,
     formFieldsets: formFieldsets,
     mapPinMain: mapPinMain,
