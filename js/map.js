@@ -3,7 +3,7 @@
 (function () {
   /**
    * Функция создает массив строк  - адресов изображений аватарок
-   * @param {arr} arr Массив обьектов случайных свойств
+   * @param {object[]} arr Массив обьектов случайных свойств
    * @return {string[]} массив строк - адресов
    */
   var generateCoordinates = function (arr) {
@@ -16,7 +16,7 @@
 
   /**
    * Функция создает булавки и добавляет их в разметку
-   * @param {arr} arr массив с заготовленными обьектами - шаблонами свойств
+   * @param {object[]} arr массив с заготовленными обьектами - шаблонами свойств
    */
   var renderPins = function (arr) {
     var ad = document.querySelector('#pin').content;

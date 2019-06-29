@@ -17,11 +17,12 @@
 
   /**
    * Функция записывает координаты центра переданного элемента в поле Input (address)
-    * @param {object} element
+    * @param {Element} el
     */
-  var fillPinInitialAddress = function (element) {
-    window.util.addressInput.value = (window.util.getParameterNumValue(element.style.left) + Math.round(window.util.getParameterNumValue(element.clientWidth) / 2)) + ', '
-        + (window.util.getParameterNumValue(element.style.top) + Math.round(window.util.getParameterNumValue(element.clientHeight) / 2));
+  var fillPinInitialAddress = function (el) {
+    var util = window.util;
+    util.addressInput.value = (util.getParameterNumValue(el.style.left) + Math.round(util.getParameterNumValue(el.clientWidth) / 2)) + ', '
+        + (util.getParameterNumValue(el.style.top) + Math.round(util.getParameterNumValue(el.clientHeight) / 2));
   };
 
   /**
