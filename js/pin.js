@@ -30,7 +30,7 @@
         },
         location: {
           x: (window.util.getRandomInRange(0, window.globalElements.mapPins.offsetWidth)),
-          y: (window.util.getRandomInRange(window.util.LOWLINE_Y, window.util.TOPLINE_Y))
+          y: (window.util.getRandomInRange(window.constants.LOWLINE_Y, window.constants.TOPLINE_Y))
         }
       };
 

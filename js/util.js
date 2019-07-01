@@ -1,14 +1,6 @@
 'use strict';
 (function () {
   // изменение
-
-  var dragged = false;
-
-
-
-
-
-
   /**
    * Функция генерирует случайное число в указанном диапазоне
    * @param {number} min минимальное число включительно
@@ -50,7 +42,6 @@
 
 
   window.util = {
-    dragged: dragged,
     getRandomInRange: getRandomInRange,
     shuffleArray: shuffleArray,
     getParameterNumValue: getParameterNumValue

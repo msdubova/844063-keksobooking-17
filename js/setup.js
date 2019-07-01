@@ -26,27 +26,8 @@
         + (util.getParameterNumValue(el.style.top) + Math.round(util.getParameterNumValue(el.clientHeight) / 2));
   };
 
-  /**
-   * Функция-обрабочик , слушает клик на главную булавку при загрузке и если есть перемещение активирует страницу
-    */
-  var onPinDrag = function () {
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-      window.util.dragged = true;
-    };
-
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-      if (window.util.dragged) {
-        activatePage();
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      }
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+  var runActivation = function () {
+    activatePage();
   };
 
   /**
@@ -71,6 +52,6 @@
   };
 
   deactivateForm();
-  window.globalElements.mapPinMain.addEventListener('mousedown', onPinDrag, {once: true});
+  window.globalElements.mapPinMain.addEventListener('mousedown', window.dragNdrop.onDragListen(runActivation), {once: true});
 })();
 
