@@ -1,6 +1,5 @@
 'use strict';
 (function () {
-  // изменение
   /**
    * Функция генерирует случайное число в указанном диапазоне
    * @param {number} min минимальное число включительно
@@ -10,6 +9,7 @@
   var getRandomInRange = function (min, max) {
     return (Math.round(Math.random() * (max - min) + min));
   };
+
   /**
    * Функция перемешивает элементы массива
    * @param {arr} arr принимает массив элементов
@@ -25,21 +25,14 @@
     return arr;
   };
 
-    /**
-     * Функция возращает числовое значение запрашиваемого параметра заданного элемента
-     * @param {string} parameterStringValue
-     * @return {number} числовое значение любогозапрашиваемого параметра элемента
-     */
+  /**
+   * Функция возращает числовое значение запрашиваемого параметра заданного элемента
+   * @param {string} parameterStringValue
+   * @return {number} числовое значение любогозапрашиваемого параметра элемента
+   */
   var getParameterNumValue = function (parameterStringValue) {
     return Math.round(parseInt(parameterStringValue, 10));
   };
-
-
-
-
-
-
-
 
   window.util = {
     getRandomInRange: getRandomInRange,
