@@ -32,14 +32,14 @@
       fragment.appendChild(clonedAd);
     }
 
-    window.util.mapPins.appendChild(fragment);
+    window.globalElements.mapPins.appendChild(fragment);
   };
 
   /**
   * Функция корректирует координаты булавки , учитывая погрешность на размер булавки и перенос центра отсчета с левого  верхнего    угла на кончик булавки
   */
   var customizePinSize = function () {
-    var ads = window.util.mapPins.querySelectorAll('.map__pin');
+    var ads = window.globalElements.mapPins.querySelectorAll('.map__pin');
     for (var i = 1; i < ads.length; i++) {
       var left = (ads[i].style.left);
       var top = (ads[i].style.top);
@@ -50,8 +50,8 @@
       if ((left - width / 2) < 0) {
         left = 0;
       }
-      if ((left + width) > window.util.mapPins.offsetWidth) {
-        left = window.util.mapPins.offsetWidth - width;
+      if ((left + width) > window.globalElements.mapPins.offsetWidth) {
+        left = window.globalElements.mapPins.offsetWidth - width;
       }
       ads[i].style = 'left: ' + left + 'px; top: ' + top + 'px;';
     }
@@ -80,5 +80,5 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
-  window.util.mapPinMain.addEventListener('mousedown', onPinDrag, {once: true});
+  window.globalElements.mapPinMain.addEventListener('mousedown', onPinDrag, {once: true});
 })();

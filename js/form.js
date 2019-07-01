@@ -2,10 +2,10 @@
 
 (function () {
   var validateForm = function () {
-    var adTypeSelect = window.util.formCustomAd.querySelector('#type');
-    var adPriceInput = window.util.formCustomAd.querySelector('#price');
-    var adCheckinSelect = window.util.formCustomAd.querySelector('#timein');
-    var adCheckOutSelect = window.util.formCustomAd.querySelector('#timeout');
+    var adTypeSelect = window.globalElements.formCustomAd.querySelector('#type');
+    var adPriceInput = window.globalElements.formCustomAd.querySelector('#price');
+    var adCheckinSelect = window.globalElements.formCustomAd.querySelector('#timein');
+    var adCheckOutSelect = window.globalElements.formCustomAd.querySelector('#timeout');
 
     var adTypeParameters = {
       bungalo: {min: 0, placeholder: 0},
@@ -64,7 +64,7 @@
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  window.util.mapPinMain.addEventListener('mousedown', onPinDrag, {once: true});
+  window.globalElements.mapPinMain.addEventListener('mousedown', onPinDrag, {once: true});
 
 })();
 

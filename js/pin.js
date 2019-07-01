@@ -26,10 +26,10 @@
           avatar: avatars[i]
         },
         offer: {
-          type: window.util.types[window.util.getRandomInRange(0, window.util.types.length - 1)]
+          type: window.constants.TYPES[window.util.getRandomInRange(0, window.constants.TYPES.length - 1)]
         },
         location: {
-          x: (window.util.getRandomInRange(0, window.util.mapPins.offsetWidth)),
+          x: (window.util.getRandomInRange(0, window.globalElements.mapPins.offsetWidth)),
           y: (window.util.getRandomInRange(window.util.LOWLINE_Y, window.util.TOPLINE_Y))
         }
       };
