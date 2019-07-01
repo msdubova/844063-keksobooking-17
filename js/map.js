@@ -68,7 +68,7 @@
   };
 
   /**
-   * Функция - параметр обработчика
+   * Callback
    */
   var runAction = function () {
     renderPins(window.generateTemplates(window.constants.ELEMENTS_COUNT));

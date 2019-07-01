@@ -57,7 +57,7 @@
   };
 
   /**
-   * Функция - параметр обработчика
+Callback
    */
   var runValidation = function () {
     validateForm();
