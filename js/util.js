@@ -1,5 +1,7 @@
 'use strict';
 (function () {
+  // изменение
+  
   var mapPins = document.querySelector('.map__pins');
   var types = ['palace', 'flat', 'house', 'bungalo'];
   var LOWLINE_Y = 130;
