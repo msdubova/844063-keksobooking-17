@@ -16,32 +16,49 @@
 
     /**
      * Функция подтягивает значения двух селектов по порядковому номеру выбранной опции
-     * @param {object} firstSelect селект, в котором происходит выбор опции
-     * @param {object} secondSelect селект, в котором выбор опции подтягивается выбором в первом селекте
+     * @param {HTMLElement} firstSelect селект, в котором происходит выбор опции
+     * @param {HTMLElement} secondSelect селект, в котором выбор опции подтягивается выбором в первом селекте
      */
     var matchSelects = function (firstSelect, secondSelect) {
       secondSelect.selectedIndex = firstSelect.selectedIndex;
     };
-
-    adTypeSelect.addEventListener('change', function () {
+    /**
+     * Функция-обработчик событий селекта типа жилища. устанавливает минимальное значение поля цены
+     */
+    var onTypeSelect = function () {
       adPriceInput.setAttribute('placeholder', adTypeParameters[adTypeSelect.value].placeholder);
       adPriceInput.setAttribute('min', parseInt(adTypeParameters[adTypeSelect.value].min, 10));
-    });
+    };
 
-    adCheckinSelect.addEventListener('change', function () {
+    /**
+     * Функция-обработчик собйтий селекта чекин и автоматического подбора значения полю чекаут
+     */
+    var onCheckinSelect = function () {
       matchSelects(adCheckinSelect, adCheckOutSelect);
-    });
+    };
 
-    adCheckOutSelect.addEventListener('change', function () {
+    /**
+     * Функция-обработчик собйтий селекта  чекаут и автоматического подбора значения полю чекин
+     */
+    var onCheckoutSelect = function () {
       adCheckinSelect.selectedIndex = adCheckOutSelect.selectedIndex;
       matchSelects(adCheckOutSelect, adCheckinSelect);
-    });
+    };
+
+    adTypeSelect.addEventListener('change', onTypeSelect);
+
+    adCheckinSelect.addEventListener('change', onCheckinSelect);
+
+    adCheckOutSelect.addEventListener('change', onCheckoutSelect);
 
     // adRoomSelect.addEventListener('change', function () {
     //   adCapacitySelect.selectedIndex = adRoomSelect.selectedIndex;
     // });
   };
 
+  /**
+   * Функция - параметр обработчика
+   */
   var runValidation = function () {
     validateForm();
   };

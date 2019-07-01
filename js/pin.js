@@ -4,18 +4,12 @@
   /**
   * Функция создает массив массив, состоящий из 8 сгенерированных JS объектов (количество объектов задется параметром функции), которые будут описывать значения булавок на карте
   * @param {number} quantity желаемое количество элементов в массиве
-  * @return {[{
-    * author: {
-        * avatar: string
-        * },
-        * offer: {
-        * type: string
-        * },
-        * location: {
-        * x: number,
-        * y: number
-        * }
-        * }]} Массив обьектов случайных свойств
+  * @return {{author: string,
+   *           offer: string,
+   *           location: {
+   *             x: number,
+   *             y: number
+   *           }}[]} Массив обьектов случайных свойств
       */
   window.generateTemplates = function (quantity) {
     var ads = [];

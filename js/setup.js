@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var formFieldsets = window.globalElements.formCustomAd.children;
+
   /**
    * Функция деактивирует форму. Также выполняет заполнение поле ввода адреса автоматически при открытии. Используется при открытии страницы
     */

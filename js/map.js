@@ -3,7 +3,12 @@
 (function () {
   /**
    * Функция создает массив строк  - адресов изображений аватарок
-   * @param {object[]} arr Массив обьектов случайных свойств
+   * @param {{author: string,
+   *           offer: string,
+   *           location: {
+   *             x: number,
+   *             y: number
+   *           }}[]} arr Массив обьектов случайных свойств
    * @return {string[]} массив строк - адресов
    */
   var generateCoordinates = function (arr) {
@@ -16,7 +21,12 @@
 
   /**
    * Функция создает булавки и добавляет их в разметку
-   * @param {object[]} arr массив с заготовленными обьектами - шаблонами свойств
+   * @param { {author: string,
+   *           offer: string,
+   *           location: {
+   *             x: number,
+   *             y: number
+   *           }}[] } arr массив с заготовленными обьектами - шаблонами свойств
    */
   var renderPins = function (arr) {
     var ad = document.querySelector('#pin').content;
@@ -57,6 +67,9 @@
     }
   };
 
+  /**
+   * Функция - параметр обработчика
+   */
   var runAction = function () {
     renderPins(window.generateTemplates(window.constants.ELEMENTS_COUNT));
     customizePinSize();

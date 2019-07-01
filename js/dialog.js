@@ -6,7 +6,7 @@
   var utils = window.util;
 
   /**
-   * Функция- обработчик, обрабатывает событие перетаскивания пина
+   * Функция - обработчик, реализует перемещение пина по мышиным событиям драгндроп
    * @param {object} evt объeкт события
    */
   var dragDropPin = function (evt) {
@@ -75,7 +75,7 @@
 
     /**
      * Функция записывает координаты нижней центральной точки переданного элемента в поле Input (address)
-     * @param {Element} el элемент, чьи координаты необходимо получить
+     * @param {HTMLElement} el элемент, чьи координаты необходимо получить
      */
     var fillPinAddressOnActiveMap = function (el) {
       globs.addressInput.value = (utils.getParameterNumValue(el.style.left) + Math.round(utils.getParameterNumValue(el.clientWidth) / 2)) + ', '
