@@ -57,7 +57,7 @@
   };
 
   /**
-Callback
+Callback функция которая будет выполняться при выполлении условий onDragListen
    */
   var runValidation = function () {
     validateForm();

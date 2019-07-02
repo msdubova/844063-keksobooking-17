@@ -68,7 +68,7 @@
   };
 
   /**
-   * Callback
+   * Callback функция которая будет выполняться при выполлении условий onDragListen
    */
   var runAction = function () {
     renderPins(window.generateTemplates(window.constants.ELEMENTS_COUNT));
