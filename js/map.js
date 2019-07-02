@@ -74,5 +74,6 @@
     renderPins(window.generateTemplates(window.constants.ELEMENTS_COUNT));
     customizePinSize();
   };
+
   window.globalElements.mapPinMain.addEventListener('mousedown', window.dragNdrop.onDragListen(runAction), {once: true});
 })();

@@ -44,17 +44,14 @@
           topCoord = consts.LOWLINE_Y - consts.PIN_TAIL_HEIGHT - globs.mapPinMain.clientHeight;
         } else if (topCoord + consts.PIN_TAIL_HEIGHT + globs.mapPinMain.clientHeight > consts.TOPLINE_Y) {
           topCoord = consts.TOPLINE_Y - consts.PIN_TAIL_HEIGHT - globs.mapPinMain.clientHeight;
-        } else {
-          globs.mapPinMain.style.top = topCoord + 'px';
         }
 
         if (leftCoord < 0) {
           leftCoord = 0;
         } else if (leftCoord + globs.mapPinMain.clientWidth > globs.mapPins.offsetWidth) {
           leftCoord = globs.mapPins.offsetWidth - globs.mapPinMain.clientWidth;
-        } else {
-          globs.mapPinMain.style.left = leftCoord + 'px';
         }
+
         globs.mapPinMain.style.left = leftCoord + 'px';
         globs.mapPinMain.style.top = topCoord + 'px';
       };
@@ -89,4 +86,6 @@
   globs.mapPinMain.addEventListener('mousedown', function (evt) {
     dragDropPin(evt);
   });
+
+
 })();

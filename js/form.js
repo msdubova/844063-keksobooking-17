@@ -63,7 +63,6 @@ Callback
     validateForm();
   };
 
-
   window.globalElements.mapPinMain.addEventListener('mousedown', window.dragNdrop.onDragListen(runValidation), {once: true});
 
 })();

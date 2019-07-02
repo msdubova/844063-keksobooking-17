@@ -11,12 +11,12 @@
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-      window.util.dragged = true;
+      dragged = true;
     };
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      if (window.util.dragged) {
+      if (dragged) {
         action();
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
