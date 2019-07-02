@@ -59,11 +59,8 @@
   /**
 Callback функция которая будет выполняться при выполлении условий onDragListen
    */
-  var runValidation = function () {
+  window.runValidation = function () {
     validateForm();
   };
-
-  window.globalElements.mapPinMain.addEventListener('mousedown', window.dragNdrop.onDragListen(runValidation), {once: true});
-
 })();
 

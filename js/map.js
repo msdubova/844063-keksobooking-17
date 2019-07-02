@@ -70,10 +70,9 @@
   /**
    * Callback функция которая будет выполняться при выполлении условий onDragListen
    */
-  var runAction = function () {
+  window.runAction = function () {
     renderPins(window.generateTemplates(window.constants.ELEMENTS_COUNT));
     customizePinSize();
   };
 
-  window.globalElements.mapPinMain.addEventListener('mousedown', window.dragNdrop.onDragListen(runAction), {once: true});
 })();

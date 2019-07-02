@@ -10,9 +10,6 @@
       window.globalElements.formCustomAd.classList.add('ad-form--disabled');
     }
 
-    for (var i = 0; i < formFieldsets.length; i++) {
-      formFieldsets[i].setAttribute('disabled', 'disabled');
-    }
 
     fillPinInitialAddress(window.globalElements.mapPinMain);
   };
@@ -27,8 +24,10 @@
         + (util.getParameterNumValue(el.style.top) + Math.round(util.getParameterNumValue(el.clientHeight) / 2));
   };
 
-  var runActivation = function () {
+  window.runActivation = function () {
     activatePage();
+    window.runValidation();
+    window.runAction();
   };
 
   /**
@@ -53,6 +52,5 @@
   };
 
   deactivateForm();
-  window.globalElements.mapPinMain.addEventListener('mousedown', window.dragNdrop.onDragListen(runActivation), {once: true});
 })();
 
