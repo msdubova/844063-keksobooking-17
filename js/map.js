@@ -3,7 +3,12 @@
 (function () {
   /**
    * Функция создает массив строк  - адресов изображений аватарок
-   * @param {object[]} arr Массив обьектов случайных свойств
+   * @param {{author: string,
+   *           offer: string,
+   *           location: {
+   *             x: number,
+   *             y: number
+   *           }}[]} arr Массив обьектов случайных свойств
    * @return {string[]} массив строк - адресов
    */
   var generateCoordinates = function (arr) {
@@ -16,7 +21,12 @@
 
   /**
    * Функция создает булавки и добавляет их в разметку
-   * @param {object[]} arr массив с заготовленными обьектами - шаблонами свойств
+   * @param { {author: string,
+   *           offer: string,
+   *           location: {
+   *             x: number,
+   *             y: number
+   *           }}[] } arr массив с заготовленными обьектами - шаблонами свойств
    */
   var renderPins = function (arr) {
     var ad = document.querySelector('#pin').content;
@@ -32,14 +42,14 @@
       fragment.appendChild(clonedAd);
     }
 
-    window.util.mapPins.appendChild(fragment);
+    window.globalElements.mapPins.appendChild(fragment);
   };
 
   /**
   * Функция корректирует координаты булавки , учитывая погрешность на размер булавки и перенос центра отсчета с левого  верхнего    угла на кончик булавки
   */
   var customizePinSize = function () {
-    var ads = window.util.mapPins.querySelectorAll('.map__pin');
+    var ads = window.globalElements.mapPins.querySelectorAll('.map__pin');
     for (var i = 1; i < ads.length; i++) {
       var left = (ads[i].style.left);
       var top = (ads[i].style.top);
@@ -50,35 +60,19 @@
       if ((left - width / 2) < 0) {
         left = 0;
       }
-      if ((left + width) > window.util.mapPins.offsetWidth) {
-        left = window.util.mapPins.offsetWidth - width;
+      if ((left + width) > window.globalElements.mapPins.offsetWidth) {
+        left = window.globalElements.mapPins.offsetWidth - width;
       }
       ads[i].style = 'left: ' + left + 'px; top: ' + top + 'px;';
     }
   };
 
   /**
-   * Функция-обрабочик , слушает клик на главную булавку при загрузке и если есть перемещение активирует страницу
+   * Callback функция которая будет выполняться при выполлении условий onDragListen
    */
-  var onPinDrag = function () {
-
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-      window.util.dragged = true;
-    };
-
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-      if (window.util.dragged) {
-        renderPins(window.generateTemplates(window.util.ELEMENTS_COUNT));
-        customizePinSize();
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      }
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+  window.runAction = function () {
+    renderPins(window.generateTemplates(window.constants.ELEMENTS_COUNT));
+    customizePinSize();
   };
-  window.util.mapPinMain.addEventListener('mousedown', onPinDrag, {once: true});
+
 })();

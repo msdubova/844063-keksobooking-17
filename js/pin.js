@@ -4,18 +4,12 @@
   /**
   * Функция создает массив массив, состоящий из 8 сгенерированных JS объектов (количество объектов задется параметром функции), которые будут описывать значения булавок на карте
   * @param {number} quantity желаемое количество элементов в массиве
-  * @return {[{
-    * author: {
-        * avatar: string
-        * },
-        * offer: {
-        * type: string
-        * },
-        * location: {
-        * x: number,
-        * y: number
-        * }
-        * }]} Массив обьектов случайных свойств
+  * @return {{author: string,
+   *           offer: string,
+   *           location: {
+   *             x: number,
+   *             y: number
+   *           }}[]} Массив обьектов случайных свойств
       */
   window.generateTemplates = function (quantity) {
     var ads = [];
@@ -26,11 +20,11 @@
           avatar: avatars[i]
         },
         offer: {
-          type: window.util.types[window.util.getRandomInRange(0, window.util.types.length - 1)]
+          type: window.constants.TYPES[window.util.getRandomInRange(0, window.constants.TYPES.length - 1)]
         },
         location: {
-          x: (window.util.getRandomInRange(0, window.util.mapPins.offsetWidth)),
-          y: (window.util.getRandomInRange(window.util.LOWLINE_Y, window.util.TOPLINE_Y))
+          x: (window.util.getRandomInRange(0, window.globalElements.mapPins.offsetWidth)),
+          y: (window.util.getRandomInRange(window.constants.LOWLINE_Y, window.constants.TOPLINE_Y))
         }
       };
 
