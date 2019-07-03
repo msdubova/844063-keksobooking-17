@@ -2,47 +2,49 @@
 
 (function () {
   /**
-   * Функция создает массив строк  - адресов изображений аватарок
+   * Функция создает булавки и добавляет их в разметку
    * @param {{author: string,
    *           offer: string,
    *           location: {
    *             x: number,
    *             y: number
-   *           }}[]} arr Массив обьектов случайных свойств
-   * @return {string[]} массив строк - адресов
+   *           } } } advertisement объект свойств обьявления из массива, полученного с сервера
+   *          @return {object} clonedAd
    */
-  var generateCoordinates = function (arr) {
-    var coordinates = [];
-    for (var i = 0; i < arr.length; i++) {
-      coordinates.push('left: ' + arr[i].location.x + 'px; top: ' + arr[i].location.y + 'px;');
-    }
-    return coordinates;
+  var renderPins = function (advertisement) {
+    var ad = document.querySelector('#pin').content;
+
+    var clonedAd = ad.cloneNode(true);
+    var clonedAdImage = clonedAd.querySelector('img');
+    var clonedAdButton = clonedAd.querySelector('button');
+    clonedAdButton.style.top = advertisement.location.y + 'px';
+    clonedAdButton.style.left = advertisement.location.x + 'px';
+    clonedAdImage.src = advertisement.author.avatar;
+    clonedAdImage.alt = advertisement.offer.type;
+
+    return clonedAd;
   };
 
-  /**
-   * Функция создает булавки и добавляет их в разметку
-   * @param { {author: string,
-   *           offer: string,
-   *           location: {
-   *             x: number,
-   *             y: number
-   *           }}[] } arr массив с заготовленными обьектами - шаблонами свойств
-   */
-  var renderPins = function (arr) {
-    var ad = document.querySelector('#pin').content;
+  var successHandler = function (ads) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < arr.length; i++) {
-      var clonedAd = ad.cloneNode(true);
-      var clonedAdImage = clonedAd.querySelector('img');
-      var clonedAdButton = clonedAd.querySelector('button');
-      clonedAdButton.style = (generateCoordinates(arr)[i]);
-      clonedAdImage.src = arr[i].author.avatar;
-      clonedAdImage.alt = arr[i].offer.type;
-      fragment.appendChild(clonedAd);
+    for (var i = 0; i < ads.length; i++) {
+      fragment.appendChild(renderPins(ads[i]));
     }
-
     window.globalElements.mapPins.appendChild(fragment);
+
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; width: 400px; height: auto; text-align: center; background-color: tomato; color: #ffffff; font-size: 2em; padding: 30px; position: absolute; top: 40%; margin: 0 auto;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
   };
 
   /**
@@ -71,7 +73,8 @@
    * Callback функция которая будет выполняться при выполлении условий onDragListen
    */
   window.runAction = function () {
-    renderPins(window.generateTemplates(window.constants.ELEMENTS_COUNT));
+    // renderPins(window.generateTemplates(window.constants.ELEMENTS_COUNT));
+    window.load(successHandler, errorHandler);
     customizePinSize();
   };
 
