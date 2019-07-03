@@ -4,12 +4,14 @@
   var consts = window.constants;
   var globs = window.globalElements;
   var utils = window.util;
+  var activated = false;
   /**
    * Функция - обработчик, реализует перемещение пина по мышиным событиям драгндроп
    * @param {object} evt объeкт события
    */
   var dragDropPin = function (evt) {
     evt.preventDefault();
+    var dragged = false;
 
     var startCoords = {
       x: evt.clientX,
@@ -22,7 +24,7 @@
      */
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-
+      dragged = true;
       var shift = {
         x: startCoords.x - moveEvt.clientX,
         y: startCoords.y - moveEvt.clientY
@@ -65,10 +67,13 @@
      */
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
+      if ((dragged) && (!activated)) {
+        window.runActivation();
+        activated = true;
+      }
       fillPinAddressOnActiveMap(globs.mapPinMain, consts.PIN_TAIL_HEIGHT);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-
 
     };
 
@@ -85,33 +90,9 @@
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  var activate = function (evt) {
-    evt.preventDefault();
-    var dragged = false;
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-      dragged = true;
-    };
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-      if (dragged) {
-        window.runActivation();
 
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      }
-    };
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-
-
-  };
   globs.mapPinMain.addEventListener('mousedown', function (evt) {
     dragDropPin(evt);
   });
-
-  globs.mapPinMain.addEventListener('mousedown', function (evt) {
-    activate(evt);
-  }, {once: true});
 
 })();
