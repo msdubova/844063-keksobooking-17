@@ -35,15 +35,42 @@
 
   };
 
-  var errorHandler = function (errorMessage) {
+  var errorHandler = function (errorStatus) {
     var page = document.querySelector('main');
 
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var alarm = errorTemplate.cloneNode(true);
 
-    alarm.textContent = errorMessage;
 
     page.insertAdjacentElement('afterbegin', alarm);
+
+    var errorDescription = alarm.querySelector('.error__message');
+
+    switch (errorStatus) {
+      case 300:
+        errorDescription.textContent = 'Multiple Choice';
+        break;
+      case 301:
+        errorDescription.textContent = 'Moved Permanently';
+        break;
+      case 307:
+        errorDescription.textContent = 'Temporary Redirect';
+        break;
+      case 400:
+        errorDescription.textContent = 'Bad Request';
+        break;
+      case 401:
+        errorDescription.textContent = 'Access denied';
+        break;
+      case 404:
+        errorDescription.textContent = 'Not found';
+        break;
+      case 500:
+        errorDescription.textContent = 'Internal Server Error';
+        break;
+      default:
+        errorDescription.textContent = 'CRequest status: ' + status;
+    }
   };
 
   /**
