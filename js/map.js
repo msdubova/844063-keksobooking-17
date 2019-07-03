@@ -2,47 +2,75 @@
 
 (function () {
   /**
-   * Функция создает массив строк  - адресов изображений аватарок
+   * Функция создает булавки и добавляет их в разметку
    * @param {{author: string,
    *           offer: string,
    *           location: {
    *             x: number,
    *             y: number
-   *           }}[]} arr Массив обьектов случайных свойств
-   * @return {string[]} массив строк - адресов
+   *           } } } advertisement объект свойств обьявления из массива, полученного с сервера
+   *          @return {object} clonedAd
    */
-  var generateCoordinates = function (arr) {
-    var coordinates = [];
-    for (var i = 0; i < arr.length; i++) {
-      coordinates.push('left: ' + arr[i].location.x + 'px; top: ' + arr[i].location.y + 'px;');
-    }
-    return coordinates;
+  var renderPins = function (advertisement) {
+    var ad = document.querySelector('#pin').content;
+
+    var clonedAd = ad.cloneNode(true);
+    var clonedAdImage = clonedAd.querySelector('img');
+    var clonedAdButton = clonedAd.querySelector('button');
+    clonedAdButton.style.top = advertisement.location.y + 'px';
+    clonedAdButton.style.left = advertisement.location.x + 'px';
+    clonedAdImage.src = advertisement.author.avatar;
+    clonedAdImage.alt = advertisement.offer.type;
+
+    return clonedAd;
   };
 
-  /**
-   * Функция создает булавки и добавляет их в разметку
-   * @param { {author: string,
-   *           offer: string,
-   *           location: {
-   *             x: number,
-   *             y: number
-   *           }}[] } arr массив с заготовленными обьектами - шаблонами свойств
-   */
-  var renderPins = function (arr) {
-    var ad = document.querySelector('#pin').content;
+  var successHandler = function (ads) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < arr.length; i++) {
-      var clonedAd = ad.cloneNode(true);
-      var clonedAdImage = clonedAd.querySelector('img');
-      var clonedAdButton = clonedAd.querySelector('button');
-      clonedAdButton.style = (generateCoordinates(arr)[i]);
-      clonedAdImage.src = arr[i].author.avatar;
-      clonedAdImage.alt = arr[i].offer.type;
-      fragment.appendChild(clonedAd);
+    for (var i = 0; i < ads.length; i++) {
+      fragment.appendChild(renderPins(ads[i]));
     }
-
     window.globalElements.mapPins.appendChild(fragment);
+
+  };
+
+  var errorHandler = function (errorStatus) {
+    var page = document.querySelector('main');
+
+    var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+    var alarm = errorTemplate.cloneNode(true);
+
+
+    page.insertAdjacentElement('afterbegin', alarm);
+
+    var errorDescription = alarm.querySelector('.error__message');
+
+    switch (errorStatus) {
+      case 300:
+        errorDescription.textContent = 'Multiple Choice';
+        break;
+      case 301:
+        errorDescription.textContent = 'Moved Permanently';
+        break;
+      case 307:
+        errorDescription.textContent = 'Temporary Redirect';
+        break;
+      case 400:
+        errorDescription.textContent = 'Bad Request';
+        break;
+      case 401:
+        errorDescription.textContent = 'Access denied';
+        break;
+      case 404:
+        errorDescription.textContent = 'Not found';
+        break;
+      case 500:
+        errorDescription.textContent = 'Internal Server Error';
+        break;
+      default:
+        errorDescription.textContent = 'CRequest status: ' + status;
+    }
   };
 
   /**
@@ -71,7 +99,7 @@
    * Callback функция которая будет выполняться при выполлении условий onDragListen
    */
   window.runAction = function () {
-    renderPins(window.generateTemplates(window.constants.ELEMENTS_COUNT));
+    window.load(successHandler, errorHandler);
     customizePinSize();
   };
 
