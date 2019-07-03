@@ -36,15 +36,14 @@
   };
 
   var errorHandler = function (errorMessage) {
-    var node = document.createElement('div');
-    node.style = 'z-index: 100; width: 400px; height: auto; text-align: center; background-color: tomato; color: #ffffff; font-size: 2em; padding: 30px; position: absolute; top: 40%; margin: 0 auto;';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
+    var page = document.querySelector('main');
 
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
+    var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+    var alarm = errorTemplate.cloneNode(true);
+
+    alarm.textContent = errorMessage;
+
+    page.insertAdjacentElement('afterbegin', alarm);
   };
 
   /**
@@ -73,7 +72,6 @@
    * Callback функция которая будет выполняться при выполлении условий onDragListen
    */
   window.runAction = function () {
-    // renderPins(window.generateTemplates(window.constants.ELEMENTS_COUNT));
     window.load(successHandler, errorHandler);
     customizePinSize();
   };
