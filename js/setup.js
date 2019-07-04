@@ -10,8 +10,10 @@
       window.globalElements.formCustomAd.classList.add('ad-form--disabled');
     }
 
-
     fillPinInitialAddress(window.globalElements.mapPinMain);
+    for (var i = 0; i < formFieldsets.length; i++) {
+      formFieldsets[i].setAttribute('disabled', 'disabled');
+    }
   };
 
   /**
@@ -37,7 +39,7 @@
     window.globalElements.formCustomAd.classList.remove('ad-form--disabled');
 
     for (var i = 0; i < formFieldsets.length; i++) {
-      formFieldsets[i].removeAttribute('disabled');
+      formFieldsets[i].removeAttribute('disabled', 'disabled');
     }
 
     setup();
