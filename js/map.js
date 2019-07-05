@@ -63,11 +63,11 @@
       case 404:
         errorDescription.textContent = 'Not found';
         break;
-      case 500:
+      case 503:
         errorDescription.textContent = 'Internal Server Error';
         break;
       default:
-        errorDescription.textContent = 'CRequest status: ' + status;
+        errorDescription.textContent = 'Request status: ' + status;
     }
   };
 

@@ -6,7 +6,6 @@
   // evt.preventDefault();
   // filters.style.background = 'red';
   // });
-
   var housingTypeFilter = filters.querySelector('#housing-type');
   var housingPriceFilter = filters.querySelector('#housing-price');
   var housingRoomsFilter = filters.querySelector('#housing-rooms');
@@ -18,7 +17,9 @@
   var elevatorFilter = filters.querySelector('#filter-elevator');
   var condFilter = filters.querySelector('#filter-conditioner');
 
-var choice;
+  var choice;
+  var identificator;
+
   var cleanMap = function () {
     var pins = window.globalElements.mapPins.querySelectorAll('button[type = button]');
     for (var i = 0; i < pins.length; i++) {
@@ -27,16 +28,33 @@ var choice;
   };
 
   var updatePins = function () {
-    var sameChoice = window.pins.filter(function(it) {
-      return it.offer.type === choice;
+    var ads = window.pins;
+    var sameChoice = ads.filter(function (it) {
+      if (choice == 'any') {
+        return it;
+      } else {
+        if (identificator === 'housing-type') {
+          return it.offer.type == choice;
+        } else if (identificator == 'housing-price') {
+          return it.offer.price == choice;
+        } else if (identificator == 'housing-rooms') {
+          return it.offer.rooms == choice;
+        } else if (identificator == 'housing-guests') {
+          return it.offer.guests == choice;
+        }
+      }
     });
+
+    alert(sameChoice);
     window.renderPins(sameChoice);
   };
 
   var onFilterChange = function (evt) {
     evt.preventDefault();
     choice = evt.target.value;
+    identificator = evt.target.id;
     alert(choice);
+    alert(identificator);
     cleanMap();
     updatePins();
   };
