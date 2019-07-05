@@ -15,7 +15,7 @@
     var ad = document.querySelector('#pin').content;
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < ads.length; i++) {
+    for (var i = 0; i < window.constants.ELEMENTS_COUNT; i++) {
       var clonedAd = ad.cloneNode(true);
       var clonedAdImage = clonedAd.querySelector('img');
       var clonedAdButton = clonedAd.querySelector('button');

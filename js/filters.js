@@ -36,7 +36,15 @@
         if (identificator === 'housing-type') {
           return it.offer.type == choice;
         } else if (identificator == 'housing-price') {
-          return it.offer.price == choice;
+          var price;
+          if (it.offer.price < 10000) {
+            price = 'low';
+          } else if ((it.offer.price >= 10000) && (it.offer.price < 50000)) {
+            price = 'middle';
+          } else if (it.offer.price >= 50000) {
+            price = 'high';
+          }
+          return price === choice;
         } else if (identificator == 'housing-rooms') {
           return it.offer.rooms == choice;
         } else if (identificator == 'housing-guests') {
