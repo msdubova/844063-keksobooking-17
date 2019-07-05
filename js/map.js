@@ -14,8 +14,8 @@
   window.renderPins = function (ads) {
     var ad = document.querySelector('#pin').content;
     var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < window.constants.ELEMENTS_COUNT; i++) {
+    // if (ads.length > 5) {ads.length = 5};
+    for (var i = 0; i < ads.length; i++) {
       var clonedAd = ad.cloneNode(true);
       var clonedAdImage = clonedAd.querySelector('img');
       var clonedAdButton = clonedAd.querySelector('button');
@@ -30,7 +30,8 @@
 
   var successHandler = function (ads) {
     window.pins = ads;
-    window.renderPins(window.pins);
+    var sliced = ads.slice(1, 6);
+    window.renderPins(sliced);
   };
 
   var errorHandler = function (errorStatus) {
