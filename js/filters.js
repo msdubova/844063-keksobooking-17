@@ -22,15 +22,15 @@
     var guestsChoice = housingGuestsFilter.value;
 
     var hasMatchingType = function (it) {
-      if (typeChoice == 'any') {
+      if (typeChoice === 'any') {
         return it;
       } else {
-        return it.offer.type == typeChoice;
+        return it.offer.type === typeChoice;
       }
     };
 
     var hasMatchingPrice = function (it) {
-      if (priceChoice == 'any') {
+      if (priceChoice === 'any') {
         return it;
       } else {
         var price;
@@ -49,22 +49,24 @@
       if (roomsChoice === 'any') {
         return it;
       } else {
-        return it.offer.rooms == roomsChoice;
+        return it.offer.rooms === parseInt(roomsChoice, 10);
       }
     };
 
     var hasMatchingGuests = function (it) {
-      if (guestsChoice == 'any') {
+      if (guestsChoice === 'any') {
         return it;
+      } else if (guestsChoice === '0') {
+        return it.offer.guests === parseInt(guestsChoice, 10);
       } else {
-        return it.offer.guests == guestsChoice;
+        return it.offer.guests >= guestsChoice;
       }
     };
 
     var filteredAds = ads.filter(hasMatchingType).filter(hasMatchingPrice).filter(hasMatchingRooms).filter(hasMatchingGuests);
 
     if (filteredAds.length > 5) {
-      var sliced = filteredAds.slice(5);
+      var sliced = filteredAds.slice(1, 6);
       window.renderPins(sliced);
     } else {
       window.renderPins(filteredAds);
