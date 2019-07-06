@@ -31,6 +31,13 @@
     window.pins = ads;
     var sliced = ads.slice(1, 6);
     window.renderPins(sliced);
+    window.listenPins = function (evt) {
+      if ((evt.target.tagName === 'BUTTON') || (evt.target.tagName === 'IMG')) {
+        evt.preventDefault();
+        window.renderCard(evt);
+      }
+    };
+    window.globalElements.mapPins.addEventListener('click', window.listenPins);
   };
 
   var errorHandler = function (errorStatus) {
