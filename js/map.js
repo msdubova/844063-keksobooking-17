@@ -9,12 +9,11 @@
    *           location: {
    *             x: number,
    *             y: number
-   *           } } } ads объект свойств обьявления из массива, полученного с сервера
+   *           } } } ads массив объектов свойств
    */
   window.renderPins = function (ads) {
     var ad = document.querySelector('#pin').content;
     var fragment = document.createDocumentFragment();
-    // if (ads.length > 5) {ads.length = 5};
     for (var i = 0; i < ads.length; i++) {
       var clonedAd = ad.cloneNode(true);
       var clonedAdImage = clonedAd.querySelector('img');
