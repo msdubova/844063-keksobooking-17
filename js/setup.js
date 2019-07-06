@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var formFieldsets = window.globalElements.formCustomAd.children;
+  var filterSelects = Array.from(document.querySelector('.map__filters'));
 
   /**
    * Функция деактивирует форму. Также выполняет заполнение поле ввода адреса автоматически при открытии. Используется при открытии страницы
@@ -9,9 +10,14 @@
     if (!window.globalElements.formCustomAd.classList.contains('ad-form--disabled')) {
       window.globalElements.formCustomAd.classList.add('ad-form--disabled');
     }
-
-
+    filterSelects.forEach(function (it) {
+      it.setAttribute('disabled', 'disabled');
+    });
     fillPinInitialAddress(window.globalElements.mapPinMain);
+
+    for (var i = 0; i < formFieldsets.length; i++) {
+      formFieldsets[i].setAttribute('disabled', 'disabled');
+    }
   };
 
   /**
@@ -35,9 +41,11 @@
     */
   var activatePage = function () {
     window.globalElements.formCustomAd.classList.remove('ad-form--disabled');
-
+    filterSelects.forEach(function (it) {
+      it.removeAttribute('disabled', 'disabled');
+    });
     for (var i = 0; i < formFieldsets.length; i++) {
-      formFieldsets[i].removeAttribute('disabled');
+      formFieldsets[i].removeAttribute('disabled', 'disabled');
     }
 
     setup();
@@ -47,8 +55,7 @@
    * Функция запускает предварительные настройки
     */
   var setup = function () {
-    var map = document.querySelector('.map');
-    map.classList.remove('map--faded');
+    window.globalElements.map.classList.remove('map--faded');
   };
 
   deactivateForm();

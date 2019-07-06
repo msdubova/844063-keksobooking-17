@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  window.wizards = [];
   /**
    * Функция создает булавки и добавляет их в разметку
    * @param {{author: string,
@@ -8,31 +9,28 @@
    *           location: {
    *             x: number,
    *             y: number
-   *           } } } advertisement объект свойств обьявления из массива, полученного с сервера
-   *          @return {object} clonedAd
+   *           } } } ads массив объектов свойств
    */
-  var renderPins = function (advertisement) {
+  window.renderPins = function (ads) {
     var ad = document.querySelector('#pin').content;
-
-    var clonedAd = ad.cloneNode(true);
-    var clonedAdImage = clonedAd.querySelector('img');
-    var clonedAdButton = clonedAd.querySelector('button');
-    clonedAdButton.style.top = advertisement.location.y + 'px';
-    clonedAdButton.style.left = advertisement.location.x + 'px';
-    clonedAdImage.src = advertisement.author.avatar;
-    clonedAdImage.alt = advertisement.offer.type;
-
-    return clonedAd;
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < ads.length; i++) {
+      var clonedAd = ad.cloneNode(true);
+      var clonedAdImage = clonedAd.querySelector('img');
+      var clonedAdButton = clonedAd.querySelector('button');
+      clonedAdButton.style.top = ads[i].location.y + 'px';
+      clonedAdButton.style.left = ads[i].location.x + 'px';
+      clonedAdImage.src = ads[i].author.avatar;
+      clonedAdImage.alt = ads[i].offer.type;
+      fragment.appendChild(clonedAd);
+    }
+    window.globalElements.mapPins.appendChild(fragment);
   };
 
   var successHandler = function (ads) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < ads.length; i++) {
-      fragment.appendChild(renderPins(ads[i]));
-    }
-    window.globalElements.mapPins.appendChild(fragment);
-
+    window.pins = ads;
+    var sliced = ads.slice(1, 6);
+    window.renderPins(sliced);
   };
 
   var errorHandler = function (errorStatus) {
@@ -65,11 +63,11 @@
       case 404:
         errorDescription.textContent = 'Not found';
         break;
-      case 500:
+      case 503:
         errorDescription.textContent = 'Internal Server Error';
         break;
       default:
-        errorDescription.textContent = 'CRequest status: ' + status;
+        errorDescription.textContent = 'Request status: ' + status;
     }
   };
 
