@@ -9,7 +9,7 @@
   var Price = {
     LOW_PRICE_LIMIT: 10000,
     HIGH_PRICE_LIMIT: 50000
-  }
+  };
 
   window.constants = {
     TYPES: TYPES,
