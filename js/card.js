@@ -16,12 +16,6 @@
     var clonedCardPhotos = clonedCard.querySelector('.popup__photos');
     var closeCardButton = clonedCard.querySelector('.popup__close');
 
-
-    clonedCardImage.src = window.pins[0].author.avatar;
-    clonedCardHead.textContent = window.pins[0].offer.title;
-    clonedCardAddress.textContent = window.pins[0].offer.address;
-    clonedCardPrice.textContent = (window.pins[0].offer.price + '₽/ночь');
-
     var addType = function () {
       clonedCardPhotos.innerHTML = '';
       switch (window.pins[0].offer.type) {
@@ -41,11 +35,6 @@
           clonedCardType.textContent = window.pins[0].offer.type;
       }
     };
-
-    addType();
-
-    clonedCardCapacity.textContent = (window.pins[0].offer.rooms + ' комнаты для ' + window.pins[0].offer.guests + ' гостей');
-    clonedCardTime.textContent = ('Заезд после ' + window.pins[0].offer.checkin + ', выезд до ' + window.pins[0].offer.checkout);
 
     var addFeatures = function () {
       var featuresData = window.pins[0].offer.features;
@@ -76,11 +65,6 @@
       }
     };
 
-    addFeatures();
-
-    clonedCardDescription.textContent = window.pins[0].offer.description;
-
-
     var addPhotos = function () {
       var photos = window.pins[0].offer.photos;
       for (var j = 0; j < photos.length; j++) {
@@ -93,6 +77,21 @@
       }
     };
 
+    clonedCardImage.src = window.pins[0].author.avatar;
+    clonedCardHead.textContent = window.pins[0].offer.title;
+    clonedCardAddress.textContent = window.pins[0].offer.address;
+    clonedCardPrice.textContent = (window.pins[0].offer.price + '₽/ночь');
+
+    addType();
+
+    clonedCardCapacity.textContent = (window.pins[0].offer.rooms + ' комнаты для ' + window.pins[0].offer.guests + ' гостей');
+    clonedCardTime.textContent = ('Заезд после ' + window.pins[0].offer.checkin + ', выезд до ' + window.pins[0].offer.checkout);
+
+    addFeatures();
+
+    clonedCardDescription.textContent = window.pins[0].offer.description;
+
+
     addPhotos();
 
 
@@ -101,10 +100,14 @@
       var popup = window.globalElements.map.querySelector('.map__card');
       popup.remove();
     };
-    // Юрий, этот клик не работает на закрытие окна, так как сейчас перехватывается нажатие на button из
-    // map.js 35 строка и как бы оновременно и создается и закрывается попап поэтому не поисходит фактического
-    //  закрытия окна. Как можно ограничить родительский обработчик на попапе, чтоб он слышал только свои
-    closeCardButton.addEventListener('click', closeCard);
+
+    closeCardButton.addEventListener('click', function (evt) {
+      if ((evt.currentTarget.tagName === 'BUTTON') && (evt.target.tagName === 'BUTTON')) {
+        closeCard(evt);
+        evt.stopPropagation();
+      }
+
+    });
 
     fragment.appendChild(clonedCard);
     window.globalElements.mapPins.appendChild(fragment);

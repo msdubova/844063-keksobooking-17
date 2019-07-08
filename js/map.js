@@ -11,7 +11,7 @@
    *             y: number
    *           } } } ads массив объектов свойств
    */
-  window.renderPins = function (ads) {
+  window.onRenderPins = function (ads) {
     var ad = document.querySelector('#pin').content;
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < ads.length; i++) {
@@ -30,14 +30,14 @@
   var successHandler = function (ads) {
     window.pins = ads;
     var sliced = ads.slice(1, 6);
-    window.renderPins(sliced);
-    window.listenPins = function (evt) {
+    window.onRenderPins(sliced);
+    window.onListenPins = function (evt) {
       if ((evt.target.tagName === 'BUTTON') || (evt.target.tagName === 'IMG')) {
         evt.preventDefault();
         window.renderCard(evt);
       }
     };
-    window.globalElements.mapPins.addEventListener('click', window.listenPins);
+    window.globalElements.mapPins.addEventListener('click', window.onListenPins);
   };
 
   var errorHandler = function (errorStatus) {
