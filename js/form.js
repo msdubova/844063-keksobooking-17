@@ -6,7 +6,8 @@
     var adPriceInput = window.globalElements.formCustomAd.querySelector('#price');
     var adCheckinSelect = window.globalElements.formCustomAd.querySelector('#timein');
     var adCheckOutSelect = window.globalElements.formCustomAd.querySelector('#timeout');
-
+    var adRoomSelect = window.globalElements.formCustomAd.querySelector('#room_number');
+    var adCapacitySelect = window.globalElements.formCustomAd.querySelector('#capacity');
     var adTypeParameters = {
       bungalo: {min: 0, placeholder: 0},
       flat: {min: 1000, placeholder: 1000},
@@ -45,22 +46,28 @@
       matchSelects(adCheckOutSelect, adCheckinSelect);
     };
 
+    var onRoomSelect = function () {
+      if (adRoomSelect.value === '100') {
+        adCapacitySelect.value = 0;
+      }
+    };
+
+
     adTypeSelect.addEventListener('change', onTypeSelect);
 
     adCheckinSelect.addEventListener('change', onCheckinSelect);
 
     adCheckOutSelect.addEventListener('change', onCheckoutSelect);
 
-    // adRoomSelect.addEventListener('change', function () {
-    //   adCapacitySelect.selectedIndex = adRoomSelect.selectedIndex;
-    // });
+    adRoomSelect.addEventListener('change', onRoomSelect);
+
+
   };
 
   /**
-Callback функция которая будет выполняться при выполлении условий onDragListen
+   Callback функция которая будет выполняться при выполлении условий onDragListen
    */
   window.runValidation = function () {
     validateForm();
   };
 })();
-
