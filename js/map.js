@@ -2,43 +2,52 @@
 
 (function () {
   window.wizards = [];
+
   /**
    * Функция создает булавки и добавляет их в разметку
-   * @param {{author: string,
-   *           offer: string,
-   *           location: {
-   *             x: number,
-   *             y: number
-   *           } } } ads массив объектов свойств
+   * @param {object[]} ads массив объектов с данными для рендеринга булавок и обьявлений к ним
    */
-  window.renderPins = function (ads) {
+  window.onRenderPins = function (ads) {
     var ad = document.querySelector('#pin').content;
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < ads.length; i++) {
+
+    ads.forEach(function (thisAd) {
       var clonedAd = ad.cloneNode(true);
       var clonedAdImage = clonedAd.querySelector('img');
       var clonedAdButton = clonedAd.querySelector('button');
-      clonedAdButton.style.top = ads[i].location.y + 'px';
-      clonedAdButton.style.left = ads[i].location.x + 'px';
-      clonedAdImage.src = ads[i].author.avatar;
-      clonedAdImage.alt = ads[i].offer.type;
+      clonedAdButton.style.top = thisAd.location.y + 'px';
+      clonedAdButton.style.left = thisAd.location.x + 'px';
+      clonedAdImage.src = thisAd.author.avatar;
+      clonedAdImage.alt = thisAd.offer.type;
+      clonedAdButton.addEventListener('click', function () {
+        window.renderCard(thisAd);
+      });
       fragment.appendChild(clonedAd);
-    }
+    });
+
     window.globalElements.mapPins.appendChild(fragment);
   };
 
+
+  /**
+   * Функция колбэк, если данные с сервера получены успешно - рендерит пины и ограничивает их количество до 5
+   * @param {object[]} ads полученный с сервера массив объектов с данными для рендеринга булавок и обьявлений к ним
+   */
   var successHandler = function (ads) {
     window.pins = ads;
     var sliced = ads.slice(1, 6);
-    window.renderPins(sliced);
+    window.onRenderPins(sliced);
   };
 
+  /**
+   * Функция-колбэк для неудачного запроса на сервер, создает окно с сообщением об ошибке
+   * @param {number} errorStatus номер ошибки
+   */
   var errorHandler = function (errorStatus) {
     var page = document.querySelector('main');
 
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var alarm = errorTemplate.cloneNode(true);
-
 
     page.insertAdjacentElement('afterbegin', alarm);
 

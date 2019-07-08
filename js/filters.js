@@ -63,13 +63,16 @@
       }
     };
 
-    var filteredAds = ads.filter(hasMatchingType).filter(hasMatchingPrice).filter(hasMatchingRooms).filter(hasMatchingGuests);
+    var filteredAds = ads.filter(hasMatchingType)
+                         .filter(hasMatchingPrice)
+                         .filter(hasMatchingRooms)
+                         .filter(hasMatchingGuests);
 
     if (filteredAds.length > 5) {
       var sliced = filteredAds.slice(1, 6);
-      window.renderPins(sliced);
+      window.onRenderPins(sliced);
     } else {
-      window.renderPins(filteredAds);
+      window.onRenderPins(filteredAds);
     }
   };
 
