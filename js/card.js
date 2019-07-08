@@ -2,8 +2,28 @@
 (function () {
   /**
    * Функция рендерит объявление об обьекте размещения с данными, полученными с сервера
+   * @param  {{author : {
+   *   avatar: string},
+   *   offer: {
+   *     title: string,
+   *     address: string,
+   *     price: number,
+   *     type: string,
+   *     rooms: number,
+   *     guests: number,
+   *     checkin: string,
+   *     checkout: string,
+   *     features: string[],
+   *     description: string,
+   *     photos: string[]
+   *   },
+   *   location: {
+   *     x: number,
+   *     y: number
+   *   }
+   * }} ad обьект свойств одного пина и обьявления, полученный из загружженого с сервера массива данных
    */
-  window.renderCard = function () {
+  window.renderCard = function (ad) {
     var template = document.querySelector('#card').content;
     var fragment = document.createDocumentFragment();
     var clonedCard = template.cloneNode(true);
@@ -24,7 +44,7 @@
      */
     var addType = function () {
       clonedCardPhotos.innerHTML = '';
-      switch (window.pins[0].offer.type) {
+      switch (ad.offer.type) {
         case 'palace':
           clonedCardType.textContent = 'Дворец';
           break;
@@ -38,7 +58,7 @@
           clonedCardType.textContent = 'Бунгало';
           break;
         default:
-          clonedCardType.textContent = window.pins[0].offer.type;
+          clonedCardType.textContent = ad.offer.type;
       }
     };
 
@@ -46,7 +66,7 @@
      * Функция добавляет в объявление лишки - удобства, если таковые имеются для данного пина
      */
     var addFeatures = function () {
-      var featuresData = window.pins[0].offer.features;
+      var featuresData = ad.offer.features;
       for (var j = 0; j < featuresData.length; j++) {
         var li = document.createElement('li');
         li.classList.add('popup__feature');
@@ -78,7 +98,7 @@
      * Функция добавляет в объявление фотографии, если таковые имеются для данного пина
      */
     var addPhotos = function () {
-      var photos = window.pins[0].offer.photos;
+      var photos = ad.offer.photos;
       for (var j = 0; j < photos.length; j++) {
         var img = document.createElement('img');
         img.src = photos[j];
@@ -111,24 +131,16 @@
         closeCard(evt);
       }
     };
-
-    clonedCardImage.src = window.pins[0].author.avatar;
-    clonedCardHead.textContent = window.pins[0].offer.title;
-    clonedCardAddress.textContent = window.pins[0].offer.address;
-    clonedCardPrice.textContent = (window.pins[0].offer.price + '₽/ночь');
-
+    clonedCardImage.src = ad.author.avatar;
+    clonedCardHead.textContent = ad.offer.title;
+    clonedCardAddress.textContent = ad.offer.address;
+    clonedCardPrice.textContent = (ad.offer.price + '₽/ночь');
     addType();
-
-    clonedCardCapacity.textContent = (window.pins[0].offer.rooms + ' комнаты для ' + window.pins[0].offer.guests + ' гостей');
-    clonedCardTime.textContent = ('Заезд после ' + window.pins[0].offer.checkin + ', выезд до ' + window.pins[0].offer.checkout);
-
+    clonedCardCapacity.textContent = (ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей');
+    clonedCardTime.textContent = ('Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout);
     addFeatures();
-
-    clonedCardDescription.textContent = window.pins[0].offer.description;
-
-
+    clonedCardDescription.textContent = ad.offer.description;
     addPhotos();
-
 
     document.addEventListener('keydown', onEscPush);
     closeCardButton.addEventListener('click', function (evt) {
@@ -136,7 +148,6 @@
         closeCard(evt);
         evt.stopPropagation();
       }
-
     });
 
     fragment.appendChild(clonedCard);
