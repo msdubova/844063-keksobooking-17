@@ -5,6 +5,7 @@
   var LOWLINE_Y = 130;
   var TOPLINE_Y = 630;
   var ELEMENTS_COUNT = 5;
+  var ESCAPE_CODE = 27;
 
   var Price = {
     LOW_PRICE_LIMIT: 10000,
@@ -17,6 +18,7 @@
     LOWLINE_Y: LOWLINE_Y,
     TOPLINE_Y: TOPLINE_Y,
     ELEMENTS_COUNT: ELEMENTS_COUNT,
+    ESCAPE_CODE: ESCAPE_CODE,
     Price: Price
   };
 })();

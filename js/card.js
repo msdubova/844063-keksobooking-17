@@ -1,5 +1,8 @@
 'use strict';
 (function () {
+  /**
+   * Функция рендерит объявление об обьекте размещения с данными, полученными с сервера
+   */
   window.renderCard = function () {
     var template = document.querySelector('#card').content;
     var fragment = document.createDocumentFragment();
@@ -16,6 +19,9 @@
     var clonedCardPhotos = clonedCard.querySelector('.popup__photos');
     var closeCardButton = clonedCard.querySelector('.popup__close');
 
+    /**
+     * Функция присваивает обьявлению значение типа обьекта размещения
+     */
     var addType = function () {
       clonedCardPhotos.innerHTML = '';
       switch (window.pins[0].offer.type) {
@@ -36,6 +42,9 @@
       }
     };
 
+    /**
+     * Функция добавляет в объявление лишки - удобства, если таковые имеются для данного пина
+     */
     var addFeatures = function () {
       var featuresData = window.pins[0].offer.features;
       for (var j = 0; j < featuresData.length; j++) {
@@ -65,6 +74,9 @@
       }
     };
 
+    /**
+     * Функция добавляет в объявление фотографии, если таковые имеются для данного пина
+     */
     var addPhotos = function () {
       var photos = window.pins[0].offer.photos;
       for (var j = 0; j < photos.length; j++) {
@@ -74,6 +86,29 @@
         img.height = 40;
         img.width = 45;
         clonedCardPhotos.appendChild(img);
+      }
+    };
+
+    /**
+     * Функция закрывает попап на нажатию кнопки закрытия попапа и удаляет слушатель клавиатурных событий с документа
+     * @param {object} evt обьект события
+     */
+    var closeCard = function (evt) {
+      evt.preventDefault();
+      var popup = window.globalElements.map.querySelector('.map__card');
+      popup.remove();
+      document.removeEventListener('keydown', onEscPush);
+      evt.stopPropagation();
+    };
+
+    /**
+     * Функция закрывает попап при нажатии кнопки ESCAPE
+     * @param {object} evt  обьект события
+     */
+    var onEscPush = function (evt) {
+      evt.preventDefault();
+      if (evt.keyCode === window.constants.ESCAPE_CODE) {
+        closeCard(evt);
       }
     };
 
@@ -95,12 +130,7 @@
     addPhotos();
 
 
-    var closeCard = function (evt) {
-      evt.preventDefault();
-      var popup = window.globalElements.map.querySelector('.map__card');
-      popup.remove();
-    };
-
+    document.addEventListener('keydown', onEscPush);
     closeCardButton.addEventListener('click', function (evt) {
       if ((evt.currentTarget.tagName === 'BUTTON') && (evt.target.tagName === 'BUTTON')) {
         closeCard(evt);
