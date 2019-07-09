@@ -88,7 +88,7 @@
     var alarm = errorTemplate.cloneNode(true);
 
     page.insertAdjacentElement('afterbegin', alarm);
-
+``
     var errorDescription = alarm.querySelector('.error__message');
 
     switch (errorStatus) {

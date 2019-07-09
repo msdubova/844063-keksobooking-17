@@ -30,7 +30,7 @@
   };
 
   window.save = function (data, onSuccess, onError) {
-    var URL = 'https://js.dump.academy/keksobookingss';
+    var URL = 'https://js.dump.academy/keksobooking';
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     var onLoadRequest = function () {

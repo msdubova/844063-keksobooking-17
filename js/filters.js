@@ -7,7 +7,7 @@
   var housingRoomsFilter = filters.querySelector('#housing-rooms');
   var housingGuestsFilter = filters.querySelector('#housing-guests');
 
-  var cleanMap = function () {
+  window.cleanMap = function () {
     var pins = window.globalElements.mapPins.querySelectorAll('button[type = button]');
     for (var i = 0; i < pins.length; i++) {
       pins[i].remove();
@@ -78,7 +78,7 @@
 
   var onFilterChange = function (evt) {
     evt.preventDefault();
-    cleanMap();
+    window.cleanMap();
     updatePins();
   };
 
