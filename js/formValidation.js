@@ -156,8 +156,6 @@
       var trigger = checkRoomGuests();
       if (trigger) {
         window.save(new FormData(form), onSuccess, onError);
-      } else {
-        adRoomSelect.setCustomValidity('некорректное соотношение гости комнаты');
       }
       evt.preventDefault();
     });
