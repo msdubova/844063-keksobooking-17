@@ -112,13 +112,29 @@
       setValidation(adCapacitySelect);
     };
 
+    // var onButtonClick = function (evt, element) {
+    //   evt.preventDefault();
+    //   window.globalElements.mapPins.querySelector(element).remove();
+    //   document.removeEventListener('click', onButtonClick);
+    //   document.removeEventListener('click', onButtonPush);
+    // };
+    //
+    // var onButtonPush = function (evt, element) {
+    //   evt.preventDefault();
+    //   if (evt.keyCode === window.constants.ESCAPE_CODE) {
+    //     window.globalElements.mapPins.querySelector(element).remove();
+    //     document.removeEventListener('click', onButtonPush);
+    //     document.removeEventListener('click', onButtonClick);
+    //   }
+    // };
+
     var onSuccess = function () {
       var template = document.querySelector('#success').content;
       var success = template.cloneNode(true);
 
       var onButtonClick = function (evt) {
         evt.preventDefault();
-        window.globalElements.mapPins.querySelector('.success').remove();
+        window.globalElements.mapPins.querySelector('.succes').remove();
         document.removeEventListener('click', onButtonClick);
         document.removeEventListener('click', onButtonPush);
       };
@@ -142,7 +158,43 @@
       window.fillPinInitialAddress(window.globalElements.mapPinMain);
     };
 
-    var onError = function () {};
+    var onError = function () {
+      var template = document.querySelector('#error').content;
+      var error = template.cloneNode(true);
+      var main = document.querySelector('main');
+      var buttonClose = main.querySelector('.error__button');
+
+      var onButtonClick = function (evt) {
+        evt.preventDefault();
+        main.querySelector('.error').remove();
+        document.removeEventListener('click', onButtonClick);
+        document.removeEventListener('click', onButtonPush);
+        buttonClose.removeEventListener('click', onButtonCloseClick);
+      };
+
+      var onButtonPush = function (evt) {
+        evt.preventDefault();
+        if (evt.keyCode === window.constants.ESCAPE_CODE) {
+          main.querySelector('.error').remove();
+          document.removeEventListener('click', onButtonPush);
+          document.removeEventListener('click', onButtonClick);
+          buttonClose.removeEventListener('click', onButtonCloseClick);
+        }
+      };
+
+      var onButtonCloseClick = function (evt) {
+        evt.preventDefault();
+        main.querySelector('.error').remove();
+        document.removeEventListener('click', onButtonClick);
+        document.removeEventListener('click', onButtonPush);
+        buttonClose.removeEventListener('click', onButtonCloseClick);
+      };
+
+      main.appendChild(error);
+      document.addEventListener('click', onButtonClick);
+      document.addEventListener('keydown', onButtonPush);
+      buttonClose.addEventListener('click', onButtonCloseClick);
+    };
 
     adTypeSelect.addEventListener('change', onTypeSelect);
     adPriceInput.addEventListener('input', onPriceInput);
