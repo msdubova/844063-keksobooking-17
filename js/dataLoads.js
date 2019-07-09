@@ -45,5 +45,4 @@
     xhr.open('POST', URL);
     xhr.send(data);
   };
-
 })();
