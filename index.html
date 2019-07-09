@@ -224,7 +224,7 @@
                     for="price">Цена за ночь, руб.</label> <input id="price"
                     max="1000000"
                     name="price"
-                    placeholder="5000"
+                    placeholder="1000"
                     required
                     type="number">
         </fieldset>
@@ -284,14 +284,14 @@
                     for="capacity">Количество мест</label> <select id="capacity"
                     name="capacity"
                     required>
-            <option selected
+            <option
                     value="3">
               для 3 гостей
             </option>
             <option value="2">
               для 2 гостей
             </option>
-            <option value="1">
+            <option value="1" selected>
               для 1 гостя
             </option>
             <option value="0">
@@ -443,8 +443,8 @@
   <script src="js/setup.js"></script>
   <script src="js/card.js"></script>
   <script src="js/map.js"></script>
-  <script src="js/form.js"></script>
-  <script src="js/backend.js"></script>
+  <script src="js/formValidation.js"></script>
+  <script src="js/dataLoads.js"></script>
   <script src="js/filters.js"></script>
 
 </body>
