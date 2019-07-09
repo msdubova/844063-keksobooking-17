@@ -5,7 +5,26 @@
 
   /**
    * Функция создает булавки и добавляет их в разметку
-   * @param {object[]} ads массив объектов с данными для рендеринга булавок и обьявлений к ним
+   * @param {[{author : {
+   *   avatar: string},
+   *   offer: {
+   *     title: string,
+   *     address: string,
+   *     price: number,
+   *     type: string,
+   *     rooms: number,
+   *     guests: number,
+   *     checkin: string,
+   *     checkout: string,
+   *     features: string[],
+   *     description: string,
+   *     photos: string[]
+   *   },
+   *   location: {
+   *     x: number,
+   *     y: number
+   *   }
+   * }]} ads массив объектов с данными для рендеринга булавок и обьявлений к ним
    */
   window.onRenderPins = function (ads) {
     var ad = document.querySelector('#pin').content;
@@ -31,7 +50,26 @@
 
   /**
    * Функция колбэк, если данные с сервера получены успешно - рендерит пины и ограничивает их количество до 5
-   * @param {object[]} ads полученный с сервера массив объектов с данными для рендеринга булавок и обьявлений к ним
+   * @param {[{author : {
+   *   avatar: string},
+   *   offer: {
+   *     title: string,
+   *     address: string,
+   *     price: number,
+   *     type: string,
+   *     rooms: number,
+   *     guests: number,
+   *     checkin: string,
+   *     checkout: string,
+   *     features: string[],
+   *     description: string,
+   *     photos: string[]
+   *   },
+   *   location: {
+   *     x: number,
+   *     y: number
+   *   }
+   * }]} ads полученный с сервера массив объектов с данными для рендеринга булавок и обьявлений к ним
    */
   var successHandler = function (ads) {
     window.pins = ads;

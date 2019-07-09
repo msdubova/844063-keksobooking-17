@@ -39,6 +39,11 @@
     var clonedCardPhotos = clonedCard.querySelector('.popup__photos');
     var closeCardButton = clonedCard.querySelector('.popup__close');
 
+
+    if (window.globalElements.mapPins.querySelector('article')) {
+      window.globalElements.mapPins.querySelector('article').remove();
+    }
+
     /**
      * Функция присваивает обьявлению значение типа обьекта размещения
      */
