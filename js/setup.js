@@ -7,13 +7,16 @@
    * Функция деактивирует форму. Также выполняет заполнение поле ввода адреса автоматически при открытии. Используется при открытии страницы
     */
   var deactivateForm = function () {
+    window.startX = window.globalElements.mapPinMain.left;
+    window.startY = window.globalElements.mapPinMain.top;
+
     if (!window.globalElements.formCustomAd.classList.contains('ad-form--disabled')) {
       window.globalElements.formCustomAd.classList.add('ad-form--disabled');
     }
     filterSelects.forEach(function (it) {
       it.setAttribute('disabled', 'disabled');
     });
-    fillPinInitialAddress(window.globalElements.mapPinMain);
+    window.fillPinInitialAddress(window.globalElements.mapPinMain);
 
     for (var i = 0; i < formFieldsets.length; i++) {
       formFieldsets[i].setAttribute('disabled', 'disabled');
@@ -24,7 +27,7 @@
    * Функция записывает координаты центра переданного элемента в поле Input (address)
     * @param {Element} el
     */
-  var fillPinInitialAddress = function (el) {
+  window.fillPinInitialAddress = function (el) {
     var util = window.util;
     window.globalElements.addressInput.value = (util.getParameterNumValue(el.style.left) + Math.round(util.getParameterNumValue(el.clientWidth) / 2)) + ', '
         + (util.getParameterNumValue(el.style.top) + Math.round(util.getParameterNumValue(el.clientHeight) / 2));
