@@ -139,11 +139,13 @@
   };
 
 
-  var onFilterChange = function (evt) {
-    evt.preventDefault();
-    window.cleanMap();
-    updatePins(evt);
-  };
+  var onFilterChange = window.debounce(
+      function (evt) {
+        evt.preventDefault();
+        window.cleanMap();
+        updatePins(evt);
+      }
+  );
 
   filters.addEventListener('change', onFilterChange);
 })();
