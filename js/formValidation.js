@@ -3,7 +3,6 @@
 (function () {
   var validateForm = function () {
     var form = window.globalElements.formCustomAd;
-    var adAddress = form.querySelector('#address');
     var adTypeSelect = form.querySelector('#type');
     var adPriceInput = form.querySelector('#price');
     var adCheckinSelect = form.querySelector('#timein');
@@ -16,7 +15,6 @@
       house: {min: 5000, placeholder: 5000},
       palace: {min: 10000, placeholder: 10000}
     };
-
 
     /**
      * Функция подтягивает значения двух селектов по порядковому номеру выбранной опции
@@ -34,6 +32,7 @@
       adPriceInput.setAttribute('placeholder', adTypeParameters[adTypeSelect.value].placeholder);
       adPriceInput.setAttribute('min', parseInt(adTypeParameters[adTypeSelect.value].min, 10));
     };
+
     /**
      * Функция назначает мин значение цены для выбранного поля типа размещения
      * @param {Object} evt обьект события
@@ -73,8 +72,32 @@
       matchSelects(adCheckOutSelect, adCheckinSelect);
     };
 
+    /**
+     * Функция колбек выполняет проверку и назначает сообщение для ошибки для двух полей сразу  - комнаты и гости
+     */
+    var onRoomCapacityChange = function () {
+      setValidation(adRoomSelect);
+      setValidation(adCapacitySelect);
+    };
 
-    var checkRoomGuests = function () {
+    /**
+     * Функция назначает сообщение об ошибке , если проверка соотношения гостей-комнат не пройдена, для заданного элемента
+     * @param {HTMLElement} select
+     */
+    var setValidation = function (select) {
+      var check = window.checkRoomGuests();
+      if (!check) {
+        select.setCustomValidity('Некорректное соотношение гостей и комнат.');
+      } else {
+        select.setCustomValidity('');
+      }
+    };
+
+    /**
+     * Функция проверяет соотношение гостей и комнат и выдает булево значение результатом
+     * @return {boolean}
+     */
+    window.checkRoomGuests = function () {
       if (adRoomSelect.value === adCapacitySelect.value) {
         return true;
       } else if ((!(adRoomSelect.value === '100')) && (adCapacitySelect.value === '0')) {
@@ -98,124 +121,13 @@
       }
     };
 
-    var setValidation = function (select) {
-      var check = checkRoomGuests();
-      if (!check) {
-        select.setCustomValidity('Некорректное соотношение гостей и комнат.');
-      } else {
-        select.setCustomValidity('');
-      }
-    };
-
-    var checkRoomCapacity = function () {
-      setValidation(adRoomSelect);
-      setValidation(adCapacitySelect);
-    };
-
-    // var onButtonClick = function (evt, element) {
-    //   evt.preventDefault();
-    //   window.globalElements.mapPins.querySelector(element).remove();
-    //   document.removeEventListener('click', onButtonClick);
-    //   document.removeEventListener('click', onButtonPush);
-    // };
-    //
-    // var onButtonPush = function (evt, element) {
-    //   evt.preventDefault();
-    //   if (evt.keyCode === window.constants.ESCAPE_CODE) {
-    //     window.globalElements.mapPins.querySelector(element).remove();
-    //     document.removeEventListener('click', onButtonPush);
-    //     document.removeEventListener('click', onButtonClick);
-    //   }
-    // };
-
-    var onSuccess = function () {
-      var template = document.querySelector('#success').content;
-      var success = template.cloneNode(true);
-
-      var onButtonClick = function (evt) {
-        evt.preventDefault();
-        window.globalElements.mapPins.querySelector('.success').remove();
-        document.removeEventListener('click', onButtonClick);
-        document.removeEventListener('click', onButtonPush);
-      };
-
-      var onButtonPush = function (evt) {
-        evt.preventDefault();
-        if (evt.keyCode === window.constants.ESCAPE_CODE) {
-          window.globalElements.mapPins.querySelector('.success').remove();
-          document.removeEventListener('click', onButtonPush);
-          document.removeEventListener('click', onButtonClick);
-        }
-      };
-
-      window.cleanMap();
-      window.globalElements.map.classList.add('map--faded');
-      window.globalElements.mapPinMain.addEventListener('mousedown', function (evt) {
-        window.dragDropPin(evt);
-      });
-
-      window.globalElements.mapPins.appendChild(success);
-      document.addEventListener('click', onButtonClick);
-      document.addEventListener('keydown', onButtonPush);
-
-      window.globalElements.mapPinMain.left = window.startX;
-      window.globalElements.mapPinMain.top = window.startY;
-      window.fillPinInitialAddress(window.globalElements.mapPinMain);
-    };
-
-    var onError = function () {
-      var template = document.querySelector('#error').content;
-      var error = template.cloneNode(true);
-      var main = document.querySelector('main');
-      var buttonClose = main.querySelector('.error__button');
-
-      var onButtonClick = function (evt) {
-        evt.preventDefault();
-        main.querySelector('.error').remove();
-        document.removeEventListener('click', onButtonClick);
-        document.removeEventListener('click', onButtonPush);
-        buttonClose.removeEventListener('click', onButtonCloseClick);
-      };
-
-      var onButtonPush = function (evt) {
-        evt.preventDefault();
-        if (evt.keyCode === window.constants.ESCAPE_CODE) {
-          main.querySelector('.error').remove();
-          document.removeEventListener('click', onButtonPush);
-          document.removeEventListener('click', onButtonClick);
-          buttonClose.removeEventListener('click', onButtonCloseClick);
-        }
-      };
-
-      var onButtonCloseClick = function (evt) {
-        evt.preventDefault();
-        main.querySelector('.error').remove();
-        document.removeEventListener('click', onButtonClick);
-        document.removeEventListener('click', onButtonPush);
-        buttonClose.removeEventListener('click', onButtonCloseClick);
-      };
-
-      main.appendChild(error);
-      document.addEventListener('click', onButtonClick);
-      document.addEventListener('keydown', onButtonPush);
-      buttonClose.addEventListener('click', onButtonCloseClick);
-    };
 
     adTypeSelect.addEventListener('change', onTypeSelect);
     adPriceInput.addEventListener('input', onPriceInput);
     adCheckinSelect.addEventListener('change', onCheckinSelect);
     adCheckOutSelect.addEventListener('change', onCheckoutSelect);
-    adRoomSelect.addEventListener('change', checkRoomCapacity);
-    adCapacitySelect.addEventListener('change', checkRoomCapacity);
-
-    form.addEventListener('submit', function (evt) {
-      adAddress.removeAttribute('readonly');
-      var trigger = checkRoomGuests();
-      if (trigger) {
-        window.save(new FormData(form), onSuccess, onError);
-      }
-      evt.preventDefault();
-    });
+    adRoomSelect.addEventListener('change', onRoomCapacityChange);
+    adCapacitySelect.addEventListener('change', onRoomCapacityChange);
   };
 
   /**
