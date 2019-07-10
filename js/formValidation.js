@@ -22,7 +22,7 @@
     /**
      * Функция-обработчик событий селекта типа жилища. устанавливает минимальное значение поля цены
      */
-    var onTypeSelect = function () {
+    window.onTypeSelect = function () {
       globs.adPriceInput.setAttribute('placeholder', adTypeParameters[globs.adTypeSelect.value].placeholder);
       globs.adPriceInput.setAttribute('min', parseInt(adTypeParameters[globs.adTypeSelect.value].min, 10));
     };
@@ -115,7 +115,7 @@
       }
     };
 
-    globs.adTypeSelect.addEventListener('change', onTypeSelect);
+    globs.adTypeSelect.addEventListener('change', window.onTypeSelect);
     globs.adPriceInput.addEventListener('input', onPriceInput);
     globs.adCheckinSelect.addEventListener('change', onCheckinSelect);
     globs.adCheckOutSelect.addEventListener('change', onCheckoutSelect);

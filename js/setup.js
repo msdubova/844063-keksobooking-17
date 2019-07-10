@@ -63,6 +63,7 @@
     window.globalElements.map.classList.add('map--faded');
     window.cleanMap();
     window.globalElements.formCustomAd.reset();
+    window.onTypeSelect();
     window.globalElements.mapPinMain.style.top = window.constants.START_Y + 'px';
     window.globalElements.mapPinMain.style.left = window.constants.START_X + 'px';
     deactivateForm();

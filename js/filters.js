@@ -7,6 +7,14 @@
   var housingRoomsFilter = filters.querySelector('#housing-rooms');
   var housingGuestsFilter = filters.querySelector('#housing-guests');
 
+  var wifiFilter = filters.querySelector('#filter-wifi');
+  var dishwasherFilter = filters.querySelector('#filter-dishwasher');
+  var parkingFilter = filters.querySelector('#filter-parking');
+  var washerFilter = filters.querySelector('#filter-washer');
+  var elevatorFilter = filters.querySelector('#filter-elevator');
+  var conditionerFilter = filters.querySelector('#filter-conditioner');
+
+
   window.cleanMap = function () {
     var pins = window.globalElements.mapPins.querySelectorAll('button[type = button]');
     for (var i = 0; i < pins.length; i++) {
@@ -63,10 +71,64 @@
       }
     };
 
+    var wifiProvided = function (it) {
+      if (wifiFilter.checked) {
+        return (it.offer.features.indexOf('wifi') !== -1);
+      } else {
+        return it;
+      }
+    };
+    var dishwasherProvided = function (it) {
+      if (dishwasherFilter.checked) {
+        return (it.offer.features.indexOf('dishwasher') !== -1);
+      } else {
+        return it;
+      }
+    };
+
+    var parkingProvided = function (it) {
+      if (parkingFilter.checked) {
+        return (it.offer.features.indexOf('parking') !== -1);
+      } else {
+        return it;
+      }
+    };
+
+    var washerProvided = function (it) {
+      if (washerFilter.checked) {
+        return (it.offer.features.indexOf('washer') !== -1);
+      } else {
+        return it;
+      }
+    };
+
+    var elevatorProvided = function (it) {
+      if (elevatorFilter.checked) {
+        return (it.offer.features.indexOf('elevator') !== -1);
+      } else {
+        return it;
+      }
+    };
+
+    var conditionerProvided = function (it) {
+      if (conditionerFilter.checked) {
+        return (it.offer.features.indexOf('conditioner') !== -1);
+      } else {
+        return it;
+      }
+    };
+
+
     var filteredAds = ads.filter(hasMatchingType)
-                         .filter(hasMatchingPrice)
-                         .filter(hasMatchingRooms)
-                         .filter(hasMatchingGuests);
+      .filter(hasMatchingPrice)
+      .filter(hasMatchingRooms)
+      .filter(hasMatchingGuests)
+      .filter(wifiProvided)
+      .filter(dishwasherProvided)
+      .filter(parkingProvided)
+      .filter(washerProvided)
+      .filter(elevatorProvided)
+      .filter(conditionerProvided);
 
     if (filteredAds.length > 5) {
       var sliced = filteredAds.slice(1, 6);
@@ -76,10 +138,11 @@
     }
   };
 
+
   var onFilterChange = function (evt) {
     evt.preventDefault();
     window.cleanMap();
-    updatePins();
+    updatePins(evt);
   };
 
   filters.addEventListener('change', onFilterChange);
