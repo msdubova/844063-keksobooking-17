@@ -9,7 +9,7 @@
    * Функция - обработчик, реализует перемещение пина по мышиным событиям драгндроп
    * @param {object} evt объeкт события
    */
-  window.dragDropPin = function (evt) {
+  window.onPinDrag = function (evt) {
     evt.preventDefault();
     var dragged = false;
 
@@ -91,6 +91,6 @@
   };
 
 
-  globs.mapPinMain.addEventListener('mousedown', window.dragDropPin);
+  globs.mapPinMain.addEventListener('mousedown', window.onPinDrag);
 
 })();
