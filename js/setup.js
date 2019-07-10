@@ -3,13 +3,11 @@
   var formFieldsets = window.globalElements.formCustomAd.children;
   var filterSelects = Array.from(document.querySelector('.map__filters'));
 
+
   /**
    * Функция деактивирует форму. Также выполняет заполнение поле ввода адреса автоматически при открытии. Используется при открытии страницы
     */
   var deactivateForm = function () {
-    window.startX = window.globalElements.mapPinMain.left;
-    window.startY = window.globalElements.mapPinMain.top;
-
     if (!window.globalElements.formCustomAd.classList.contains('ad-form--disabled')) {
       window.globalElements.formCustomAd.classList.add('ad-form--disabled');
     }
@@ -59,6 +57,17 @@
     */
   var setup = function () {
     window.globalElements.map.classList.remove('map--faded');
+  };
+
+  window.resetPage = function () {
+    window.globalElements.map.classList.add('map--faded');
+    window.cleanMap();
+    window.globalElements.formCustomAd.reset();
+    window.onTypeSelect();
+    window.globalElements.mapPinMain.style.top = window.constants.START_Y + 'px';
+    window.globalElements.mapPinMain.style.left = window.constants.START_X + 'px';
+    deactivateForm();
+    window.activated = false;
   };
 
   deactivateForm();

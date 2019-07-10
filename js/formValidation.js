@@ -1,22 +1,14 @@
 'use strict';
-
 (function () {
   var validateForm = function () {
-    var form = window.globalElements.formCustomAd;
-    var adAddress = form.querySelector('#address');
-    var adTypeSelect = form.querySelector('#type');
-    var adPriceInput = form.querySelector('#price');
-    var adCheckinSelect = form.querySelector('#timein');
-    var adCheckOutSelect = form.querySelector('#timeout');
-    var adRoomSelect = form.querySelector('#room_number');
-    var adCapacitySelect = form.querySelector('#capacity');
+    var globs = window.globalElements;
+
     var adTypeParameters = {
       bungalo: {min: 0, placeholder: 0},
       flat: {min: 1000, placeholder: 1000},
       house: {min: 5000, placeholder: 5000},
       palace: {min: 10000, placeholder: 10000}
     };
-
 
     /**
      * Функция подтягивает значения двух селектов по порядковому номеру выбранной опции
@@ -30,10 +22,11 @@
     /**
      * Функция-обработчик событий селекта типа жилища. устанавливает минимальное значение поля цены
      */
-    var onTypeSelect = function () {
-      adPriceInput.setAttribute('placeholder', adTypeParameters[adTypeSelect.value].placeholder);
-      adPriceInput.setAttribute('min', parseInt(adTypeParameters[adTypeSelect.value].min, 10));
+    window.onTypeSelect = function () {
+      globs.adPriceInput.setAttribute('placeholder', adTypeParameters[globs.adTypeSelect.value].placeholder);
+      globs.adPriceInput.setAttribute('min', parseInt(adTypeParameters[globs.adTypeSelect.value].min, 10));
     };
+
     /**
      * Функция назначает мин значение цены для выбранного поля типа размещения
      * @param {Object} evt обьект события
@@ -41,7 +34,7 @@
     var onPriceInput = function (evt) {
       evt.preventDefault();
       var minPrice;
-      switch (adTypeSelect.value) {
+      switch (globs.adTypeSelect.value) {
         case 'bungalo' :
           minPrice = 0;
           break;
@@ -55,51 +48,38 @@
           minPrice = 10000;
           break;
       }
-      adPriceInput.setAttribute('min', minPrice);
+      globs.adPriceInput.setAttribute('min', minPrice);
     };
 
     /**
      * Функция-обработчик событий селекта чекин и автоматического подбора значения полю чекаут
      */
     var onCheckinSelect = function () {
-      matchSelects(adCheckinSelect, adCheckOutSelect);
+      matchSelects(globs.adCheckinSelect, globs.adCheckOutSelect);
     };
 
     /**
      * Функция-обработчик собйтий селекта  чекаут и автоматического подбора значения полю чекин
      */
     var onCheckoutSelect = function () {
-      adCheckinSelect.selectedIndex = adCheckOutSelect.selectedIndex;
-      matchSelects(adCheckOutSelect, adCheckinSelect);
+      globs.adCheckinSelect.selectedIndex = globs.adCheckOutSelect.selectedIndex;
+      matchSelects(globs.adCheckOutSelect, globs.adCheckinSelect);
     };
 
-
-    var checkRoomGuests = function () {
-      if (adRoomSelect.value === adCapacitySelect.value) {
-        return true;
-      } else if ((!(adRoomSelect.value === '100')) && (adCapacitySelect.value === '0')) {
-        return false;
-      } else if ((!(adRoomSelect.value === '100')) && (adRoomSelect.value > adCapacitySelect.value)) {
-        return true;
-      } else if ((adRoomSelect.value === '100') && (adCapacitySelect.value === '0')) {
-        return true;
-      } else if ((adRoomSelect.value === '100') && (!(adCapacitySelect.value === '0'))) {
-        return false;
-      } else if (adRoomSelect.value < adCapacitySelect.value) {
-        return false;
-      } else if ((adRoomSelect.value === '1') && (adCapacitySelect.value === '0')) {
-        return false;
-      } else if ((adRoomSelect.value === '2') && (adCapacitySelect.value === '0')) {
-        return false;
-      } else if ((adRoomSelect.value === '3') && (adCapacitySelect.value === '0')) {
-        return false;
-      } else {
-        return false;
-      }
+    /**
+     * Функция колбек выполняет проверку и назначает сообщение для ошибки для двух полей сразу  - комнаты и гости
+     */
+    var onRoomCapacityChange = function () {
+      setValidation(globs.adRoomSelect);
+      setValidation(globs.adCapacitySelect);
     };
 
+    /**
+     * Функция назначает сообщение об ошибке , если проверка соотношения гостей-комнат не пройдена, для заданного элемента
+     * @param {HTMLElement} select
+     */
     var setValidation = function (select) {
-      var check = checkRoomGuests();
+      var check = window.checkRoomGuests();
       if (!check) {
         select.setCustomValidity('Некорректное соотношение гостей и комнат.');
       } else {
@@ -107,58 +87,39 @@
       }
     };
 
-    var checkRoomCapacity = function () {
-      setValidation(adRoomSelect);
-      setValidation(adCapacitySelect);
-    };
-
-    var onSuccess = function () {
-      var template = document.querySelector('#success').content;
-      var success = template.cloneNode(true);
-
-      var onButtonClick = function (evt) {
-        evt.preventDefault();
-        window.globalElements.mapPins.querySelector('.success').remove();
-        document.removeEventListener('click', onButtonClick);
-        document.removeEventListener('click', onButtonPush);
-      };
-
-      var onButtonPush = function (evt) {
-        evt.preventDefault();
-        if (evt.keyCode === window.constants.ESCAPE_CODE) {
-          window.globalElements.mapPins.querySelector('.success').remove();
-          document.removeEventListener('click', onButtonPush);
-          document.removeEventListener('click', onButtonClick);
-        }
-      };
-
-      window.globalElements.mapPins.appendChild(success);
-      document.addEventListener('click', onButtonClick);
-      document.addEventListener('keydown', onButtonPush);
-
-
-      window.globalElements.mapPinMain.left = window.startX;
-      window.globalElements.mapPinMain.top = window.startY;
-      window.fillPinInitialAddress(window.globalElements.mapPinMain);
-    };
-
-    var onError = function () {};
-
-    adTypeSelect.addEventListener('change', onTypeSelect);
-    adPriceInput.addEventListener('input', onPriceInput);
-    adCheckinSelect.addEventListener('change', onCheckinSelect);
-    adCheckOutSelect.addEventListener('change', onCheckoutSelect);
-    adRoomSelect.addEventListener('change', checkRoomCapacity);
-    adCapacitySelect.addEventListener('change', checkRoomCapacity);
-
-    form.addEventListener('submit', function (evt) {
-      adAddress.removeAttribute('readonly');
-      var trigger = checkRoomGuests();
-      if (trigger) {
-        window.save(new FormData(form), onSuccess, onError);
+    /**
+     * Функция проверяет соотношение гостей и комнат и выдает булево значение результатом
+     * @return {boolean}
+     */
+    window.checkRoomGuests = function () {
+      if (globs.adRoomSelect.value === globs.adCapacitySelect.value) {
+        return true;
+      } else if ((!(globs.adRoomSelect.value === '100')) && (globs.adCapacitySelect.value === '0')) {
+        return false;
+      } else if ((!(globs.adRoomSelect.value === '100')) && (globs.adRoomSelect.value > globs.adCapacitySelect.value)) {
+        return true;
+      } else if ((globs.adRoomSelect.value === '100') && (globs.adCapacitySelect.value === '0')) {
+        return true;
+      } else if ((globs.adRoomSelect.value === '100') && (!(globs.adCapacitySelect.value === '0'))) {
+        return false;
+      } else if (globs.adRoomSelect.value < globs.adCapacitySelect.value) {
+        return false;
+      } else if ((globs.adRoomSelect.value === '1') && (globs.adCapacitySelect.value === '0')) {
+        return false;
+      } else if ((globs.adRoomSelect.value === '2') && (globs.adCapacitySelect.value === '0')) {
+        return false;
+      } else if ((globs.adRoomSelect.value === '3') && (globs.adCapacitySelect.value === '0')) {
+        return false;
       }
-      evt.preventDefault();
-    });
+      return false;
+    };
+
+    globs.adTypeSelect.addEventListener('change', window.onTypeSelect);
+    globs.adPriceInput.addEventListener('input', onPriceInput);
+    globs.adCheckinSelect.addEventListener('change', onCheckinSelect);
+    globs.adCheckOutSelect.addEventListener('change', onCheckoutSelect);
+    globs.adRoomSelect.addEventListener('change', onRoomCapacityChange);
+    globs.adCapacitySelect.addEventListener('change', onRoomCapacityChange);
   };
 
   /**
