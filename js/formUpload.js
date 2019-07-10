@@ -7,27 +7,27 @@
     var template = document.querySelector('#success').content;
     var success = template.cloneNode(true);
 
-    var onButtonClick = function (evt) {
+    var onSuccessDocumentClick = function (evt) {
       evt.preventDefault();
       window.globalElements.mapPins.querySelector('.success').remove();
-      document.removeEventListener('click', onButtonClick);
-      document.removeEventListener('keydown', onButtonPush);
+      document.removeEventListener('click', onSuccessDocumentClick);
+      document.removeEventListener('keydown', onSuccessDocumentKeydown);
     };
 
-    var onButtonPush = function (evt) {
+    var onSuccessDocumentKeydown = function (evt) {
       evt.preventDefault();
       if (evt.keyCode === window.constants.ESCAPE_CODE) {
         window.globalElements.mapPins.querySelector('.success').remove();
-        document.removeEventListener('keydown', onButtonPush);
-        document.removeEventListener('click', onButtonClick);
+        document.removeEventListener('keydown', onSuccessDocumentKeydown);
+        document.removeEventListener('click', onSuccessDocumentClick);
       }
     };
 
     window.resetPage();
 
     window.globalElements.mapPins.appendChild(success);
-    document.addEventListener('click', onButtonClick);
-    document.addEventListener('keydown', onButtonPush);
+    document.addEventListener('click', onSuccessDocumentClick);
+    document.addEventListener('keydown', onSuccessDocumentKeydown);
 
     window.globalElements.mapPinMain.left = window.startX;
     window.globalElements.mapPinMain.top = window.startY;
@@ -40,36 +40,36 @@
     var main = document.querySelector('main');
     var buttonClose = main.querySelector('.error__button');
 
-    var onButtonClick = function (evt) {
+    var onErrorDocumentClick = function (evt) {
       evt.preventDefault();
       main.querySelector('.error').remove();
-      document.removeEventListener('click', onButtonClick);
-      document.removeEventListener('click', onButtonPush);
-      buttonClose.removeEventListener('click', onButtonCloseClick);
+      document.removeEventListener('click', onErrorDocumentClick);
+      document.removeEventListener('click', onErrorDocumentKeydown);
+      buttonClose.removeEventListener('click', onErrorCloseButtonClick);
     };
 
-    var onButtonPush = function (evt) {
+    var onErrorDocumentKeydown = function (evt) {
       evt.preventDefault();
       if (evt.keyCode === window.constants.ESCAPE_CODE) {
         main.querySelector('.error').remove();
-        document.removeEventListener('click', onButtonPush);
-        document.removeEventListener('click', onButtonClick);
-        buttonClose.removeEventListener('click', onButtonCloseClick);
+        document.removeEventListener('click', onErrorDocumentKeydown);
+        document.removeEventListener('click', onErrorDocumentClick);
+        buttonClose.removeEventListener('click', onErrorCloseButtonClick);
       }
     };
 
-    var onButtonCloseClick = function (evt) {
+    var onErrorCloseButtonClick = function (evt) {
       evt.preventDefault();
       main.querySelector('.error').remove();
-      document.removeEventListener('click', onButtonClick);
-      document.removeEventListener('click', onButtonPush);
-      buttonClose.removeEventListener('click', onButtonCloseClick);
+      document.removeEventListener('click', onErrorDocumentClick);
+      document.removeEventListener('click', onErrorDocumentKeydown);
+      buttonClose.removeEventListener('click', onErrorCloseButtonClick);
     };
 
     main.appendChild(error);
-    document.addEventListener('click', onButtonClick);
-    document.addEventListener('keydown', onButtonPush);
-    buttonClose.addEventListener('click', onButtonCloseClick);
+    document.addEventListener('click', onErrorDocumentClick);
+    document.addEventListener('keydown', onErrorDocumentKeydown);
+    buttonClose.addEventListener('click', onErrorCloseButtonClick);
   };
 
 
