@@ -110,9 +110,8 @@
         return false;
       } else if ((globs.adRoomSelect.value === '3') && (globs.adCapacitySelect.value === '0')) {
         return false;
-      } else {
-        return false;
       }
+      return false;
     };
 
     globs.adTypeSelect.addEventListener('change', window.onTypeSelect);
