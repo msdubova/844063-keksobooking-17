@@ -8,6 +8,7 @@
   var ESCAPE_CODE = 27;
   var START_X = 570;
   var START_Y = 375;
+  var DEBOUNCE_INTERVAL = 500;
   var Price = {
     LOW_PRICE_LIMIT: 10000,
     HIGH_PRICE_LIMIT: 50000
@@ -22,6 +23,7 @@
     ESCAPE_CODE: ESCAPE_CODE,
     START_X: START_X,
     START_Y: START_Y,
+    DEBOUNCE_INTERVAL: DEBOUNCE_INTERVAL,
     Price: Price
   };
 })();
