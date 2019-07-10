@@ -11,23 +11,19 @@
       evt.preventDefault();
       window.globalElements.mapPins.querySelector('.success').remove();
       document.removeEventListener('click', onButtonClick);
-      document.removeEventListener('click', onButtonPush);
+      document.removeEventListener('keydown', onButtonPush);
     };
 
     var onButtonPush = function (evt) {
       evt.preventDefault();
       if (evt.keyCode === window.constants.ESCAPE_CODE) {
         window.globalElements.mapPins.querySelector('.success').remove();
-        document.removeEventListener('click', onButtonPush);
+        document.removeEventListener('keydown', onButtonPush);
         document.removeEventListener('click', onButtonClick);
       }
     };
 
-    window.cleanMap();
-    window.globalElements.map.classList.add('map--faded');
-    window.globalElements.mapPinMain.addEventListener('mousedown', function (evt) {
-      window.dragDropPin(evt);
-    });
+    window.resetPage();
 
     window.globalElements.mapPins.appendChild(success);
     document.addEventListener('click', onButtonClick);
@@ -75,6 +71,7 @@
     document.addEventListener('keydown', onButtonPush);
     buttonClose.addEventListener('click', onButtonCloseClick);
   };
+
 
   form.addEventListener('submit', function (evt) {
     adAddress.removeAttribute('readonly');

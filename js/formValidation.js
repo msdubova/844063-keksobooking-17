@@ -1,14 +1,8 @@
 'use strict';
-
 (function () {
   var validateForm = function () {
-    var form = window.globalElements.formCustomAd;
-    var adTypeSelect = form.querySelector('#type');
-    var adPriceInput = form.querySelector('#price');
-    var adCheckinSelect = form.querySelector('#timein');
-    var adCheckOutSelect = form.querySelector('#timeout');
-    var adRoomSelect = form.querySelector('#room_number');
-    var adCapacitySelect = form.querySelector('#capacity');
+    var globs = window.globalElements;
+
     var adTypeParameters = {
       bungalo: {min: 0, placeholder: 0},
       flat: {min: 1000, placeholder: 1000},
@@ -29,8 +23,8 @@
      * Функция-обработчик событий селекта типа жилища. устанавливает минимальное значение поля цены
      */
     var onTypeSelect = function () {
-      adPriceInput.setAttribute('placeholder', adTypeParameters[adTypeSelect.value].placeholder);
-      adPriceInput.setAttribute('min', parseInt(adTypeParameters[adTypeSelect.value].min, 10));
+      globs.adPriceInput.setAttribute('placeholder', adTypeParameters[globs.adTypeSelect.value].placeholder);
+      globs.adPriceInput.setAttribute('min', parseInt(adTypeParameters[globs.adTypeSelect.value].min, 10));
     };
 
     /**
@@ -40,7 +34,7 @@
     var onPriceInput = function (evt) {
       evt.preventDefault();
       var minPrice;
-      switch (adTypeSelect.value) {
+      switch (globs.adTypeSelect.value) {
         case 'bungalo' :
           minPrice = 0;
           break;
@@ -54,30 +48,30 @@
           minPrice = 10000;
           break;
       }
-      adPriceInput.setAttribute('min', minPrice);
+      globs.adPriceInput.setAttribute('min', minPrice);
     };
 
     /**
      * Функция-обработчик событий селекта чекин и автоматического подбора значения полю чекаут
      */
     var onCheckinSelect = function () {
-      matchSelects(adCheckinSelect, adCheckOutSelect);
+      matchSelects(globs.adCheckinSelect, globs.adCheckOutSelect);
     };
 
     /**
      * Функция-обработчик собйтий селекта  чекаут и автоматического подбора значения полю чекин
      */
     var onCheckoutSelect = function () {
-      adCheckinSelect.selectedIndex = adCheckOutSelect.selectedIndex;
-      matchSelects(adCheckOutSelect, adCheckinSelect);
+      globs.adCheckinSelect.selectedIndex = globs.adCheckOutSelect.selectedIndex;
+      matchSelects(globs.adCheckOutSelect, globs.adCheckinSelect);
     };
 
     /**
      * Функция колбек выполняет проверку и назначает сообщение для ошибки для двух полей сразу  - комнаты и гости
      */
     var onRoomCapacityChange = function () {
-      setValidation(adRoomSelect);
-      setValidation(adCapacitySelect);
+      setValidation(globs.adRoomSelect);
+      setValidation(globs.adCapacitySelect);
     };
 
     /**
@@ -98,36 +92,35 @@
      * @return {boolean}
      */
     window.checkRoomGuests = function () {
-      if (adRoomSelect.value === adCapacitySelect.value) {
+      if (globs.adRoomSelect.value === globs.adCapacitySelect.value) {
         return true;
-      } else if ((!(adRoomSelect.value === '100')) && (adCapacitySelect.value === '0')) {
+      } else if ((!(globs.adRoomSelect.value === '100')) && (globs.adCapacitySelect.value === '0')) {
         return false;
-      } else if ((!(adRoomSelect.value === '100')) && (adRoomSelect.value > adCapacitySelect.value)) {
+      } else if ((!(globs.adRoomSelect.value === '100')) && (globs.adRoomSelect.value > globs.adCapacitySelect.value)) {
         return true;
-      } else if ((adRoomSelect.value === '100') && (adCapacitySelect.value === '0')) {
+      } else if ((globs.adRoomSelect.value === '100') && (globs.adCapacitySelect.value === '0')) {
         return true;
-      } else if ((adRoomSelect.value === '100') && (!(adCapacitySelect.value === '0'))) {
+      } else if ((globs.adRoomSelect.value === '100') && (!(globs.adCapacitySelect.value === '0'))) {
         return false;
-      } else if (adRoomSelect.value < adCapacitySelect.value) {
+      } else if (globs.adRoomSelect.value < globs.adCapacitySelect.value) {
         return false;
-      } else if ((adRoomSelect.value === '1') && (adCapacitySelect.value === '0')) {
+      } else if ((globs.adRoomSelect.value === '1') && (globs.adCapacitySelect.value === '0')) {
         return false;
-      } else if ((adRoomSelect.value === '2') && (adCapacitySelect.value === '0')) {
+      } else if ((globs.adRoomSelect.value === '2') && (globs.adCapacitySelect.value === '0')) {
         return false;
-      } else if ((adRoomSelect.value === '3') && (adCapacitySelect.value === '0')) {
+      } else if ((globs.adRoomSelect.value === '3') && (globs.adCapacitySelect.value === '0')) {
         return false;
       } else {
         return false;
       }
     };
 
-
-    adTypeSelect.addEventListener('change', onTypeSelect);
-    adPriceInput.addEventListener('input', onPriceInput);
-    adCheckinSelect.addEventListener('change', onCheckinSelect);
-    adCheckOutSelect.addEventListener('change', onCheckoutSelect);
-    adRoomSelect.addEventListener('change', onRoomCapacityChange);
-    adCapacitySelect.addEventListener('change', onRoomCapacityChange);
+    globs.adTypeSelect.addEventListener('change', onTypeSelect);
+    globs.adPriceInput.addEventListener('input', onPriceInput);
+    globs.adCheckinSelect.addEventListener('change', onCheckinSelect);
+    globs.adCheckOutSelect.addEventListener('change', onCheckoutSelect);
+    globs.adRoomSelect.addEventListener('change', onRoomCapacityChange);
+    globs.adCapacitySelect.addEventListener('change', onRoomCapacityChange);
   };
 
   /**

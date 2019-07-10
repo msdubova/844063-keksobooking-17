@@ -4,7 +4,7 @@
   var consts = window.constants;
   var globs = window.globalElements;
   var utils = window.util;
-  var activated = false;
+  window.activated = false;
   /**
    * Функция - обработчик, реализует перемещение пина по мышиным событиям драгндроп
    * @param {object} evt объeкт события
@@ -67,9 +67,9 @@
      */
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      if ((dragged) && (!activated)) {
+      if ((dragged) && (!window.activated)) {
         window.runActivation();
-        activated = true;
+        window.activated = true;
       }
       fillPinAddressOnActiveMap(globs.mapPinMain, consts.PIN_TAIL_HEIGHT);
       document.removeEventListener('mousemove', onMouseMove);
@@ -91,8 +91,6 @@
   };
 
 
-  globs.mapPinMain.addEventListener('mousedown', function (evt) {
-    window.dragDropPin(evt);
-  });
+  globs.mapPinMain.addEventListener('mousedown', window.dragDropPin);
 
 })();
