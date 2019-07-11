@@ -40,6 +40,11 @@
       clonedAdImage.alt = thisAd.offer.type;
       clonedAdButton.addEventListener('click', function () {
         window.renderCard(thisAd);
+        if (window.globalElements.mapPins.querySelector('.map__pin--active')) {
+          window.globalElements.mapPins.querySelector('.map__pin--active').classList.remove('map__pin--active');
+        }
+
+        clonedAdButton.classList.add('map__pin--active');
       });
       fragment.appendChild(clonedAd);
     });
