@@ -62,6 +62,9 @@
   window.resetPage = function () {
     window.globalElements.map.classList.add('map--faded');
     window.cleanMap();
+    if (window.globalElements.mapPins.querySelector('article')) {
+      window.globalElements.mapPins.querySelector('article').remove();
+    }
     window.gallery.innerHTML = '';
     window.avatarPreview.src = 'img/muffin-grey.svg';
     window.globalElements.formCustomAd.reset();
