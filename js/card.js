@@ -39,7 +39,7 @@
     var clonedCardPhotos = clonedCard.querySelector('.popup__photos');
     var closeCardButton = clonedCard.querySelector('.popup__close');
 
-
+    document.removeEventListener('keydown', window.onEscPush);
     if (window.globalElements.mapPins.querySelector('article')) {
       window.globalElements.mapPins.querySelector('article').remove();
     }
@@ -140,6 +140,7 @@
       }
       document.removeEventListener('keydown', window.onEscPush);
     };
+
     clonedCardImage.src = ad.author.avatar;
     clonedCardHead.textContent = ad.offer.title;
     clonedCardAddress.textContent = ad.offer.address;
@@ -151,7 +152,7 @@
     clonedCardDescription.textContent = ad.offer.description;
     addPhotos();
 
-    document.removeEventListener('keydown', window.onEscPush);
+
     document.addEventListener('keydown', window.onEscPush);
     closeCardButton.addEventListener('click', function (evt) {
       if ((evt.currentTarget.tagName === 'BUTTON') && (evt.target.tagName === 'BUTTON')) {
