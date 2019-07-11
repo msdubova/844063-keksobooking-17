@@ -122,6 +122,9 @@
       evt.preventDefault();
       var popup = window.globalElements.map.querySelector('.map__card');
       popup.remove();
+      if (window.globalElements.mapPins.querySelector('.map__pin--active')) {
+        window.globalElements.mapPins.querySelector('.map__pin--active').classList.remove('map__pin--active');
+      }
       document.removeEventListener('keydown', onEscPush);
       evt.stopPropagation();
     };
