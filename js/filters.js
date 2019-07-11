@@ -102,7 +102,9 @@
         evt.preventDefault();
         window.cleanMap();
         updatePins(evt);
-        window.globalElements.mapPins.querySelector('article').remove();
+        if (window.globalElements.mapPins.querySelector('article')) {
+          window.globalElements.mapPins.querySelector('article').remove();
+        }
       }
   );
 
