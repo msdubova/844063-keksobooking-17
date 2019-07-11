@@ -138,6 +138,7 @@
       if (evt.keyCode === window.constants.ESCAPE_CODE) {
         closeCard(evt);
       }
+      document.removeEventListener('keydown', onEscPush);
     };
     clonedCardImage.src = ad.author.avatar;
     clonedCardHead.textContent = ad.offer.title;
@@ -155,6 +156,7 @@
       if ((evt.currentTarget.tagName === 'BUTTON') && (evt.target.tagName === 'BUTTON')) {
         closeCard(evt);
         evt.stopPropagation();
+        document.removeEventListener('keydown', onEscPush);
       }
     });
 
