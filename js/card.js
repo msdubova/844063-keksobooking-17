@@ -125,7 +125,7 @@
       if (window.globalElements.mapPins.querySelector('.map__pin--active')) {
         window.globalElements.mapPins.querySelector('.map__pin--active').classList.remove('map__pin--active');
       }
-      document.removeEventListener('keydown', onEscPush);
+      document.removeEventListener('keydown', window.onEscPush);
       evt.stopPropagation();
     };
 
@@ -133,12 +133,12 @@
      * Функция закрывает попап при нажатии кнопки ESCAPE
      * @param {object} evt  обьект события
      */
-    var onEscPush = function (evt) {
+    window.onEscPush = function (evt) {
       evt.preventDefault();
       if (evt.keyCode === window.constants.ESCAPE_CODE) {
         closeCard(evt);
       }
-      document.removeEventListener('keydown', onEscPush);
+      document.removeEventListener('keydown', window.onEscPush);
     };
     clonedCardImage.src = ad.author.avatar;
     clonedCardHead.textContent = ad.offer.title;
@@ -151,12 +151,13 @@
     clonedCardDescription.textContent = ad.offer.description;
     addPhotos();
 
-    document.addEventListener('keydown', onEscPush);
+    document.removeEventListener('keydown', window.onEscPush);
+    document.addEventListener('keydown', window.onEscPush);
     closeCardButton.addEventListener('click', function (evt) {
       if ((evt.currentTarget.tagName === 'BUTTON') && (evt.target.tagName === 'BUTTON')) {
         closeCard(evt);
         evt.stopPropagation();
-        document.removeEventListener('keydown', onEscPush);
+        document.removeEventListener('keydown', window.onEscPush);
       }
     });
 
