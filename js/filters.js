@@ -102,6 +102,13 @@
         evt.preventDefault();
         window.cleanMap();
         updatePins(evt);
+        if (window.globalElements.mapPins.querySelector('article')) {
+          window.globalElements.mapPins.querySelector('article').remove();
+        }
+
+        (document.removeEventListener('keydown', window.onEscPush))
+
+        ;
       }
   );
 

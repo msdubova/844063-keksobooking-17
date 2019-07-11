@@ -81,4 +81,8 @@
     }
     evt.preventDefault();
   });
+
+  form.querySelector('.ad-form__reset').addEventListener('click', function () {
+    window.resetPage();
+  });
 })();
