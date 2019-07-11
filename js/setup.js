@@ -63,7 +63,7 @@
     window.globalElements.map.classList.add('map--faded');
     window.cleanMap();
     window.gallery.innerHTML = '';
-    window.avatarPreview.src = '';
+    window.avatarPreview.src = 'img/muffin-grey.svg';
     window.globalElements.formCustomAd.reset();
     window.onTypeSelect();
     window.globalElements.mapPinMain.style.top = window.constants.START_Y + 'px';

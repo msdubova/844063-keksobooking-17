@@ -81,4 +81,9 @@
     }
     evt.preventDefault();
   });
+
+  form.querySelector('.ad-form__reset').addEventListener('click', function () {
+    window.gallery.innerHTML = '';
+    window.avatarPreview.src = 'img/muffin-grey.svg';
+  });
 })();
