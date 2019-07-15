@@ -65,7 +65,6 @@
       } else if (guestsChoice === '0') {
         return it.offer.guests === parseInt(guestsChoice, 10);
       } else {
-        // return it.offer.guests >= guestsChoice;
         return it.offer.guests === parseInt(guestsChoice, 10);
       }
     };
