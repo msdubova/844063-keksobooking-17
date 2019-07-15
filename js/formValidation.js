@@ -10,6 +10,17 @@
       palace: {min: 10000, placeholder: 10000}
     };
 
+    var onTitleInvalid = function (evt) {
+      if (globs.adTitleInput.validity.tooShort) {
+        globs.adTitleInput.setCustomValidity('Название объявления должно состоять минимум из 30 символов');
+      } else if (globs.adTitleInput.validity.tooLong) {
+        globs.adTitleInput.setCustomValidity('Название объявления не должно превышать 100 символов');
+      } else if (globs.adTitleInput.validity.valueMissing) {
+        globs.adTitleInput.setCustomValidity('Дайте название объявлению');
+      }
+    };
+
+
     /**
      * Функция подтягивает значения двух селектов по порядковому номеру выбранной опции
      * @param {HTMLElement} firstSelect селект, в котором происходит выбор опции
@@ -113,7 +124,7 @@
       }
       return false;
     };
-
+    globs.adTitleInput.addEventListener('invalid', onTitleInvalid);
     globs.adTypeSelect.addEventListener('change', window.onTypeSelect);
     globs.adPriceInput.addEventListener('input', onPriceInput);
     globs.adCheckinSelect.addEventListener('change', onCheckinSelect);

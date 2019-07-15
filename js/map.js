@@ -97,10 +97,6 @@
       document.querySelector('.error').remove();
       window.load(successHandler, errorHandler);
     };
-
-    errorButton.addEventListener('click', tryActivatePage);
-    page.insertAdjacentElement('afterbegin', alarm);
-
     var errorDescription = alarm.querySelector('.error__message');
 
     switch (errorStatus) {
@@ -118,7 +114,10 @@
         break;
       default:
         errorDescription.textContent = 'Статус запроса: ' + errorStatus;
-    }
+    };
+
+    errorButton.addEventListener('click', tryActivatePage);
+    page.insertAdjacentElement('afterbegin', alarm);
   };
 
   /**
