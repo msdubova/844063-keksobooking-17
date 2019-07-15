@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   window.load = function (onSuccess, onError) {
-    var URL = 'https://js.dump.academy/keksobooking/data';
+    var URL = 'https://js.dump.academy/keksobooking/dataa';
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -9,7 +9,7 @@
       if (xhr.status === 200) {
         onSuccess(xhr.response);
       } else {
-        onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError(xhr.status);
       }
     };
     xhr.addEventListener('load', onLoadRequest);

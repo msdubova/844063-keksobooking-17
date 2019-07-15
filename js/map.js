@@ -91,35 +91,33 @@
 
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var alarm = errorTemplate.cloneNode(true);
+    var errorButton = alarm.querySelector('.error__button');
+    var tryActivatePage = function () {
+      errorButton.removeEventListener('click', tryActivatePage);
+      document.querySelector('.error').remove();
+      window.load(successHandler, errorHandler);
+    };
 
+    errorButton.addEventListener('click', tryActivatePage);
     page.insertAdjacentElement('afterbegin', alarm);
 
     var errorDescription = alarm.querySelector('.error__message');
 
     switch (errorStatus) {
-      case 300:
-        errorDescription.textContent = 'Multiple Choice';
-        break;
-      case 301:
-        errorDescription.textContent = 'Moved Permanently';
-        break;
-      case 307:
-        errorDescription.textContent = 'Temporary Redirect';
-        break;
       case 400:
-        errorDescription.textContent = 'Bad Request';
+        errorDescription.textContent = 'Ошибка сервера';
         break;
       case 401:
-        errorDescription.textContent = 'Access denied';
+        errorDescription.textContent = 'Нет прав доступа';
         break;
       case 404:
-        errorDescription.textContent = 'Not found';
+        errorDescription.textContent = 'Страница не найдена';
         break;
       case 503:
-        errorDescription.textContent = 'Internal Server Error';
+        errorDescription.textContent = 'Сервис временно недоступен';
         break;
       default:
-        errorDescription.textContent = 'Request status: ' + status;
+        errorDescription.textContent = 'Статус запроса: ' + errorStatus;
     }
   };
 
