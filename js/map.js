@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  window.wizards = [];
 
   /**
    * Функция создает булавки и добавляет их в разметку
@@ -114,7 +113,7 @@
         break;
       default:
         errorDescription.textContent = 'Статус запроса: ' + errorStatus;
-    };
+    }
 
     errorButton.addEventListener('click', tryActivatePage);
     page.insertAdjacentElement('afterbegin', alarm);

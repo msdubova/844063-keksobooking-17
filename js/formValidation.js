@@ -10,16 +10,22 @@
       palace: {min: 10000, placeholder: 10000}
     };
 
-    var onTitleInvalid = function (evt) {
-      if (globs.adTitleInput.validity.tooShort) {
-        globs.adTitleInput.setCustomValidity('Название объявления должно состоять минимум из 30 символов');
-      } else if (globs.adTitleInput.validity.tooLong) {
-        globs.adTitleInput.setCustomValidity('Название объявления не должно превышать 100 символов');
-      } else if (globs.adTitleInput.validity.valueMissing) {
-        globs.adTitleInput.setCustomValidity('Дайте название объявлению');
+    /**
+     * Функция кастомизирует сообщение об ошибке в поле ввода названия
+     * @param {Object}evt объект события
+     */
+    var onTitleInput = function (evt) {
+      var target = evt.target;
+      if (target.validity.tooShort) {
+        target.setCustomValidity('Название объявления должно состоять минимум из 30 символов');
+      } else if (target.validity.tooLong) {
+        target.setCustomValidity('Название объявления не должно превышать 100 символов');
+      } else if (target.validity.valueMissing) {
+        target.setCustomValidity('Дайте название объявлению');
+      } else {
+        target.setCustomValidity('');
       }
     };
-
 
     /**
      * Функция подтягивает значения двух селектов по порядковому номеру выбранной опции
@@ -36,14 +42,13 @@
     window.onTypeSelect = function () {
       globs.adPriceInput.setAttribute('placeholder', adTypeParameters[globs.adTypeSelect.value].placeholder);
       globs.adPriceInput.setAttribute('min', parseInt(adTypeParameters[globs.adTypeSelect.value].min, 10));
+      onPriceInvalid();
     };
 
     /**
      * Функция назначает мин значение цены для выбранного поля типа размещения
-     * @param {Object} evt обьект события
      */
-    var onPriceInput = function (evt) {
-      evt.preventDefault();
+    var onPriceInput = function () {
       var minPrice;
       switch (globs.adTypeSelect.value) {
         case 'bungalo' :
@@ -60,6 +65,32 @@
           break;
       }
       globs.adPriceInput.setAttribute('min', minPrice);
+    };
+
+    /**
+     * Функция кастомизирует сообщение об ошибке в поле ввода цены
+     */
+    var onPriceInvalid = function () {
+      if (globs.adPriceInput.validity.valueMissing) {
+        globs.adPriceInput.setCustomValidity('Укажите цену проживания в объекте размещения за одну ночь');
+      } else if (globs.adPriceInput.validity.rangeUnderflow) {
+        switch (globs.adTypeSelect.value) {
+          case 'bungalo' :
+            globs.adPriceInput.setCustomValidity('Минимальная цена за ночь в бунгало - 0 денег');
+            break;
+          case 'flat' :
+            globs.adPriceInput.setCustomValidity('Минимальная цена за ночь в квартире - 1000 денег');
+            break;
+          case 'house' :
+            globs.adPriceInput.setCustomValidity('Минимальная цена за ночь в доме - 5000 денег');
+            break;
+          case 'palace' :
+            globs.adPriceInput.setCustomValidity('Минимальная цена за ночь во дворце - 10000 денег');
+            break;
+        }
+      } else {
+        globs.adPriceInput.setCustomValidity('');
+      }
     };
 
     /**
@@ -124,9 +155,11 @@
       }
       return false;
     };
-    globs.adTitleInput.addEventListener('invalid', onTitleInvalid);
+
+    globs.target.addEventListener('input', onTitleInput);
     globs.adTypeSelect.addEventListener('change', window.onTypeSelect);
     globs.adPriceInput.addEventListener('input', onPriceInput);
+    globs.adPriceInput.addEventListener('input', onPriceInvalid);
     globs.adCheckinSelect.addEventListener('change', onCheckinSelect);
     globs.adCheckOutSelect.addEventListener('change', onCheckoutSelect);
     globs.adRoomSelect.addEventListener('change', onRoomCapacityChange);
