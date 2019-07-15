@@ -74,7 +74,6 @@
 
 
   form.addEventListener('submit', function (evt) {
-    adAddress.removeAttribute('readonly');
     var trigger = window.checkRoomGuests();
     if (trigger) {
       window.save(new FormData(form), onSuccess, onError);
