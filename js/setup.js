@@ -54,6 +54,7 @@
       formFieldsets[i].classList.remove('deactivated');
     }
     setup();
+    window.globalElements.formCustomAd.querySelector('.ad-form__submit').removeAttribute('disabled', 'disabled');
   };
 
   /**

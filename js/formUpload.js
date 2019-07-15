@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   var form = window.globalElements.formCustomAd;
-  var adAddress = form.querySelector('#address');
+  // var adAddress = form.querySelector('#address');
 
   var onSuccess = function () {
     var template = document.querySelector('#success').content;
@@ -77,6 +77,7 @@
     var trigger = window.checkRoomGuests();
     if (trigger) {
       window.save(new FormData(form), onSuccess, onError);
+      form.querySelector('.ad-form__submit').setAttribute('disabled', 'disabled');
     }
     evt.preventDefault();
   });
