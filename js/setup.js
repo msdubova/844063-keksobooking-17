@@ -13,11 +13,14 @@
     }
     filterSelects.forEach(function (it) {
       it.setAttribute('disabled', 'disabled');
+      it.classList.add('deactivated');
     });
     window.fillPinInitialAddress(window.globalElements.mapPinMain);
 
     for (var i = 0; i < formFieldsets.length; i++) {
       formFieldsets[i].setAttribute('disabled', 'disabled');
+      formFieldsets[i].classList.add('deactivated');
+
     }
   };
 
@@ -44,11 +47,12 @@
     window.globalElements.formCustomAd.classList.remove('ad-form--disabled');
     filterSelects.forEach(function (it) {
       it.removeAttribute('disabled', 'disabled');
+      it.classList.remove('deactivated');
     });
     for (var i = 0; i < formFieldsets.length; i++) {
       formFieldsets[i].removeAttribute('disabled', 'disabled');
+      formFieldsets[i].classList.remove('deactivated');
     }
-
     setup();
   };
 
