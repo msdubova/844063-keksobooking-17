@@ -5,6 +5,16 @@
   var globs = window.globalElements;
   var utils = window.util;
   window.activated = false;
+
+  /**
+   * Функция записывает координаты нижней центральной точки переданного элемента в поле Input (address)
+   * @param {HTMLElement} el элемент, чьи координаты необходимо получить
+   */
+  var fillPinAddressOnActiveMap = function (el) {
+    globs.addressInput.value = (utils.getParameterNumValue(el.style.left) + Math.round(utils.getParameterNumValue(el.clientWidth) / 2)) + ', '
+      + (utils.getParameterNumValue(el.style.top) + utils.getParameterNumValue(el.clientHeight) + consts.PIN_TAIL_HEIGHT);
+  };
+
   /**
    * Функция - обработчик, реализует перемещение пина по мышиным событиям драгндроп
    * @param {object} evt объeкт события
@@ -74,23 +84,23 @@
       fillPinAddressOnActiveMap(globs.mapPinMain, consts.PIN_TAIL_HEIGHT);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-
+      globs.mapPinMain.removeEventListener('keydown', onPinKeydown);
     };
 
-    /**
-     * Функция записывает координаты нижней центральной точки переданного элемента в поле Input (address)
-     * @param {HTMLElement} el элемент, чьи координаты необходимо получить
-     */
-    var fillPinAddressOnActiveMap = function (el) {
-      globs.addressInput.value = (utils.getParameterNumValue(el.style.left) + Math.round(utils.getParameterNumValue(el.clientWidth) / 2)) + ', '
-        + (utils.getParameterNumValue(el.style.top) + utils.getParameterNumValue(el.clientHeight) + consts.PIN_TAIL_HEIGHT);
-    };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
 
-
+  var onPinKeydown = function (evt) {
+    if ((evt.keyCode === window.constants.ENTER_CODE) && (!window.activated)) {
+      window.runActivation();
+      window.activated = true;
+    }
+    fillPinAddressOnActiveMap(globs.mapPinMain, consts.PIN_TAIL_HEIGHT);
+    globs.mapPinMain.removeEventListener('keydown', onPinKeydown);
+  };
+  globs.mapPinMain.addEventListener('keydown', onPinKeydown);
   globs.mapPinMain.addEventListener('mousedown', window.onPinDrag);
 
 })();
