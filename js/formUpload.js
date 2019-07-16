@@ -1,7 +1,6 @@
 'use strict';
 (function () {
   var form = window.globalElements.formCustomAd;
-  // var adAddress = form.querySelector('#address');
 
   var onSuccess = function () {
     var template = document.querySelector('#success').content;
