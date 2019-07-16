@@ -66,12 +66,13 @@
 
   window.resetPage = function () {
     window.globalElements.map.classList.add('map--faded');
-    window.cleanMap();
+
     window.checkboxes.forEach(function (it) {
       if (it.checked) {
         it.removeAttribute('checked', 'checked');
       }
     });
+    window.cleanMap();
     if (window.globalElements.mapPins.querySelector('article')) {
       window.globalElements.mapPins.querySelector('article').remove();
     }

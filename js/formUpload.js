@@ -74,10 +74,13 @@
 
 
   form.addEventListener('submit', function (evt) {
-    var trigger = window.checkRoomGuests();
-    if (trigger) {
-      window.save(new FormData(form), onSuccess, onError);
-      form.querySelector('.ad-form__submit').setAttribute('disabled', 'disabled');
+    if (!document.activeElement.classList.contains('feature__checkbox')) {
+      var trigger = window.checkRoomGuests();
+      if (trigger) {
+        window.save(new FormData(form), onSuccess, onError);
+        form.querySelector('.ad-form__submit').setAttribute('disabled', 'disabled');
+      }
+      evt.preventDefault();
     }
     evt.preventDefault();
   });
