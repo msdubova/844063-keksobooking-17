@@ -13,6 +13,23 @@
   var elevatorFilter = filters.querySelector('#filter-elevator');
   var conditionerFilter = filters.querySelector('#filter-conditioner');
 
+  window.checkboxes = Array.from(document.querySelectorAll('input[type=checkbox]'));
+
+
+  window.checkboxes.forEach(function (it) {
+    var onCheckboxKeydown = function (evt) {
+      if (evt.keyCode === window.constants.ENTER_CODE) {
+        if (!it.checked) {
+          it.setAttribute('checked', 'checked');
+          onFilterChange(evt);
+        } else if (it.checked) {
+          it.removeAttribute('checked', 'checked');
+          onFilterChange(evt);
+        }
+      }
+    };
+    it.addEventListener('keydown', onCheckboxKeydown);
+  });
 
   window.cleanMap = function () {
     var pins = window.globalElements.mapPins.querySelectorAll('button[type = button]');
