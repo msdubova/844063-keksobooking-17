@@ -80,6 +80,7 @@
     window.avatarPreview.src = 'img/muffin-grey.svg';
     window.globalElements.formCustomAd.reset();
     window.onTypeSelect();
+    window.globalElements.mapPinMain.addEventListener('keydown', window.onPinKeydown);
     window.globalElements.mapPinMain.style.top = window.constants.START_Y + 'px';
     window.globalElements.mapPinMain.style.left = window.constants.START_X + 'px';
     window.globalElements.mapPinMain.addEventListener('keydown', window.onPinKeydown);
