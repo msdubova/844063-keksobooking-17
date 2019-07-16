@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   var validateForm = function () {
-    var globs = window.globalElements;
+    var globals = window.globalElements;
 
     var adTypeParameters = {
       bungalo: {min: 0, placeholder: 0},
@@ -40,8 +40,8 @@
      * Функция-обработчик событий селекта типа жилища. устанавливает минимальное значение поля цены
      */
     window.onTypeSelect = function () {
-      globs.adPriceInput.setAttribute('placeholder', adTypeParameters[globs.adTypeSelect.value].placeholder);
-      globs.adPriceInput.setAttribute('min', parseInt(adTypeParameters[globs.adTypeSelect.value].min, 10));
+      globals.adPriceInput.setAttribute('placeholder', adTypeParameters[globals.adTypeSelect.value].placeholder);
+      globals.adPriceInput.setAttribute('min', parseInt(adTypeParameters[globals.adTypeSelect.value].min, 10));
       onPriceInvalid();
     };
 
@@ -50,7 +50,7 @@
      */
     var onPriceInput = function () {
       var minPrice;
-      switch (globs.adTypeSelect.value) {
+      switch (globals.adTypeSelect.value) {
         case 'bungalo' :
           minPrice = 0;
           break;
@@ -64,32 +64,32 @@
           minPrice = 10000;
           break;
       }
-      globs.adPriceInput.setAttribute('min', minPrice);
+      globals.adPriceInput.setAttribute('min', minPrice);
     };
 
     /**
      * Функция кастомизирует сообщение об ошибке в поле ввода цены
      */
     var onPriceInvalid = function () {
-      if (globs.adPriceInput.validity.valueMissing) {
-        globs.adPriceInput.setCustomValidity('Укажите цену проживания в объекте размещения за одну ночь');
-      } else if (globs.adPriceInput.validity.rangeUnderflow) {
-        switch (globs.adTypeSelect.value) {
+      if (globals.adPriceInput.validity.valueMissing) {
+        globals.adPriceInput.setCustomValidity('Укажите цену проживания в объекте размещения за одну ночь');
+      } else if (globals.adPriceInput.validity.rangeUnderflow) {
+        switch (globals.adTypeSelect.value) {
           case 'bungalo' :
-            globs.adPriceInput.setCustomValidity('Минимальная цена за ночь в бунгало - 0 денег');
+            globals.adPriceInput.setCustomValidity('Минимальная цена за ночь в бунгало - 0 денег');
             break;
           case 'flat' :
-            globs.adPriceInput.setCustomValidity('Минимальная цена за ночь в квартире - 1000 денег');
+            globals.adPriceInput.setCustomValidity('Минимальная цена за ночь в квартире - 1000 денег');
             break;
           case 'house' :
-            globs.adPriceInput.setCustomValidity('Минимальная цена за ночь в доме - 5000 денег');
+            globals.adPriceInput.setCustomValidity('Минимальная цена за ночь в доме - 5000 денег');
             break;
           case 'palace' :
-            globs.adPriceInput.setCustomValidity('Минимальная цена за ночь во дворце - 10000 денег');
+            globals.adPriceInput.setCustomValidity('Минимальная цена за ночь во дворце - 10000 денег');
             break;
         }
       } else {
-        globs.adPriceInput.setCustomValidity('');
+        globals.adPriceInput.setCustomValidity('');
       }
     };
 
@@ -97,23 +97,23 @@
      * Функция-обработчик событий селекта чекин и автоматического подбора значения полю чекаут
      */
     var onCheckinSelect = function () {
-      matchSelects(globs.adCheckinSelect, globs.adCheckOutSelect);
+      matchSelects(globals.adCheckinSelect, globals.adCheckOutSelect);
     };
 
     /**
      * Функция-обработчик собйтий селекта  чекаут и автоматического подбора значения полю чекин
      */
     var onCheckoutSelect = function () {
-      globs.adCheckinSelect.selectedIndex = globs.adCheckOutSelect.selectedIndex;
-      matchSelects(globs.adCheckOutSelect, globs.adCheckinSelect);
+      globals.adCheckinSelect.selectedIndex = globals.adCheckOutSelect.selectedIndex;
+      matchSelects(globals.adCheckOutSelect, globals.adCheckinSelect);
     };
 
     /**
      * Функция колбек выполняет проверку и назначает сообщение для ошибки для двух полей сразу  - комнаты и гости
      */
     var onRoomCapacityChange = function () {
-      setValidation(globs.adRoomSelect);
-      setValidation(globs.adCapacitySelect);
+      setValidation(globals.adRoomSelect);
+      setValidation(globals.adCapacitySelect);
     };
 
     /**
@@ -134,36 +134,36 @@
      * @return {boolean}
      */
     window.checkRoomGuests = function () {
-      if (globs.adRoomSelect.value === globs.adCapacitySelect.value) {
+      if (globals.adRoomSelect.value === globals.adCapacitySelect.value) {
         return true;
-      } else if ((!(globs.adRoomSelect.value === '100')) && (globs.adCapacitySelect.value === '0')) {
+      } else if ((!(globals.adRoomSelect.value === '100')) && (globals.adCapacitySelect.value === '0')) {
         return false;
-      } else if ((!(globs.adRoomSelect.value === '100')) && (globs.adRoomSelect.value > globs.adCapacitySelect.value)) {
+      } else if ((!(globals.adRoomSelect.value === '100')) && (globals.adRoomSelect.value > globals.adCapacitySelect.value)) {
         return true;
-      } else if ((globs.adRoomSelect.value === '100') && (globs.adCapacitySelect.value === '0')) {
+      } else if ((globals.adRoomSelect.value === '100') && (globals.adCapacitySelect.value === '0')) {
         return true;
-      } else if ((globs.adRoomSelect.value === '100') && (!(globs.adCapacitySelect.value === '0'))) {
+      } else if ((globals.adRoomSelect.value === '100') && (!(globals.adCapacitySelect.value === '0'))) {
         return false;
-      } else if (globs.adRoomSelect.value < globs.adCapacitySelect.value) {
+      } else if (globals.adRoomSelect.value < globals.adCapacitySelect.value) {
         return false;
-      } else if ((globs.adRoomSelect.value === '1') && (globs.adCapacitySelect.value === '0')) {
+      } else if ((globals.adRoomSelect.value === '1') && (globals.adCapacitySelect.value === '0')) {
         return false;
-      } else if ((globs.adRoomSelect.value === '2') && (globs.adCapacitySelect.value === '0')) {
+      } else if ((globals.adRoomSelect.value === '2') && (globals.adCapacitySelect.value === '0')) {
         return false;
-      } else if ((globs.adRoomSelect.value === '3') && (globs.adCapacitySelect.value === '0')) {
+      } else if ((globals.adRoomSelect.value === '3') && (globals.adCapacitySelect.value === '0')) {
         return false;
       }
       return false;
     };
 
-    globs.target.addEventListener('input', onTitleInput);
-    globs.adTypeSelect.addEventListener('change', window.onTypeSelect);
-    globs.adPriceInput.addEventListener('input', onPriceInput);
-    globs.adPriceInput.addEventListener('input', onPriceInvalid);
-    globs.adCheckinSelect.addEventListener('change', onCheckinSelect);
-    globs.adCheckOutSelect.addEventListener('change', onCheckoutSelect);
-    globs.adRoomSelect.addEventListener('change', onRoomCapacityChange);
-    globs.adCapacitySelect.addEventListener('change', onRoomCapacityChange);
+    globals.target.addEventListener('input', onTitleInput);
+    globals.adTypeSelect.addEventListener('change', window.onTypeSelect);
+    globals.adPriceInput.addEventListener('input', onPriceInput);
+    globals.adPriceInput.addEventListener('input', onPriceInvalid);
+    globals.adCheckinSelect.addEventListener('change', onCheckinSelect);
+    globals.adCheckOutSelect.addEventListener('change', onCheckoutSelect);
+    globals.adRoomSelect.addEventListener('change', onRoomCapacityChange);
+    globals.adCapacitySelect.addEventListener('change', onRoomCapacityChange);
   };
 
   /**
