@@ -35,15 +35,14 @@
   };
 
   window.runActivation = function () {
-    activatePage();
-    window.runValidation();
     window.runAction();
+    window.runValidation();
   };
 
   /**
    * Функция активирует форму и карту с ее функциями и элементами
     */
-  var activatePage = function () {
+  window.activatePage = function () {
     window.globalElements.formCustomAd.classList.remove('ad-form--disabled');
     filterSelects.forEach(function (it) {
       it.removeAttribute('disabled', 'disabled');
@@ -53,16 +52,11 @@
       formFieldsets[i].removeAttribute('disabled', 'disabled');
       formFieldsets[i].classList.remove('deactivated');
     }
-    setup();
+    window.globalElements.map.classList.remove('map--faded');
+
     window.globalElements.formCustomAd.querySelector('.ad-form__submit').removeAttribute('disabled', 'disabled');
   };
 
-  /**
-   * Функция запускает предварительные настройки
-    */
-  var setup = function () {
-    window.globalElements.map.classList.remove('map--faded');
-  };
 
   window.resetPage = function () {
     window.globalElements.map.classList.add('map--faded');

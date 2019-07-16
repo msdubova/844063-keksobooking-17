@@ -78,6 +78,7 @@
     window.pins = ads;
     var sliced = ads.slice(1, 6);
     window.onRenderPins(sliced);
+    window.activatePage();
   };
 
   /**
