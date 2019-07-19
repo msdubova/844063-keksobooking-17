@@ -14,19 +14,19 @@
   var conditionerFilter = filters.querySelector('#filter-conditioner');
   window.checkboxes = Array.from(document.querySelectorAll('input[type=checkbox]'));
 
-  window.checkboxes.forEach(function (it) {
+  window.checkboxes.forEach(function (checkboxItem) {
     var onCheckboxKeydown = function (evt) {
       if (evt.keyCode === window.constants.ENTER_CODE) {
-        if (!it.checked) {
-          it.setAttribute('checked', 'checked');
+        if (!checkboxItem.checked) {
+          checkboxItem.setAttribute('checked', 'checked');
           onFilterChange(evt);
-        } else if (it.checked) {
-          it.removeAttribute('checked', 'checked');
+        } else if (checkboxItem.checked) {
+          checkboxItem.removeAttribute('checked', 'checked');
           onFilterChange(evt);
         }
       }
     };
-    it.addEventListener('keydown', onCheckboxKeydown);
+    checkboxItem.addEventListener('keydown', onCheckboxKeydown);
   });
 
   window.cleanMap = function () {
@@ -37,44 +37,44 @@
     });
   };
 
-  var hasMatchingType = function (it) {
+  var hasMatchingType = function (pin) {
     if (window.typeChoice === 'any') {
-      return it;
+      return pin;
     }
-    return it.offer.type === window.typeChoice;
+    return pin.offer.type === window.typeChoice;
   };
 
-  var hasMatchingPrice = function (it) {
+  var hasMatchingPrice = function (pin) {
     if (window.priceChoice === 'any') {
-      return it;
+      return pin;
     } else {
       var price;
-      if (it.offer.price < window.constants.Price.LOW_PRICE_LIMIT) {
+      if (pin.offer.price < window.constants.Price.LOW_PRICE_LIMIT) {
         price = 'low';
-      } else if ((it.offer.price >= window.constants.Price.LOW_PRICE_LIMIT) && (it.offer.price < window.constants.Price.HIGH_PRICE_LIMIT)) {
+      } else if ((pin.offer.price >= window.constants.Price.LOW_PRICE_LIMIT) && (pin.offer.price < window.constants.Price.HIGH_PRICE_LIMIT)) {
         price = 'middle';
-      } else if (it.offer.price >= window.constants.Price.HIGH_PRICE_LIMIT) {
+      } else if (pin.offer.price >= window.constants.Price.HIGH_PRICE_LIMIT) {
         price = 'high';
       }
       return price === window.priceChoice;
     }
   };
 
-  var hasMatchingRooms = function (it) {
+  var hasMatchingRooms = function (pin) {
     if (window.roomsChoice === 'any') {
-      return it;
+      return pin;
     }
-    return it.offer.rooms === parseInt(window.roomsChoice, 10);
+    return pin.offer.rooms === parseInt(window.roomsChoice, 10);
 
   };
 
-  var hasMatchingGuests = function (it) {
+  var hasMatchingGuests = function (pin) {
     if (window.guestsChoice === 'any') {
-      return it;
+      return pin;
     } else if (window.guestsChoice === '0') {
-      return it.offer.guests === parseInt(window.guestsChoice, 10);
+      return pin.offer.guests === parseInt(window.guestsChoice, 10);
     } else {
-      return it.offer.guests === parseInt(window.guestsChoice, 10);
+      return pin.offer.guests === parseInt(window.guestsChoice, 10);
     }
   };
 
