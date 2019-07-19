@@ -33,9 +33,7 @@
 
   window.cleanMap = function () {
     var pins = Array.from(window.globalElements.mapPins.querySelectorAll('button[type = button]'));
-    // for (var i = 0; i < pins.length; i++) {
-    //   pins[i].remove();
-    // }
+
     pins.forEach(function (pin) {
       pin.remove();
     });
