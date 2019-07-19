@@ -12,7 +12,7 @@
 
     /**
      * Функция кастомизирует сообщение об ошибке в поле ввода названия
-     * @param {Object}evt объект события
+     * @param {Event} evt объект события
      */
     var onTitleInput = function (evt) {
       var target = evt.target;

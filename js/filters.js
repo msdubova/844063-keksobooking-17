@@ -32,10 +32,13 @@
   });
 
   window.cleanMap = function () {
-    var pins = window.globalElements.mapPins.querySelectorAll('button[type = button]');
-    for (var i = 0; i < pins.length; i++) {
-      pins[i].remove();
-    }
+    var pins = Array.from(window.globalElements.mapPins.querySelectorAll('button[type = button]'));
+    // for (var i = 0; i < pins.length; i++) {
+    //   pins[i].remove();
+    // }
+    pins.forEach(function (pin) {
+      pin.remove();
+    });
   };
 
   var updatePins = function () {
@@ -122,8 +125,8 @@
         if (window.globalElements.mapPins.querySelector('article')) {
           window.globalElements.mapPins.querySelector('article').remove();
         }
-        (document.removeEventListener('keydown', window.onEscPush))
-        ;
+        (document.removeEventListener('keydown', window.onEscPush));
+
       }
   );
 

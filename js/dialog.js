@@ -17,7 +17,7 @@
 
   /**
    * Функция - обработчик, реализует перемещение пина по мышиным событиям драгндроп
-   * @param {object} evt объeкт события
+   * @param {MouseEvent} evt объeкт события
    */
   window.onPinDrag = function (evt) {
     evt.preventDefault();
@@ -30,7 +30,7 @@
 
     /**
      * Функция-обработчик перемещения мыши - перемещает пин по движению мыши и запускает ограничитель поля перемещения
-     * @param {object} moveEvt объeкт события
+     * @param {MouseEvent} moveEvt объeкт события
      */
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
@@ -73,7 +73,7 @@
 
     /**
      * Функция-обработчик события отпускания мыши - записывает координаты сброса пина в форму и удаляет обработчики мыши перемещения
-     * @param {object} upEvt объeкт события
+     * @param {MouseEvent} upEvt объeкт события
      */
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
