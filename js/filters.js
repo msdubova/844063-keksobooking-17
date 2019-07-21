@@ -93,7 +93,16 @@
     window.guestsChoice = housingGuestsFilter.value;
     var ads = window.pins;
 
-    var filteredAds = ads.filter(hasMatchingType, hasMatchingPrice, hasMatchingRooms, hasMatchingGuests, generateIsFn(wifiFilter, 'wifi'), generateIsFn(dishwasherFilter, 'dishwasher'), generateIsFn(parkingFilter, 'parking'), generateIsFn(washerFilter, 'washer'), generateIsFn(elevatorFilter, 'elevator'), generateIsFn(conditionerFilter, 'conditioner'));
+    var filteredAds = ads.filter(hasMatchingType)
+      .filter(hasMatchingPrice)
+      .filter(hasMatchingRooms)
+      .filter(hasMatchingGuests)
+      .filter(generateIsFn(wifiFilter, 'wifi'))
+      .filter(generateIsFn(dishwasherFilter, 'dishwasher'))
+      .filter(generateIsFn(parkingFilter, 'parking'))
+      .filter(generateIsFn(washerFilter, 'washer'))
+      .filter(generateIsFn(elevatorFilter, 'elevator'))
+      .filter(generateIsFn(conditionerFilter, 'conditioner'));
 
     if (filteredAds.length > 5) {
       var sliced = filteredAds.slice(1, 6);
