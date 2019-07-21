@@ -13,6 +13,7 @@
     /**
      * Функция кастомизирует сообщение об ошибке в поле ввода названия
      * @param {Event} evt объект события
+     * @return {void}
      */
     var onTitleInput = function (evt) {
       var target = evt.target;
@@ -28,25 +29,28 @@
     };
 
     /**
-     * Функция подтягивает значения двух селектов по порядковому номеру выбранной опции
-     * @param {HTMLElement} firstSelect селект, в котором происходит выбор опции
-     * @param {HTMLElement} secondSelect селект, в котором выбор опции подтягивается выбором в первом селекте
+     * @param {HTMLSelectElement} firstSelect элемент, значение которого присваивается
+     * @param {HTMLSelectElement} secondSelect элемент, которому присваивается значение
+     * @return {void}
      */
-    var matchSelects = function (firstSelect, secondSelect) {
+    var synchronizeSelect = function (firstSelect, secondSelect) {
       secondSelect.selectedIndex = firstSelect.selectedIndex;
     };
 
-    /**
-     * Функция-обработчик событий селекта типа жилища. устанавливает минимальное значение поля цены
-     */
-    window.onTypeSelect = function () {
+    var updatePriceMinValue = function () {
       globals.adPriceInput.setAttribute('placeholder', adTypeParameters[globals.adTypeSelect.value].placeholder);
       globals.adPriceInput.setAttribute('min', parseInt(adTypeParameters[globals.adTypeSelect.value].min, 10));
+    };
+
+
+    window.onTypeSelect = function () {
+      updatePriceMinValue();
       onPriceInvalid();
     };
 
     /**
      * Функция назначает мин значение цены для выбранного поля типа размещения
+     * @return {void}
      */
     var onPriceInput = function () {
       var minPrice;
@@ -69,6 +73,7 @@
 
     /**
      * Функция кастомизирует сообщение об ошибке в поле ввода цены
+     * @return {void}
      */
     var onPriceInvalid = function () {
       if (globals.adPriceInput.validity.valueMissing) {
@@ -93,24 +98,16 @@
       }
     };
 
-    /**
-     * Функция-обработчик событий селекта чекин и автоматического подбора значения полю чекаут
-     */
+
     var onCheckinSelect = function () {
-      matchSelects(globals.adCheckinSelect, globals.adCheckOutSelect);
+      synchronizeSelect(globals.adCheckinSelect, globals.adCheckOutSelect);
     };
 
-    /**
-     * Функция-обработчик собйтий селекта  чекаут и автоматического подбора значения полю чекин
-     */
     var onCheckoutSelect = function () {
       globals.adCheckinSelect.selectedIndex = globals.adCheckOutSelect.selectedIndex;
-      matchSelects(globals.adCheckOutSelect, globals.adCheckinSelect);
+      synchronizeSelect(globals.adCheckOutSelect, globals.adCheckinSelect);
     };
 
-    /**
-     * Функция колбек выполняет проверку и назначает сообщение для ошибки для двух полей сразу  - комнаты и гости
-     */
     var onRoomCapacityChange = function () {
       setValidation(globals.adRoomSelect);
       setValidation(globals.adCapacitySelect);
@@ -118,7 +115,8 @@
 
     /**
      * Функция назначает сообщение об ошибке , если проверка соотношения гостей-комнат не пройдена, для заданного элемента
-     * @param {HTMLElement} select
+     * @param {HTMLSelectElement} select проверяемое поле
+     * @return {void}
      */
     var setValidation = function (select) {
       var check = window.checkRoomGuests();
@@ -130,7 +128,6 @@
     };
 
     /**
-     * Функция проверяет соотношение гостей и комнат и выдает булево значение результатом
      * @return {boolean}
      */
     window.checkRoomGuests = function () {
@@ -168,6 +165,7 @@
 
   /**
    Callback функция которая будет выполняться при выполлении условий onDragListen
+   * @return {void}
    */
   window.runValidation = function () {
     validateForm();

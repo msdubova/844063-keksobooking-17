@@ -2,8 +2,7 @@
 
 (function () {
   /**
-   * Функция создает булавки и добавляет их в разметку
-   * @param {[{author : {
+   * @typedef {[{author : {
    *   avatar: string},
    *   offer: {
    *     title: string,
@@ -22,7 +21,13 @@
    *     x: number,
    *     y: number
    *   }
-   * }]} ads массив объектов с данными для рендеринга булавок и обьявлений к ним
+   * }]} data
+   */
+
+  /**
+   * Функция создает булавки и добавляет их в разметку
+   * @param {data} ads
+   * @return {void}
    */
   window.onRenderPins = function (ads) {
     var ad = document.querySelector('#pin').content;
@@ -53,26 +58,8 @@
 
   /**
    * Функция колбэк, если данные с сервера получены успешно - рендерит пины и ограничивает их количество до 5
-   * @param {[{author : {
-   *   avatar: string},
-   *   offer: {
-   *     title: string,
-   *     address: string,
-   *     price: number,
-   *     type: string,
-   *     rooms: number,
-   *     guests: number,
-   *     checkin: string,
-   *     checkout: string,
-   *     features: string[],
-   *     description: string,
-   *     photos: string[]
-   *   },
-   *   location: {
-   *     x: number,
-   *     y: number
-   *   }
-   * }]} ads полученный с сервера массив объектов с данными для рендеринга булавок и обьявлений к ним
+   * @param {data} ads
+   * @return {void}
    */
   var successHandler = function (ads) {
     window.pins = ads;
@@ -84,6 +71,7 @@
   /**
    * Функция-колбэк для неудачного запроса на сервер, создает окно с сообщением об ошибке
    * @param {number} errorStatus номер ошибки
+   * @return {void}
    */
   var errorHandler = function (errorStatus) {
     var page = document.querySelector('main');
@@ -121,7 +109,8 @@
 
   /**
   * Функция корректирует координаты булавки , учитывая погрешность на размер булавки и перенос центра отсчета с левого  верхнего    угла на кончик булавки
-  */
+   * @return {void}
+   */
   var customizePinSize = function () {
     var ads = window.globalElements.mapPins.querySelectorAll('.map__pin');
     for (var i = 1; i < ads.length; i++) {
@@ -143,6 +132,7 @@
 
   /**
    * Callback функция которая будет выполняться при выполлении условий onDragListen
+   * @return {void}
    */
   window.runAction = function () {
     window.load(successHandler, errorHandler);

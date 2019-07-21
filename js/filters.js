@@ -65,7 +65,6 @@
       return pin;
     }
     return pin.offer.rooms === parseInt(window.roomsChoice, 10);
-
   };
 
   var hasMatchingGuests = function (pin) {
@@ -94,15 +93,15 @@
     window.guestsChoice = housingGuestsFilter.value;
     var ads = window.pins;
     var filteredAds = ads.filter(hasMatchingType)
-      .filter(hasMatchingPrice)
-      .filter(hasMatchingRooms)
-      .filter(hasMatchingGuests)
-      .filter(generateIsFn(wifiFilter, 'wifi'))
-      .filter(generateIsFn(dishwasherFilter, 'dishwasher'))
-      .filter(generateIsFn(parkingFilter, 'parking'))
-      .filter(generateIsFn(washerFilter, 'washer'))
-      .filter(generateIsFn(elevatorFilter, 'elevator'))
-      .filter(generateIsFn(conditionerFilter, 'conditioner'));
+     .filter(hasMatchingPrice)
+     .filter(hasMatchingRooms)
+     .filter(hasMatchingGuests)
+     .filter(generateIsFn(wifiFilter, 'wifi'))
+     .filter(generateIsFn(dishwasherFilter, 'dishwasher'))
+     .filter(generateIsFn(parkingFilter, 'parking'))
+     .filter(generateIsFn(washerFilter, 'washer'))
+     .filter(generateIsFn(elevatorFilter, 'elevator'))
+     .filter(generateIsFn(conditionerFilter, 'conditioner'));
 
     if (filteredAds.length > 5) {
       var sliced = filteredAds.slice(1, 6);

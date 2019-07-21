@@ -31,6 +31,7 @@
    *     y: number
    *   }
    * }} ad обьект свойств одного пина и обьявления, полученный из загружженого с сервера массива данных
+   * @return {void}
    */
   window.renderCard = function (ad) {
     var template = document.querySelector('#card').content;

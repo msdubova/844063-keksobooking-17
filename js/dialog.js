@@ -8,7 +8,8 @@
 
   /**
    * Функция записывает координаты нижней центральной точки переданного элемента в поле Input (address)
-   * @param {HTMLElement} el элемент, чьи координаты необходимо получить
+   * @param {HTMLSelectElement} el элемент, чьи координаты необходимо получить
+   * @return {void}
    */
   var fillPinAddressOnActiveMap = function (el) {
     globals.addressInput.value = (utils.getParameterNumValue(el.style.left) + Math.round(utils.getParameterNumValue(el.clientWidth) / 2)) + ', '
@@ -18,6 +19,7 @@
   /**
    * Функция - обработчик, реализует перемещение пина по мышиным событиям драгндроп
    * @param {MouseEvent} evt объeкт события
+   * @return {void}
    */
   window.onPinDrag = function (evt) {
     evt.preventDefault();
@@ -31,6 +33,7 @@
     /**
      * Функция-обработчик перемещения мыши - перемещает пин по движению мыши и запускает ограничитель поля перемещения
      * @param {MouseEvent} moveEvt объeкт события
+     * @return {void}
      */
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
@@ -50,6 +53,7 @@
 
       /**
        * Функция ограничивает поле перемещения пина
+       * @return {void}
        */
       var setPinCoordinate = function () {
         if (topCoord + constants.PIN_TAIL_HEIGHT + globals.mapPinMain.clientHeight < constants.LOWLINE_Y) {
@@ -74,6 +78,7 @@
     /**
      * Функция-обработчик события отпускания мыши - записывает координаты сброса пина в форму и удаляет обработчики мыши перемещения
      * @param {MouseEvent} upEvt объeкт события
+     * @return {void}
      */
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();

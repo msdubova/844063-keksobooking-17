@@ -8,8 +8,9 @@
 
   /**
    * Функция загружает фото в поле аватара
-   * @param {HTMLElement} fileChooser зона дропа
-   * @param {HTMLElement} preview элемент которому присвоится src изображения
+   * @param {HTMLSelectElement} fileChooser зона дропа
+   * @param {HTMLSelectElement} preview элемент которому присвоится src изображения
+   * @return {void}
    */
   var uploadPicture = function (fileChooser, preview) {
     fileChooser.addEventListener('change', function () {
@@ -34,8 +35,9 @@
 
   /**
    * Функция заружает изображения в галерею фото
-   * @param {HTMLElement} fileChooser зона дропа
-   * @param {HTMLElement} photoGallery зона для размещения превью
+   * @param {HTMLSelectElement} fileChooser зона дропа
+   * @param {HTMLSelectElement} photoGallery зона для размещения превью
+   * @return {void}
    */
   var uploadGallery = function (fileChooser, photoGallery) {
     fileChooser.addEventListener('change', function () {
