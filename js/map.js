@@ -97,7 +97,7 @@
         errorDescription.textContent = 'Страница не найдена';
         break;
       case 503:
-        errorDescription.textContent = 'Сервис временно недоступен';
+        errorDescription.textContent = 'Внутренняя ошибка сервера';
         break;
       default:
         errorDescription.textContent = 'Статус запроса: ' + errorStatus;
