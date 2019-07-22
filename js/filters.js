@@ -77,6 +77,11 @@
     }
   };
 
+  /**
+   * @param {HTMLSelectElement} service чекбокс, реализующий фильтр по виду сервиса
+   * @param {string} key строка - индикатор наличия выбранного сервиса
+   * @return {Function}
+   */
   var generateIsFn = function (service, key) {
     return function (it) {
       if (service.checked) {
