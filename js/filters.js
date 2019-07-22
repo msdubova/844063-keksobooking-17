@@ -77,13 +77,13 @@
     }
   };
 
-  var generateIsFn = function (data, service, key) {
+  var generateIsFn = function (service, key) {
     return function (it) {
       if (service.checked) {
         return (it.offer.features.indexOf(key) !== -1);
       }
       return it;
-    }(data);
+    };
   };
 
   var updatePins = function () {
@@ -98,12 +98,12 @@
       && hasMatchingPrice(x)
       && hasMatchingRooms(x)
       && hasMatchingGuests(x)
-      && generateIsFn(x, wifiFilter, 'wifi')
-      && generateIsFn(x, dishwasherFilter, 'dishwasher')
-      && generateIsFn(x, parkingFilter, 'parking')
-      && generateIsFn(x, washerFilter, 'washer')
-      && generateIsFn(x, elevatorFilter, 'elevator')
-      && generateIsFn(x, conditionerFilter, 'conditioner');
+      && generateIsFn(wifiFilter, 'wifi')(x)
+      && generateIsFn(dishwasherFilter, 'dishwasher')(x)
+      && generateIsFn(parkingFilter, 'parking')(x)
+      && generateIsFn(washerFilter, 'washer')(x)
+      && generateIsFn(elevatorFilter, 'elevator')(x)
+      && generateIsFn(conditionerFilter, 'conditioner')(x);
     });
 
     if (filteredAds.length > 5) {
