@@ -1,13 +1,25 @@
 'use strict';
 
 (function () {
-  var consts = window.constants;
-  var globs = window.globalElements;
+  var constants = window.constants;
+  var globals = window.globalElements;
   var utils = window.util;
   window.activated = false;
+
+  /**
+   * Функция записывает координаты нижней центральной точки переданного элемента в поле Input (address)
+   * @param {HTMLSelectElement} el элемент, чьи координаты необходимо получить
+   * @return {void}
+   */
+  var fillPinAddressOnActiveMap = function (el) {
+    globals.addressInput.value = (utils.getParameterNumValue(el.style.left) + Math.round(utils.getParameterNumValue(el.clientWidth) / 2)) + ', '
+      + (utils.getParameterNumValue(el.style.top) + utils.getParameterNumValue(el.clientHeight) + constants.PIN_TAIL_HEIGHT);
+  };
+
   /**
    * Функция - обработчик, реализует перемещение пина по мышиным событиям драгндроп
-   * @param {object} evt объeкт события
+   * @param {MouseEvent} evt объeкт события
+   * @return {void}
    */
   window.onPinDrag = function (evt) {
     evt.preventDefault();
@@ -20,7 +32,8 @@
 
     /**
      * Функция-обработчик перемещения мыши - перемещает пин по движению мыши и запускает ограничитель поля перемещения
-     * @param {object} moveEvt объeкт события
+     * @param {MouseEvent} moveEvt объeкт события
+     * @return {void}
      */
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
@@ -35,27 +48,28 @@
         y: moveEvt.clientY
       };
 
-      var topCoord = (globs.mapPinMain.offsetTop - shift.y);
-      var leftCoord = (globs.mapPinMain.offsetLeft - shift.x);
+      var topCoord = (globals.mapPinMain.offsetTop - shift.y);
+      var leftCoord = (globals.mapPinMain.offsetLeft - shift.x);
 
       /**
        * Функция ограничивает поле перемещения пина
+       * @return {void}
        */
       var setPinCoordinate = function () {
-        if (topCoord + consts.PIN_TAIL_HEIGHT + globs.mapPinMain.clientHeight < consts.LOWLINE_Y) {
-          topCoord = consts.LOWLINE_Y - consts.PIN_TAIL_HEIGHT - globs.mapPinMain.clientHeight;
-        } else if (topCoord + consts.PIN_TAIL_HEIGHT + globs.mapPinMain.clientHeight > consts.TOPLINE_Y) {
-          topCoord = consts.TOPLINE_Y - consts.PIN_TAIL_HEIGHT - globs.mapPinMain.clientHeight;
+        if (topCoord + constants.PIN_TAIL_HEIGHT + globals.mapPinMain.clientHeight < constants.LOWLINE_Y) {
+          topCoord = constants.LOWLINE_Y - constants.PIN_TAIL_HEIGHT - globals.mapPinMain.clientHeight;
+        } else if (topCoord + constants.PIN_TAIL_HEIGHT + globals.mapPinMain.clientHeight > constants.TOPLINE_Y) {
+          topCoord = constants.TOPLINE_Y - constants.PIN_TAIL_HEIGHT - globals.mapPinMain.clientHeight;
         }
 
         if (leftCoord < 0) {
           leftCoord = 0;
-        } else if (leftCoord + globs.mapPinMain.clientWidth > globs.mapPins.offsetWidth) {
-          leftCoord = globs.mapPins.offsetWidth - globs.mapPinMain.clientWidth;
+        } else if (leftCoord + globals.mapPinMain.clientWidth > globals.mapPins.offsetWidth) {
+          leftCoord = globals.mapPins.offsetWidth - globals.mapPinMain.clientWidth;
         }
 
-        globs.mapPinMain.style.left = leftCoord + 'px';
-        globs.mapPinMain.style.top = topCoord + 'px';
+        globals.mapPinMain.style.left = leftCoord + 'px';
+        globals.mapPinMain.style.top = topCoord + 'px';
       };
 
       setPinCoordinate();
@@ -63,7 +77,8 @@
 
     /**
      * Функция-обработчик события отпускания мыши - записывает координаты сброса пина в форму и удаляет обработчики мыши перемещения
-     * @param {object} upEvt объeкт события
+     * @param {MouseEvent} upEvt объeкт события
+     * @return {void}
      */
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
@@ -71,26 +86,26 @@
         window.runActivation();
         window.activated = true;
       }
-      fillPinAddressOnActiveMap(globs.mapPinMain, consts.PIN_TAIL_HEIGHT);
+      fillPinAddressOnActiveMap(globals.mapPinMain, constants.PIN_TAIL_HEIGHT);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-
+      globals.mapPinMain.removeEventListener('keydown', window.onPinKeydown);
     };
 
-    /**
-     * Функция записывает координаты нижней центральной точки переданного элемента в поле Input (address)
-     * @param {HTMLElement} el элемент, чьи координаты необходимо получить
-     */
-    var fillPinAddressOnActiveMap = function (el) {
-      globs.addressInput.value = (utils.getParameterNumValue(el.style.left) + Math.round(utils.getParameterNumValue(el.clientWidth) / 2)) + ', '
-        + (utils.getParameterNumValue(el.style.top) + utils.getParameterNumValue(el.clientHeight) + consts.PIN_TAIL_HEIGHT);
-    };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
 
-
-  globs.mapPinMain.addEventListener('mousedown', window.onPinDrag);
+  window.onPinKeydown = function (evt) {
+    if ((evt.keyCode === window.constants.ENTER_CODE) && (!window.activated)) {
+      window.runActivation();
+      window.activated = true;
+    }
+    fillPinAddressOnActiveMap(globals.mapPinMain, constants.PIN_TAIL_HEIGHT);
+    globals.mapPinMain.removeEventListener('keydown', window.onPinKeydown);
+  };
+  globals.mapPinMain.addEventListener('keydown', window.onPinKeydown);
+  globals.mapPinMain.addEventListener('mousedown', window.onPinDrag);
 
 })();

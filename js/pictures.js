@@ -6,6 +6,12 @@
   window.gallery = window.globalElements.formCustomAd.querySelector('.ad-form__photo');
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
+  /**
+   * Функция загружает фото в поле аватара
+   * @param {HTMLSelectElement} fileChooser зона дропа
+   * @param {HTMLSelectElement} preview элемент которому присвоится src изображения
+   * @return {void}
+   */
   var uploadPicture = function (fileChooser, preview) {
     fileChooser.addEventListener('change', function () {
       var file = fileChooser.files[0];
@@ -27,6 +33,12 @@
     });
   };
 
+  /**
+   * Функция заружает изображения в галерею фото
+   * @param {HTMLSelectElement} fileChooser зона дропа
+   * @param {HTMLSelectElement} photoGallery зона для размещения превью
+   * @return {void}
+   */
   var uploadGallery = function (fileChooser, photoGallery) {
     fileChooser.addEventListener('change', function () {
       var files = Array.from(fileChooser.files);

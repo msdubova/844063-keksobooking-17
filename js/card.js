@@ -1,5 +1,14 @@
 'use strict';
 (function () {
+  var featuresDataMap = [
+    {name: 'wifi', feature: 'popup__feature--wifi'},
+    {name: 'dishwasher', feature: 'popup__feature--dishwasher'},
+    {name: 'parking', feature: 'popup__feature--parking'},
+    {name: 'washer', feature: 'popup__feature--washer'},
+    {name: 'elevator', feature: 'popup__feature--elevator'},
+    {name: 'conditioner', feature: 'popup__feature--conditioner'}
+  ];
+
   /**
    * Функция рендерит объявление об обьекте размещения с данными, полученными с сервера
    * @param  {{author : {
@@ -22,6 +31,7 @@
    *     y: number
    *   }
    * }} ad обьект свойств одного пина и обьявления, полученный из загружженого с сервера массива данных
+   * @return {void}
    */
   window.renderCard = function (ad) {
     var template = document.querySelector('#card').content;
@@ -44,9 +54,6 @@
       window.globalElements.mapPins.querySelector('article').remove();
     }
 
-    /**
-     * Функция присваивает обьявлению значение типа обьекта размещения
-     */
     var addType = function () {
       clonedCardPhotos.innerHTML = '';
       switch (ad.offer.type) {
@@ -67,41 +74,21 @@
       }
     };
 
-    /**
-     * Функция добавляет в объявление лишки - удобства, если таковые имеются для данного пина
-     */
     var addFeatures = function () {
       var featuresData = ad.offer.features;
       for (var j = 0; j < featuresData.length; j++) {
         var li = document.createElement('li');
         li.classList.add('popup__feature');
-        switch (featuresData[j]) {
-          case 'wifi':
-            li.classList.add('popup__feature--wifi');
-            break;
-          case 'dishwasher':
-            li.classList.add('popup__feature--dishwasher');
-            break;
-          case 'parking':
-            li.classList.add('popup__feature--parking');
-            break;
-          case 'washer':
-            li.classList.add('popup__feature--washer');
-            break;
-          case 'elevator':
-            li.classList.add('popup__feature--elevator');
-            break;
-          case 'conditioner':
-            li.classList.add('popup__feature--conditioner');
-            break;
+
+        for (var k = 0; k < featuresDataMap.length; k++) {
+          if (featuresData[j] === featuresDataMap[k].name) {
+            li.classList.add(featuresDataMap[k].feature);
+          }
         }
         clonedCardFeatures.appendChild(li);
       }
     };
 
-    /**
-     * Функция добавляет в объявление фотографии, если таковые имеются для данного пина
-     */
     var addPhotos = function () {
       var photos = ad.offer.photos;
       for (var j = 0; j < photos.length; j++) {
@@ -114,10 +101,6 @@
       }
     };
 
-    /**
-     * Функция закрывает попап на нажатию кнопки закрытия попапа и удаляет слушатель клавиатурных событий с документа
-     * @param {object} evt обьект события
-     */
     var closeCard = function (evt) {
       evt.preventDefault();
       var popup = window.globalElements.map.querySelector('.map__card');
@@ -127,18 +110,24 @@
       }
       document.removeEventListener('keydown', window.onEscPush);
       evt.stopPropagation();
+      closeCardButton.removeEventListener('click', clickCloseCardButton);
     };
 
-    /**
-     * Функция закрывает попап при нажатии кнопки ESCAPE
-     * @param {object} evt  обьект события
-     */
+
     window.onEscPush = function (evt) {
       evt.preventDefault();
       if (evt.keyCode === window.constants.ESCAPE_CODE) {
         closeCard(evt);
       }
       document.removeEventListener('keydown', window.onEscPush);
+    };
+
+    var clickCloseCardButton = function (evt) {
+      if ((evt.currentTarget.tagName === 'BUTTON') && (evt.target.tagName === 'BUTTON')) {
+        closeCard(evt);
+        evt.stopPropagation();
+        document.removeEventListener('keydown', window.onEscPush);
+      }
     };
 
     clonedCardImage.src = ad.author.avatar;
@@ -151,17 +140,8 @@
     addFeatures();
     clonedCardDescription.textContent = ad.offer.description;
     addPhotos();
-
-
     document.addEventListener('keydown', window.onEscPush);
-    closeCardButton.addEventListener('click', function (evt) {
-      if ((evt.currentTarget.tagName === 'BUTTON') && (evt.target.tagName === 'BUTTON')) {
-        closeCard(evt);
-        evt.stopPropagation();
-        document.removeEventListener('keydown', window.onEscPush);
-      }
-    });
-
+    closeCardButton.addEventListener('click', clickCloseCardButton);
     fragment.appendChild(clonedCard);
     window.globalElements.mapPins.appendChild(fragment);
   };

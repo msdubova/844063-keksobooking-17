@@ -1,11 +1,8 @@
 'use strict';
 
 (function () {
-  window.wizards = [];
-
   /**
-   * Функция создает булавки и добавляет их в разметку
-   * @param {[{author : {
+   * @typedef {[{author : {
    *   avatar: string},
    *   offer: {
    *     title: string,
@@ -24,7 +21,13 @@
    *     x: number,
    *     y: number
    *   }
-   * }]} ads массив объектов с данными для рендеринга булавок и обьявлений к ним
+   * }]} data
+   */
+
+  /**
+   * Функция создает булавки и добавляет их в разметку
+   * @param {data} ads
+   * @return {void}
    */
   window.onRenderPins = function (ads) {
     var ad = document.querySelector('#pin').content;
@@ -55,77 +58,59 @@
 
   /**
    * Функция колбэк, если данные с сервера получены успешно - рендерит пины и ограничивает их количество до 5
-   * @param {[{author : {
-   *   avatar: string},
-   *   offer: {
-   *     title: string,
-   *     address: string,
-   *     price: number,
-   *     type: string,
-   *     rooms: number,
-   *     guests: number,
-   *     checkin: string,
-   *     checkout: string,
-   *     features: string[],
-   *     description: string,
-   *     photos: string[]
-   *   },
-   *   location: {
-   *     x: number,
-   *     y: number
-   *   }
-   * }]} ads полученный с сервера массив объектов с данными для рендеринга булавок и обьявлений к ним
+   * @param {data} ads
+   * @return {void}
    */
   var successHandler = function (ads) {
     window.pins = ads;
     var sliced = ads.slice(1, 6);
     window.onRenderPins(sliced);
+    window.activatePage();
   };
 
   /**
    * Функция-колбэк для неудачного запроса на сервер, создает окно с сообщением об ошибке
    * @param {number} errorStatus номер ошибки
+   * @return {void}
    */
   var errorHandler = function (errorStatus) {
     var page = document.querySelector('main');
 
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var alarm = errorTemplate.cloneNode(true);
-
-    page.insertAdjacentElement('afterbegin', alarm);
-
+    var errorButton = alarm.querySelector('.error__button');
+    var tryActivatePage = function () {
+      errorButton.removeEventListener('click', tryActivatePage);
+      document.querySelector('.error').remove();
+      window.load(successHandler, errorHandler);
+    };
     var errorDescription = alarm.querySelector('.error__message');
 
     switch (errorStatus) {
-      case 300:
-        errorDescription.textContent = 'Multiple Choice';
-        break;
-      case 301:
-        errorDescription.textContent = 'Moved Permanently';
-        break;
-      case 307:
-        errorDescription.textContent = 'Temporary Redirect';
-        break;
       case 400:
-        errorDescription.textContent = 'Bad Request';
+        errorDescription.textContent = 'Ошибка сервера';
         break;
       case 401:
-        errorDescription.textContent = 'Access denied';
+        errorDescription.textContent = 'Нет прав доступа';
         break;
       case 404:
-        errorDescription.textContent = 'Not found';
+        errorDescription.textContent = 'Страница не найдена';
         break;
       case 503:
-        errorDescription.textContent = 'Internal Server Error';
+        errorDescription.textContent = 'Внутренняя ошибка сервера';
         break;
       default:
-        errorDescription.textContent = 'Request status: ' + status;
+        errorDescription.textContent = 'Статус запроса: ' + errorStatus;
     }
+
+    errorButton.addEventListener('click', tryActivatePage);
+    page.insertAdjacentElement('afterbegin', alarm);
   };
 
   /**
   * Функция корректирует координаты булавки , учитывая погрешность на размер булавки и перенос центра отсчета с левого  верхнего    угла на кончик булавки
-  */
+   * @return {void}
+   */
   var customizePinSize = function () {
     var ads = window.globalElements.mapPins.querySelectorAll('.map__pin');
     for (var i = 1; i < ads.length; i++) {
@@ -147,6 +132,7 @@
 
   /**
    * Callback функция которая будет выполняться при выполлении условий onDragListen
+   * @return {void}
    */
   window.runAction = function () {
     window.load(successHandler, errorHandler);

@@ -19,7 +19,7 @@
     mapPinMain: mapPinMain,
     addressInput: addressInput,
     formCustomAd: formCustomAd,
-    adTitleInput: adTitleInput,
+    target: adTitleInput,
     adTypeSelect: adTypeSelect,
     adPriceInput: adPriceInput,
     adCheckinSelect: adCheckinSelect,

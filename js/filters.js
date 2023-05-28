@@ -12,82 +12,104 @@
   var washerFilter = filters.querySelector('#filter-washer');
   var elevatorFilter = filters.querySelector('#filter-elevator');
   var conditionerFilter = filters.querySelector('#filter-conditioner');
+  window.checkboxes = Array.from(document.querySelectorAll('input[type=checkbox]'));
 
+  window.checkboxes.forEach(function (checkboxItem) {
+    var onCheckboxKeydown = function (evt) {
+      if (evt.keyCode === window.constants.ENTER_CODE) {
+        if (!checkboxItem.checked) {
+          checkboxItem.setAttribute('checked', 'checked');
+          onFilterChange(evt);
+        } else if (checkboxItem.checked) {
+          checkboxItem.removeAttribute('checked', 'checked');
+          onFilterChange(evt);
+        }
+      }
+    };
+    checkboxItem.addEventListener('keydown', onCheckboxKeydown);
+  });
 
   window.cleanMap = function () {
-    var pins = window.globalElements.mapPins.querySelectorAll('button[type = button]');
-    for (var i = 0; i < pins.length; i++) {
-      pins[i].remove();
+    var pins = Array.from(window.globalElements.mapPins.querySelectorAll('button[type = button]'));
+
+    pins.forEach(function (pin) {
+      pin.remove();
+    });
+  };
+
+  var hasMatchingType = function (pin) {
+    if (window.typeChoice === 'any') {
+      return pin;
+    }
+    return pin.offer.type === window.typeChoice;
+  };
+
+  var hasMatchingPrice = function (pin) {
+    if (window.priceChoice === 'any') {
+      return pin;
+    } else {
+      var price;
+      if (pin.offer.price < window.constants.Price.LOW_PRICE_LIMIT) {
+        price = 'low';
+      } else if ((pin.offer.price >= window.constants.Price.LOW_PRICE_LIMIT) && (pin.offer.price < window.constants.Price.HIGH_PRICE_LIMIT)) {
+        price = 'middle';
+      } else if (pin.offer.price >= window.constants.Price.HIGH_PRICE_LIMIT) {
+        price = 'high';
+      }
+      return price === window.priceChoice;
     }
   };
 
+  var hasMatchingRooms = function (pin) {
+    if (window.roomsChoice === 'any') {
+      return pin;
+    }
+    return pin.offer.rooms === parseInt(window.roomsChoice, 10);
+  };
+
+  var hasMatchingGuests = function (pin) {
+    if (window.guestsChoice === 'any') {
+      return pin;
+    } else if (window.guestsChoice === '0') {
+      return pin.offer.guests === parseInt(window.guestsChoice, 10);
+    } else {
+      return pin.offer.guests === parseInt(window.guestsChoice, 10);
+    }
+  };
+
+  /**
+   * @param {HTMLSelectElement} service чекбокс, реализующий фильтр по виду сервиса
+   * @param {string} key строка - индикатор наличия выбранного сервиса
+   * @return {Function}
+   */
+  var generateIsFn = function (service, key) {
+    return function (it) {
+      if (service.checked) {
+        return (it.offer.features.indexOf(key) !== -1);
+      }
+      return it;
+    };
+  };
+
   var updatePins = function () {
+    window.typeChoice = housingTypeFilter.value;
+    window.priceChoice = housingPriceFilter.value;
+    window.roomsChoice = housingRoomsFilter.value;
+    window.guestsChoice = housingGuestsFilter.value;
     var ads = window.pins;
-    var typeChoice = housingTypeFilter.value;
-    var priceChoice = housingPriceFilter.value;
-    var roomsChoice = housingRoomsFilter.value;
-    var guestsChoice = housingGuestsFilter.value;
 
-    var hasMatchingType = function (it) {
-      if (typeChoice === 'any') {
-        return it;
-      }
-      return it.offer.type === typeChoice;
-    };
-
-    var hasMatchingPrice = function (it) {
-      if (priceChoice === 'any') {
-        return it;
-      } else {
-        var price;
-        if (it.offer.price < window.constants.Price.LOW_PRICE_LIMIT) {
-          price = 'low';
-        } else if ((it.offer.price >= window.constants.Price.LOW_PRICE_LIMIT) && (it.offer.price < window.constants.Price.HIGH_PRICE_LIMIT)) {
-          price = 'middle';
-        } else if (it.offer.price >= window.constants.Price.HIGH_PRICE_LIMIT) {
-          price = 'high';
-        }
-        return price === priceChoice;
-      }
-    };
-
-    var hasMatchingRooms = function (it) {
-      if (roomsChoice === 'any') {
-        return it;
-      }
-      return it.offer.rooms === parseInt(roomsChoice, 10);
-
-    };
-
-    var hasMatchingGuests = function (it) {
-      if (guestsChoice === 'any') {
-        return it;
-      } else if (guestsChoice === '0') {
-        return it.offer.guests === parseInt(guestsChoice, 10);
-      } else {
-        return it.offer.guests >= guestsChoice;
-      }
-    };
-
-    var generateIsFn = function (service, key) {
-      return function (it) {
-        if (service.checked) {
-          return (it.offer.features.indexOf(key) !== -1);
-        }
-        return it;
-      };
-    };
-
-    var filteredAds = ads.filter(hasMatchingType)
-      .filter(hasMatchingPrice)
-      .filter(hasMatchingRooms)
-      .filter(hasMatchingGuests)
-      .filter(generateIsFn(wifiFilter, 'wifi'))
-      .filter(generateIsFn(dishwasherFilter, 'dishwasher'))
-      .filter(generateIsFn(parkingFilter, 'parking'))
-      .filter(generateIsFn(washerFilter, 'washer'))
-      .filter(generateIsFn(elevatorFilter, 'elevator'))
-      .filter(generateIsFn(conditionerFilter, 'conditioner'));
+    var filteredAds = ads.filter(function (x) {
+      return hasMatchingType(x)
+      && hasMatchingPrice(x)
+      && hasMatchingRooms(x)
+      && hasMatchingGuests(x)
+      && generateIsFn(wifiFilter, 'wifi')(x)
+      && generateIsFn(dishwasherFilter, 'dishwasher')(x)
+      && generateIsFn(parkingFilter, 'parking')(x)
+      && generateIsFn(washerFilter, 'washer')(x)
+      && generateIsFn(elevatorFilter, 'elevator')(x)
+      && generateIsFn(conditionerFilter, 'conditioner')(x);
+    });
 
     if (filteredAds.length > 5) {
       var sliced = filteredAds.slice(1, 6);
@@ -105,10 +127,7 @@
         if (window.globalElements.mapPins.querySelector('article')) {
           window.globalElements.mapPins.querySelector('article').remove();
         }
-
-        (document.removeEventListener('keydown', window.onEscPush))
-
-        ;
+        (document.removeEventListener('keydown', window.onEscPush));
       }
   );
 

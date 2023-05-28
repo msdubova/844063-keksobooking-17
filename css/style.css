@@ -212,6 +212,7 @@ fieldset {
 }
 
 .map__pin:not(.map__pin--main):hover::after,
+.map__pin:not(.map__pin--main):focus::after,
 .map__pin:not(.map__pin--main):active::after,
 .map__pin--active:not(.map__pin--main)::after {
   background-position: 0 -88px;
@@ -1247,4 +1248,8 @@ fieldset {
 .error__button:active {
   outline: none;
   opacity: 0.6;
+}
+
+.deactivated {
+  pointer-events: none;
 }

@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   var validateForm = function () {
-    var globs = window.globalElements;
+    var globals = window.globalElements;
 
     var adTypeParameters = {
       bungalo: {min: 0, placeholder: 0},
@@ -11,30 +11,50 @@
     };
 
     /**
-     * Функция подтягивает значения двух селектов по порядковому номеру выбранной опции
-     * @param {HTMLElement} firstSelect селект, в котором происходит выбор опции
-     * @param {HTMLElement} secondSelect селект, в котором выбор опции подтягивается выбором в первом селекте
+     * Функция кастомизирует сообщение об ошибке в поле ввода названия
+     * @param {Event} evt объект события
+     * @return {void}
      */
-    var matchSelects = function (firstSelect, secondSelect) {
-      secondSelect.selectedIndex = firstSelect.selectedIndex;
+    var onTitleInput = function (evt) {
+      var target = evt.target;
+      if (target.validity.tooShort) {
+        target.setCustomValidity('Название объявления должно состоять минимум из 30 символов');
+      } else if (target.validity.tooLong) {
+        target.setCustomValidity('Название объявления не должно превышать 100 символов');
+      } else if (target.validity.valueMissing) {
+        target.setCustomValidity('Дайте название объявлению');
+      } else {
+        target.setCustomValidity('');
+      }
     };
 
     /**
-     * Функция-обработчик событий селекта типа жилища. устанавливает минимальное значение поля цены
+     * @param {HTMLSelectElement} firstSelect элемент, значение которого присваивается
+     * @param {HTMLSelectElement} secondSelect элемент, которому присваивается значение
+     * @return {void}
      */
+    var synchronizeSelect = function (firstSelect, secondSelect) {
+      secondSelect.selectedIndex = firstSelect.selectedIndex;
+    };
+
+    var updatePriceMinValue = function () {
+      globals.adPriceInput.setAttribute('placeholder', adTypeParameters[globals.adTypeSelect.value].placeholder);
+      globals.adPriceInput.setAttribute('min', parseInt(adTypeParameters[globals.adTypeSelect.value].min, 10));
+    };
+
+
     window.onTypeSelect = function () {
-      globs.adPriceInput.setAttribute('placeholder', adTypeParameters[globs.adTypeSelect.value].placeholder);
-      globs.adPriceInput.setAttribute('min', parseInt(adTypeParameters[globs.adTypeSelect.value].min, 10));
+      updatePriceMinValue();
+      onPriceInvalid();
     };
 
     /**
      * Функция назначает мин значение цены для выбранного поля типа размещения
-     * @param {Object} evt обьект события
+     * @return {void}
      */
-    var onPriceInput = function (evt) {
-      evt.preventDefault();
+    var onPriceInput = function () {
       var minPrice;
-      switch (globs.adTypeSelect.value) {
+      switch (globals.adTypeSelect.value) {
         case 'bungalo' :
           minPrice = 0;
           break;
@@ -48,35 +68,55 @@
           minPrice = 10000;
           break;
       }
-      globs.adPriceInput.setAttribute('min', minPrice);
+      globals.adPriceInput.setAttribute('min', minPrice);
     };
 
     /**
-     * Функция-обработчик событий селекта чекин и автоматического подбора значения полю чекаут
+     * Функция кастомизирует сообщение об ошибке в поле ввода цены
+     * @return {void}
      */
+    var onPriceInvalid = function () {
+      if (globals.adPriceInput.validity.valueMissing) {
+        globals.adPriceInput.setCustomValidity('Укажите цену проживания в объекте размещения за одну ночь');
+      } else if (globals.adPriceInput.validity.rangeUnderflow) {
+        switch (globals.adTypeSelect.value) {
+          case 'bungalo' :
+            globals.adPriceInput.setCustomValidity('Минимальная цена за ночь в бунгало - 0 денег');
+            break;
+          case 'flat' :
+            globals.adPriceInput.setCustomValidity('Минимальная цена за ночь в квартире - 1000 денег');
+            break;
+          case 'house' :
+            globals.adPriceInput.setCustomValidity('Минимальная цена за ночь в доме - 5000 денег');
+            break;
+          case 'palace' :
+            globals.adPriceInput.setCustomValidity('Минимальная цена за ночь во дворце - 10000 денег');
+            break;
+        }
+      } else {
+        globals.adPriceInput.setCustomValidity('');
+      }
+    };
+
+
     var onCheckinSelect = function () {
-      matchSelects(globs.adCheckinSelect, globs.adCheckOutSelect);
+      synchronizeSelect(globals.adCheckinSelect, globals.adCheckOutSelect);
     };
 
-    /**
-     * Функция-обработчик собйтий селекта  чекаут и автоматического подбора значения полю чекин
-     */
     var onCheckoutSelect = function () {
-      globs.adCheckinSelect.selectedIndex = globs.adCheckOutSelect.selectedIndex;
-      matchSelects(globs.adCheckOutSelect, globs.adCheckinSelect);
+      globals.adCheckinSelect.selectedIndex = globals.adCheckOutSelect.selectedIndex;
+      synchronizeSelect(globals.adCheckOutSelect, globals.adCheckinSelect);
     };
 
-    /**
-     * Функция колбек выполняет проверку и назначает сообщение для ошибки для двух полей сразу  - комнаты и гости
-     */
     var onRoomCapacityChange = function () {
-      setValidation(globs.adRoomSelect);
-      setValidation(globs.adCapacitySelect);
+      setValidation(globals.adRoomSelect);
+      setValidation(globals.adCapacitySelect);
     };
 
     /**
      * Функция назначает сообщение об ошибке , если проверка соотношения гостей-комнат не пройдена, для заданного элемента
-     * @param {HTMLElement} select
+     * @param {HTMLSelectElement} select проверяемое поле
+     * @return {void}
      */
     var setValidation = function (select) {
       var check = window.checkRoomGuests();
@@ -88,42 +128,44 @@
     };
 
     /**
-     * Функция проверяет соотношение гостей и комнат и выдает булево значение результатом
      * @return {boolean}
      */
     window.checkRoomGuests = function () {
-      if (globs.adRoomSelect.value === globs.adCapacitySelect.value) {
+      if (globals.adRoomSelect.value === globals.adCapacitySelect.value) {
         return true;
-      } else if ((!(globs.adRoomSelect.value === '100')) && (globs.adCapacitySelect.value === '0')) {
+      } else if ((!(globals.adRoomSelect.value === '100')) && (globals.adCapacitySelect.value === '0')) {
         return false;
-      } else if ((!(globs.adRoomSelect.value === '100')) && (globs.adRoomSelect.value > globs.adCapacitySelect.value)) {
+      } else if ((!(globals.adRoomSelect.value === '100')) && (globals.adRoomSelect.value > globals.adCapacitySelect.value)) {
         return true;
-      } else if ((globs.adRoomSelect.value === '100') && (globs.adCapacitySelect.value === '0')) {
+      } else if ((globals.adRoomSelect.value === '100') && (globals.adCapacitySelect.value === '0')) {
         return true;
-      } else if ((globs.adRoomSelect.value === '100') && (!(globs.adCapacitySelect.value === '0'))) {
+      } else if ((globals.adRoomSelect.value === '100') && (!(globals.adCapacitySelect.value === '0'))) {
         return false;
-      } else if (globs.adRoomSelect.value < globs.adCapacitySelect.value) {
+      } else if (globals.adRoomSelect.value < globals.adCapacitySelect.value) {
         return false;
-      } else if ((globs.adRoomSelect.value === '1') && (globs.adCapacitySelect.value === '0')) {
+      } else if ((globals.adRoomSelect.value === '1') && (globals.adCapacitySelect.value === '0')) {
         return false;
-      } else if ((globs.adRoomSelect.value === '2') && (globs.adCapacitySelect.value === '0')) {
+      } else if ((globals.adRoomSelect.value === '2') && (globals.adCapacitySelect.value === '0')) {
         return false;
-      } else if ((globs.adRoomSelect.value === '3') && (globs.adCapacitySelect.value === '0')) {
+      } else if ((globals.adRoomSelect.value === '3') && (globals.adCapacitySelect.value === '0')) {
         return false;
       }
       return false;
     };
 
-    globs.adTypeSelect.addEventListener('change', window.onTypeSelect);
-    globs.adPriceInput.addEventListener('input', onPriceInput);
-    globs.adCheckinSelect.addEventListener('change', onCheckinSelect);
-    globs.adCheckOutSelect.addEventListener('change', onCheckoutSelect);
-    globs.adRoomSelect.addEventListener('change', onRoomCapacityChange);
-    globs.adCapacitySelect.addEventListener('change', onRoomCapacityChange);
+    globals.target.addEventListener('input', onTitleInput);
+    globals.adTypeSelect.addEventListener('change', window.onTypeSelect);
+    globals.adPriceInput.addEventListener('input', onPriceInput);
+    globals.adPriceInput.addEventListener('input', onPriceInvalid);
+    globals.adCheckinSelect.addEventListener('change', onCheckinSelect);
+    globals.adCheckOutSelect.addEventListener('change', onCheckoutSelect);
+    globals.adRoomSelect.addEventListener('change', onRoomCapacityChange);
+    globals.adCapacitySelect.addEventListener('change', onRoomCapacityChange);
   };
 
   /**
    Callback функция которая будет выполняться при выполлении условий onDragListen
+   * @return {void}
    */
   window.runValidation = function () {
     validateForm();
